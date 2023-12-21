@@ -1,34 +1,27 @@
 #include <iostream>
-#include <string>
-#include "Contact.hpp"
+#include "PhoneBook.hpp"
 
-void    add(void)
-{
-
-}
-void    search(void)
-{
-
-}
+void    add(PhoneBook &phone_book);
+void    search(PhoneBook phone_book);
 
 int main()
 {
+    PhoneBook   phone_book;
     std::string choice;
 
     std::cout << "Welcome to PhoneBook v.42!!!\n"; // add colors
     while (1)
     {
-        std::cout << "Options: \n";
-        std::cout << "   ADD --> save a new contact\n";
-        std::cout << "SEARCH --> display specific contact\n";
-        std::cout << "  EXIT --> quit PhoneBook\n";
-        
-        std::cout << "Enter your choice: ";
+        std::cout   << "Options: \n"
+                    << "   ADD --> save a new contact\n"
+                    << "SEARCH --> display specific contact\n"
+                    << "  EXIT --> quit PhoneBook\n"
+                    << "Enter your choice: ";
         std::cin >> choice;
         if (choice == "ADD")
-            add();
+            add(phone_book);
         else if (choice == "SEARCH")
-            search();
+            search(phone_book);
         else if (choice == "EXIT")
             exit(0);
         else
@@ -38,5 +31,3 @@ int main()
         }
     }
 }
-
-//1 print menu with all the commands to chose

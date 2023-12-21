@@ -16,7 +16,9 @@ CXX = c++
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # Sources
-SRC = my_awesome_phonebook.cpp \
+SRC = 	my_awesome_phonebook.cpp	\
+		options.cpp					\
+		Contact.cpp					\
 
 # Objects
 OBJ = $(SRC:%.cpp=obj/%.o)
