@@ -23,7 +23,3 @@ std::string Contact::get_nick_name(void)
 {
     return (nick_name);
 }
-int Contact::get_phone_number(void)
-{
-    return (phone_number);
-}

@@ -10,10 +10,6 @@ void    search(void)
 {
 
 }
-void    exit(void)
-{
-
-}
 
 int main()
 {
@@ -34,7 +30,7 @@ int main()
         else if (choice == "SEARCH")
             search();
         else if (choice == "EXIT")
-            exit();
+            exit(0);
         else
         {
             std::cout << "WRONG OPTION!!!\n";
