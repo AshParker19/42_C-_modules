@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include "PhoneBook.hpp"
 
@@ -17,7 +18,9 @@ int main()
                     << "SEARCH --> display specific contact\n"
                     << "  EXIT --> quit PhoneBook\n"
                     << "Enter your choice: "; //TODO: protect of empty input
-        std::cin >> choice;
+        getline(std::cin, choice);
+        if (std::cin.eof())
+            break ;
         if (choice == "ADD")
             add(phone_book);
         else if (choice == "SEARCH")

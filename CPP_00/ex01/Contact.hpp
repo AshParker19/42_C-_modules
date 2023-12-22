@@ -22,11 +22,11 @@ class Contact
         void        set_darkest_secret(std::string darkest_secret);
 
         // getters
-        std::string get_first_name();
-        std::string get_last_name();
-        std::string get_nick_name();
-        std::string get_phone_number();
-        std::string get_darkest_secret();
+        const std::string &get_first_name() const;
+        const std::string &get_last_name() const;
+        const std::string &get_nick_name() const;
+        const std::string &get_phone_number() const;
+        const std::string &get_darkest_secret() const;
 
         bool        name_is_empty();
 };
