@@ -7,15 +7,15 @@
 void    add(PhoneBook &phone_book)
 {
     static int  i = 0;
-    std::string user_input;
+    std::string user_input; //TODO: check if it's input is empty in this funciotn
 
     std::cout << "NEW CONTACT\n";
     std::cin.ignore(); // FIXME: it fucks up if there's 2 spaces
     std::cin.clear();
 
-    std::cout << "Name:";
+    std::cout << "First name:";
     getline(std::cin, user_input);
-    phone_book.contacts[i].set_name(user_input);
+    phone_book.contacts[i].set_first_name(user_input);
     user_input.clear();
 
     std::cout << "Last name:";
@@ -53,7 +53,7 @@ std::string format_string(std::string input)
     return (copy);
 }
 
-void    display_contacts(PhoneBook phone_book)
+bool    display_contacts(PhoneBook phone_book)
 {
     int         field_w;
     std::string output;
@@ -61,64 +61,66 @@ void    display_contacts(PhoneBook phone_book)
     field_w = 10;
     std::cout   << "---------------------------------------------\n"; //TODO: are we allowed to use non ASCII characters?
     std::cout   << "|" << "   Index  |" << "First name|"
-                << "Last  name|" << " Nickname |\n";
-    std::cout   << "---------------------------------------------\n";
-    for (int i = 0; i < 8; i++)
+                << "Last  name|" << " Nickname |";
+    if (phone_book.contacts[0].name_is_empty())
+    {
+        std::cout << "\n---------------------------------------------\n";
+        return (false);
+    }
+    for (int i = 0; i <= 7; i++)
     {
         if (phone_book.contacts[i].name_is_empty())
+        {
+            std::cout << "Buggy bug " << i << "\n";
             break ;
-
+        }
+    
+        std::cout << "\n---------------------------------------------\n";
         std::cout << "|" << std::right << std::setw(field_w) << i;
 
-        if (phone_book.contacts[i].get_name().size() > 10)
-            output = format_string(phone_book.contacts[i].get_name());
-        else if (output.empty())
-        {
-            std::cout << "This field cannot be empty. Try again!!\n";
-            i = 0;
-            continue ;
-        }
+        if (phone_book.contacts[i].get_first_name().size() > 10)
+            output = format_string(phone_book.contacts[i].get_first_name());
         else
-            output = phone_book.contacts[i].get_name();
+            output = phone_book.contacts[i].get_first_name();
         std::cout << "|" << std::right << std::setw(field_w) << output;
-        output.clear();
 
         if (phone_book.contacts[i].get_last_name().size() > 10)
             output = format_string(phone_book.contacts[i].get_last_name());
         else 
             output = phone_book.contacts[i].get_last_name();
         std::cout << "|" << std::right << std::setw(field_w) << output;
-        output.clear();
 
         if (phone_book.contacts[i].get_nick_name().size() > 10)
             output = format_string(phone_book.contacts[i].get_nick_name());
         else 
             output = phone_book.contacts[i].get_nick_name();
         std::cout << "|" << std::right << std::setw(field_w) << output << "|";
-        output.clear();
     }
-    std::cout   << "\n---------------------------------------------\n";
-
+    return (true);
+    // std::cout << "\n---------------------------------------------\n";
 }
 
 void    search(PhoneBook phone_book)
 {
     int index;
 
-    display_contacts(phone_book);
-    std::cout << "ENTER THE INDEX\n";
+    index = 0;
+    if (!display_contacts(phone_book))
+        return ;
+    std::cout << "ENTER THE INDEX: ";
     std::cin >> index;
+
     if (index < 0 || index > 7)
     {
         std::cout << "Wrong index!!\n"; //TODO:red
-        std::cout << "Please choose an index between 1 and 8\n";
+        std::cout << "Please choose an index between 0 and 7\n";
         return ;
     }
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i <= 7; i++)
     {
         if (i == index)
         {
-            std::cout   << phone_book.contacts[i].get_name() << "\n"
+            std::cout   << phone_book.contacts[i].get_first_name() << "\n"
                         << phone_book.contacts[i].get_last_name() << "\n"
                         << phone_book.contacts[i].get_nick_name() << "\n"
                         << phone_book.contacts[i].get_phone_number() << "\n"

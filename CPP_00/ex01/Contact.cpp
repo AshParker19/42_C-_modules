@@ -3,13 +3,13 @@
 
 Contact::Contact()
 {
-    name = "";
+    first_name = "";
 }
 
 // setters
-void    Contact::set_name(std::string name)
+void    Contact::set_first_name(std::string first_name)
 {
-    this->name = name;
+    this->first_name = first_name;
 }
 
 void    Contact::set_last_name(std::string last_name)
@@ -33,9 +33,9 @@ void    Contact::set_darkest_secret(std::string darkest_secret)
 }
 
 // getters
-std::string Contact::get_name(void)
+std::string Contact::get_first_name(void)
 {
-    return (name);
+    return (first_name);
 }
 std::string Contact::get_last_name(void)
 {
@@ -58,5 +58,5 @@ std::string Contact::get_darkest_secret(void)
 
 bool    Contact::name_is_empty()
 {
-    return (name.empty());
+    return (first_name.empty());
 }

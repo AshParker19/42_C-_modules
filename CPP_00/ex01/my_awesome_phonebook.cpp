@@ -16,7 +16,7 @@ int main()
                     << "   ADD --> save a new contact\n"
                     << "SEARCH --> display specific contact\n"
                     << "  EXIT --> quit PhoneBook\n"
-                    << "Enter your choice: ";
+                    << "Enter your choice: "; //TODO: protect of empty input
         std::cin >> choice;
         if (choice == "ADD")
             add(phone_book);
