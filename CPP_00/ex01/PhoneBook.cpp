@@ -11,7 +11,7 @@ PhoneBook::PhoneBook()
     data[0] = "First name";
     data[1] = "Last name";
     data[2] = "Nick name";
-    data[3] = "Phone Book";
+    data[3] = "Phone number";
     data[4] = "Darkest secret";
 }
 

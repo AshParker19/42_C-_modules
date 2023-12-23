@@ -23,7 +23,7 @@ public:
 
 	typedef Account		t;
 
-	static int	getNbAccounts( void );
+	static int	getNbAccounts( void ); //use this shit to decrement
 	static int	getTotalAmount( void );
 	static int	getNbDeposits( void );
 	static int	getNbWithdrawals( void );
