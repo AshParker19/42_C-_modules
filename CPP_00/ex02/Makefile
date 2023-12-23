@@ -10,7 +10,7 @@
 NAME = the_job_of_your_dreams
 
 # Compiler
-CXX = g++
+CXX = c++
 
 # Flags
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
