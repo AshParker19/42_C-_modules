@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <sstream>
 #include <cctype>
+#include <stdlib.h>
 #include "PhoneBook.hpp"
 
 PhoneBook::PhoneBook()
@@ -28,7 +29,7 @@ void    PhoneBook::input_loop()
     {
         put_msg(options, 4, GREEN);
         put_msg("Enter your choice: ", true, PURPLE);
-        getline(std::cin, choice);
+        std::getline(std::cin, choice);
         if (std::cin.eof())
             break ;
         if (choice == "ADD")
@@ -66,6 +67,8 @@ void    PhoneBook::add()
             put_msg((data[j] + ": "), true, BLUE);
             user_input.clear();
             std::getline(std::cin, user_input);
+            if (std::cin.eof())
+                exit (0);
             if (validate_input(user_input))
                 info[j] = user_input;
             else
@@ -156,10 +159,11 @@ void    PhoneBook::search()
     {
         put_msg("ENTER THE INDEX: ", true, YELLOW);
         std::string input;
-        getline(std::cin, input);
+        std::getline(std::cin, input);
         std::stringstream p(input);
         p >> index;
-
+        if (std::cin.eof())
+            exit (0);
         if (p.fail() || index < 0 || index > 7)
             put_msg(wrong_index, 2, RED);
         else if (contacts[index].name_is_empty())

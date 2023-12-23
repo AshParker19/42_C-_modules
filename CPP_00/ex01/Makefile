@@ -16,8 +16,8 @@ CXX = c++
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # Sources
-SRC = 	My_Awesome_Phonebook.cpp	\
-		Message.cpp					\
+SRC = 	my_awesome_phonebook.cpp	\
+		message.cpp					\
 		Contact.cpp					\
 		PhoneBook.cpp				\
 
@@ -41,13 +41,13 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(CXX) $(CXXFLAGS) -o $@ $^
-	@echo "$(CYAN)╔═══════════════════════════════════════════╗"
-	@echo "$(CYAN)║                   $(PURPLE)C++ 00                  $(CYAN)║"
-	@echo "$(CYAN)╟───────────────────────────────────────────╢"
-	@echo "$(CYAN)║                    $(BLUE)ex01                   $(CYAN)║"
-	@echo "$(CYAN)╟───────────────────────────────────────────╢"
-	@echo "$(CYAN)║            $(GREEN)$(NAME)           $(CYAN)║"
-	@echo "$(CYAN)╚═══════════════════════════════════════════╝$(DEF)"
+	@echo "╔═══════════════════════════════════════════╗"
+	@echo "║                   C++ 00                  ║"
+	@echo "╟───────────────────────────────────────────╢"
+	@echo "║                    ex01                   ║"
+	@echo "╟───────────────────────────────────────────╢"
+	@echo "║            $(NAME)           ║"
+	@echo "╚═══════════════════════════════════════════╝"
 
 obj/%.o: %.cpp
 	@mkdir -p obj
@@ -55,9 +55,9 @@ obj/%.o: %.cpp
 
 clean:
 	@rm -rf obj
-	@echo "$(ORANGE)╔═══════════════════════════════════════════╗"
-	@echo "║               $(RED)[✓]  CLEANED!$(ORANGE)               ║"
-	@echo "$(ORANGE)╚═══════════════════════════════════════════╝$(DEF)"
+	@echo "╔═══════════════════════════════════════════╗"
+	@echo "║               [✓]  CLEANED!               ║"
+	@echo "╚═══════════════════════════════════════════╝"
 
 fclean: clean
 	@rm -f $(NAME)
