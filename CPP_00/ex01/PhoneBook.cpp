@@ -5,13 +5,22 @@
 #include <cctype>
 #include "PhoneBook.hpp"
 
+PhoneBook::PhoneBook()
+{
+    data[0] = "First name";
+    data[1] = "Last name";
+    data[2] = "Nick name";
+    data[3] = "Phone Book";
+    data[4] = "Darkest secret";
+}
+
 void    PhoneBook::input_loop()
 {
     std::string choice;
     std::string options[] = {   "Options: ",
-                                "ADD --> save a new contact",
-                                "SEARCH --> display specific contact",
-                                "EXIT --> quit PhoneBook"};
+                                "ADD --> \x1b[33msave a new contact",
+                                "SEARCH --> \x1b[33mdisplay specific contact",
+                                "EXIT --> \x1b[33mquit PhoneBook"};
     std::string wrong_option[] =    {"WRONG OPTION!!!",
                                     "Please select one from the list!"};
 
@@ -43,71 +52,29 @@ bool    validate_input(std::string input)
 
 void    PhoneBook::add()
 {
-    bool        correct_input = false;
     std::string info[5];
     static int  i = 0;
+    bool        right_input = false;
     std::string wrong_input[] = {"WRONG INPUT!!!", "Please enter a valid input"};
     std::string user_input;
 
-    while (!correct_input)
+    while (!right_input)
     {
         put_msg("New Contact", false, YELLOW);
-
-        put_msg("First name: ", true, YELLOW);
-        std::getline(std::cin, user_input);
-        if (validate_input(user_input))
-            info[0] = user_input;
-        else
+        for (int j = 0; j < 5; j++)
         {
-            put_msg(wrong_input, 2, RED);
-            continue ;
+            put_msg((data[j] + ": "), true, BLUE);
+            user_input.clear();
+            std::getline(std::cin, user_input);
+            if (validate_input(user_input))
+                info[j] = user_input;
+            else
+            {
+                put_msg(wrong_input, 2, RED);
+                j = -1;
+            }
         }
-        user_input.clear();
-
-        put_msg("Last name: ", true, YELLOW); //FIXME: make an array for all the infos use it here...
-        std::getline(std::cin, user_input);
-        if (validate_input(user_input))
-            info[1] = user_input;
-        else
-        {
-            put_msg(wrong_input, 2, RED);
-            continue ;
-        }
-        user_input.clear();
-
-        put_msg("Nick name: ", true, YELLOW);
-        std::getline(std::cin, user_input);
-        if (validate_input(user_input))
-            info[2] = user_input;
-        else
-        {
-            put_msg(wrong_input, 2, RED);
-            continue ;
-        }
-        user_input.clear();
-
-        put_msg("Phone number: ", true, YELLOW);
-        std::getline(std::cin, user_input);
-        if (validate_input(user_input))
-            info[3] = user_input;
-        else
-        {
-            put_msg(wrong_input, 2, RED);
-            continue ;
-        }
-        user_input.clear();
-
-        put_msg("Darkest secret: ", true, YELLOW);
-        std::getline(std::cin, user_input);
-        if (validate_input(user_input))
-            info[4] = user_input;
-        else
-        {
-            put_msg(wrong_input, 2, RED);
-            continue ;
-        }
-        user_input.clear();
-        correct_input = true;
+        right_input = true;
     }
     contacts[i].set_first_name(info[0]);
     contacts[i].set_last_name(info[1]);
@@ -119,13 +86,13 @@ void    PhoneBook::add()
         i = 0;
 }
 
-std::string format_string(std::string input)
+std::string format_string(std::string input, int pos, int len)
 {
     std::string copy;
 
     copy = input;
-    copy[9] = '.';
-    copy = copy.substr(0, 10);
+    copy[pos] = '.';
+    copy = copy.substr(0, len);
     return (copy);
 }
 
@@ -153,19 +120,19 @@ bool    PhoneBook::display_contacts()
         std::cout << CYAN << "|" << RESET << std::right << std::setw(field_w) << i;
 
         if (contacts[i].get_first_name().size() > 10)
-            output = format_string(contacts[i].get_first_name());
+            output = format_string(contacts[i].get_first_name(), 9, 10);
         else
             output = contacts[i].get_first_name();
         std::cout << CYAN << "|" << RESET << std::right << std::setw(field_w) << output;
 
         if (contacts[i].get_last_name().size() > 10)
-            output = format_string(contacts[i].get_last_name());
+            output = format_string(contacts[i].get_last_name(), 9, 10);
         else 
             output = contacts[i].get_last_name();
         std::cout << CYAN << "|" << RESET << std::right << std::setw(field_w) << output;
 
         if (contacts[i].get_nick_name().size() > 10)
-            output = format_string(contacts[i].get_nick_name());
+            output = format_string(contacts[i].get_nick_name(), 9, 10);
         else 
             output = contacts[i].get_nick_name();
         std::cout << CYAN << "|" << RESET << std::right << std::setw(field_w) << output << CYAN << "|";
@@ -180,7 +147,8 @@ void    PhoneBook::search()
     bool        right_info = false;
     std::string info[5];
     std::string no_info[] = {"NO INFO!!!", "Please add a contact first"};
-    std::string wrong_index[] = {"WRONG INDEX!!!", "Please choose an index between 0 and 7"};
+    std::string wrong_index[] = {   "WRONG INDEX!!!",
+                                    "Please choose an index between \033[32m0 \033[31mand \033[32m7"};
 
     if (!display_contacts())
         return ;
@@ -198,11 +166,16 @@ void    PhoneBook::search()
             put_msg(no_info, 2, RED);
         else
         {
-            info[0] = "First name --> " + contacts[index].get_first_name(); //FIXME: and here using +
-            info[1] = "Last name --> " + contacts[index].get_last_name();
-            info[2] = "Nick name --> " + contacts[index].get_nick_name();
-            info[3] = "Phone number --> " + contacts[index].get_phone_number();
-            info[4] = "Darkest secret --> " + contacts[index].get_darkest_secret();
+            info[0] = (data[0] + " --> ") + (YELLOW + contacts[index].get_first_name());
+            info[0] = (info[0].length() > 43) ? format_string(info[0], 47, 48) : info[0];
+            info[1] = (data[1] + " --> ") + (YELLOW + contacts[index].get_last_name());
+            info[1] = (info[1].length() > 43) ? format_string(info[1], 47, 48) : info[1];
+            info[2] = (data[2] + " --> ") + (YELLOW + contacts[index].get_nick_name());
+            info[2] = (info[2].length() > 43) ? format_string(info[2], 47, 48) : info[2];
+            info[3] = (data[3] + " --> ") + (YELLOW + contacts[index].get_phone_number());
+            info[3] = (info[3].length() > 43) ? format_string(info[3], 47, 48) : info[3];
+            info[4] = (data[4] + " --> ") + (YELLOW + contacts[index].get_darkest_secret());
+            info[4] = (info[4].length() > 43) ? format_string(info[4], 47, 48) : info[4];
             put_msg(info, 5, PURPLE);
             right_info = true;
         }

@@ -25,9 +25,26 @@ void    put_line(int type)
     std::cout << RESET << "\n";
 }
 
+int visible_length(const std::string& str)
+{
+    int     length = 0;
+    bool    in_escape_sequence = false;
+
+    for (std::size_t i = 0; i < str.size(); ++i)
+    {
+        if (str[i] == '\033' || str[i] == '\x1b')
+            in_escape_sequence = true;
+        else if (in_escape_sequence && str[i] == 'm')
+            in_escape_sequence = false;
+        else if (!in_escape_sequence)
+            ++length;
+    }
+    return (length);
+}
+
 void    put_text_center(std::string text, std::string color, bool sides)
 {
-    int wordlen = text.size();
+    int wordlen = visible_length(text);
 
     if (sides)
         std::cout << CYAN << "║";
@@ -38,14 +55,13 @@ void    put_text_center(std::string text, std::string color, bool sides)
         std::cout << color << text << CYAN;
         for (int i = 0; i < (43 - wordlen) / 2; i++)
             std::cout << " ";
-        if (text.size() % 2 == 0)
+        if (wordlen % 2 == 0)
             std::cout << " ";
         if (sides)
             std::cout << "║" << RESET << "\n";
     }
     else
         std::cout << color << text << RESET;
-
 }
 
 void    PhoneBook::greeting(void)

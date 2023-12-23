@@ -3,19 +3,24 @@
 
 #include "Contact.hpp"
 
-#define GREEN 			"\033[0;32m"
-#define RED 			"\033[0;31m"
-#define YELLOW 		    "\x1b[33m"
-#define CYAN 			"\x1b[36m"
-#define PURPLE 		    "\x1b[35m"
-#define RESET 			"\033[0m"
+#define GREEN 	"\033[32m"
+#define BLUE    "\033[34m"
+#define RED 	"\033[31m"
+#define YELLOW 	"\x1b[33m"
+#define CYAN 	"\x1b[36m"
+#define PURPLE 	"\x1b[35m"
+#define RESET 	"\033[0m"
 
 class PhoneBook
 {
     private:
-        Contact contacts[8];
+        Contact     contacts[8];
+        std::string data[5];
 
     public:
+
+        // default constructor
+        PhoneBook();
 
         // dispays message 
         void    greeting();
