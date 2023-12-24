@@ -38,6 +38,33 @@ void    PhoneBook::input_loop()
     }
 }
 
+void    PhoneBook::greeting(void)
+{
+    put_line(0);
+    put_text_center("Welcome to PhoneBook v.42++", YELLOW, true);
+    put_line(1);
+}
+
+void    PhoneBook::put_msg(std::string msg, bool no_nl, std::string color)
+{
+    if (no_nl)
+    {
+        put_text_center(msg, color, false);
+        return ;
+    }
+    put_line(0);
+    put_text_center(msg, color, true);
+    put_line(1);
+}
+
+void    PhoneBook::put_msg(std::string msgs[], int size, std::string color)
+{
+    put_line(0);
+    for (int i = 0; i < size; i++)
+        put_text_center(msgs[i], color, true);
+    put_line(1);
+}
+
 void    PhoneBook::add()
 {
     std::string info[5];
