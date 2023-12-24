@@ -51,12 +51,26 @@ bool    validate_input(std::string input)
     return (false);
 }
 
+bool    is_numeric(std::string input)
+{
+    int start = 0;
+
+    if (input.size() > 1 && input[0] == '+')
+        start = 1;
+    for (std::size_t i = start; i < input.size(); i++)
+        if (!std::isdigit(input[i]))
+            return (false);
+    return (true);
+}
+
 void    PhoneBook::add()
 {
     std::string info[5];
     static int  i = 0;
     bool        right_input = false;
-    std::string wrong_input[] = {"WRONG INPUT!!!", "Please enter a valid input"};
+    std::string wrong_input[] =     {"WRONG INPUT!!!", "Please enter a valid input"};
+    std::string non_numeric[] =     {"WRONG INPUT!!!", "Phone number can contain only digits",
+                                     "Or \033[32m+\033[31m at the beginning"};
     std::string user_input;
 
     while (!right_input)
@@ -69,12 +83,17 @@ void    PhoneBook::add()
             std::getline(std::cin, user_input);
             if (std::cin.eof())
                 exit (0);
-            if (validate_input(user_input))
+            if (j == 3 && !is_numeric(user_input))
+            {
+                put_msg(non_numeric, 3, RED);
+                j -= 1;
+            }
+            else if (validate_input(user_input))
                 info[j] = user_input;
             else
             {
                 put_msg(wrong_input, 2, RED);
-                j = -1;
+                j -= 1;
             }
         }
         right_input = true;
