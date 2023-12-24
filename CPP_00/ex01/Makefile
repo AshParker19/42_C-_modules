@@ -18,6 +18,7 @@ CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 # Sources
 SRC = 	my_awesome_phonebook.cpp	\
 		message.cpp					\
+		utils.cpp					\
 		Contact.cpp					\
 		PhoneBook.cpp				\
 

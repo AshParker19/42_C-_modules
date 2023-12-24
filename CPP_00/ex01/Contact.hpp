@@ -1,7 +1,7 @@
 #ifndef CONTACT_HPP
 #define CONTACT_HPP
 
-#include <string>
+#include "my_awesome_phonebook.hpp"
 
 class Contact
 {
@@ -14,7 +14,7 @@ class Contact
     
     public:
         //default constructor
-        Contact(); // are we allowed to have initializing lists in a class file?
+        Contact();
 
         //setters
         void        set_first_name(std::string first_name);

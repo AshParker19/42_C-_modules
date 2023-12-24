@@ -2,7 +2,7 @@
 
 int main()
 {
-    PhoneBook   phone_book; // FIXME: truncate if input "                          here"
+    PhoneBook   phone_book;
 
     phone_book.greeting();
     phone_book.input_loop();

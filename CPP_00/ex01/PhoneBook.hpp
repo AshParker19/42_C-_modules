@@ -1,6 +1,7 @@
 #ifndef PHONEBOOK_HPP
 #define PHONEBOOK_HPP
 
+#include "my_awesome_phonebook.hpp"
 #include "Contact.hpp"
 
 #define GREEN 	"\033[32m"

@@ -1,9 +1,4 @@
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <sstream>
-#include <cctype>
-#include <stdlib.h>
+#include "my_awesome_phonebook.hpp"
 #include "PhoneBook.hpp"
 
 PhoneBook::PhoneBook()
@@ -43,26 +38,6 @@ void    PhoneBook::input_loop()
     }
 }
 
-bool    validate_input(std::string input)
-{
-    for (std::size_t i = 0; i < input.length(); i++)
-        if (!isspace(static_cast<unsigned char>(input[i])))
-            return (true);
-    return (false);
-}
-
-bool    is_numeric(std::string input)
-{
-    int start = 0;
-
-    if (input.size() > 1 && input[0] == '+')
-        start = 1;
-    for (std::size_t i = start; i < input.size(); i++)
-        if (!std::isdigit(input[i]))
-            return (false);
-    return (true);
-}
-
 void    PhoneBook::add()
 {
     std::string info[5];
@@ -83,6 +58,8 @@ void    PhoneBook::add()
             std::getline(std::cin, user_input);
             if (std::cin.eof())
                 exit (0);
+            if (std::isspace(user_input[0]))
+                user_input = truncate_space(user_input);
             if (j == 3 && !is_numeric(user_input))
             {
                 put_msg(non_numeric, 3, RED);
