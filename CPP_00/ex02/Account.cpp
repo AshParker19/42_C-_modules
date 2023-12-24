@@ -60,7 +60,6 @@ void	Account::displayAccountsInfos( void )
 
 void	Account::makeDeposit( int deposit )
 {
-    // _totalAmount = deposit;
     _totalNbDeposits++;
     _nbDeposits++;
     _displayTimestamp();

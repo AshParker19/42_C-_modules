@@ -32,7 +32,7 @@ void    PhoneBook::input_loop()
         else if (choice == "SEARCH")
             search();
         else if (choice == "EXIT")
-            exit(0);
+            return ;
         else
             put_msg(wrong_option, 2, RED);
     }
