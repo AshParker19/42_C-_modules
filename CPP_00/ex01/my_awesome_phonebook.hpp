@@ -7,7 +7,6 @@
 #include <iomanip>
 #include <sstream>
 #include <cctype>
-#include <stdlib.h>
 
 /* colors */
 #define GREEN 	"\033[32m"

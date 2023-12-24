@@ -16,7 +16,10 @@ CXX = c++
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # Sources
-SRC = main.cpp
+SRC = 	main.cpp		\
+		newZombie.cpp	\
+		randomChump.cpp	\
+		Zombie.cpp	    \
 
 # Objects
 OBJ = $(SRC:%.cpp=obj/%.o)
