@@ -10,7 +10,7 @@
 NAME = my_awesome_phonebook
 
 # Compiler
-CXX = g++
+CXX = c++
 
 # Flags
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
