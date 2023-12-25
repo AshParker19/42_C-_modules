@@ -1,9 +1,36 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <sstream>
 
-int replace(char **av)
+void    replace(std::ifstream &orig_file, std::ofstream &rep_file, 
+                std::string rep_by, std::string to_rep)
+{
+    std::string content;
+    std::size_t pos;
+
+    while (std::getline(orig_file, content))
+    {
+        std::string result;
+        pos = content.find(rep_by);
+        if (pos != std::string::npos)
+        {
+            while (pos != std::string::npos)
+            {
+                result += content.substr(0, pos);
+                result += to_rep;
+                content = content.substr(pos + rep_by.size());
+                pos = content.find(rep_by);
+            }
+            result += content;
+            rep_file << result;
+        }
+        else
+            rep_file << content;
+        rep_file << std::endl;
+    }
+}
+
+int prepare_files(char **av)
 {
     std::ifstream orig_file(av[1]);
     if (orig_file.fail())
@@ -17,26 +44,7 @@ int replace(char **av)
         orig_file.close();
         return (1);
     }
-    bool only_ws = true;
-    while (orig_file.peek() != EOF)
-    {
-        
-        if (!std::isspace(orig_file.get()))
-        {
-            only_ws = false;
-            orig_file.unget();
-            break ;
-        }
-    }
-    if (only_ws)
-    {
-        std::cerr << "Only whitespaces in " << av[1] << std::endl;
-        orig_file.close();
-        return (1);
-    }
-    orig_file.clear();
-    orig_file.seekg(0, std::ios::beg);
-
+    
     std::string rep_file_name = av[1];
     rep_file_name += ".replace";
     std::ofstream rep_file(rep_file_name.c_str());
@@ -47,24 +55,7 @@ int replace(char **av)
         return (1);
     }
 
-
-    std::string content;
-    std::string word;
-    std::string rep_by = av[2];
-    std::string to_rep = av[3];
-    while (!orig_file.eof())
-    {
-        std::getline(orig_file, content);
-        std::istringstream iss(content);
-        while (iss >> word)
-        {
-            if (word == rep_by)
-                rep_file << to_rep;
-            else
-                rep_file << word;
-        }
-        rep_file << std::endl;
-    }
+    replace(orig_file, rep_file, av[2], av[3]);
     orig_file.close();
     rep_file.close();
     return (0);
@@ -73,7 +64,7 @@ int replace(char **av)
 int main(int ac, char **av)
 {
     if (ac == 4)
-        return (replace(av));
+        return (prepare_files(av));
     else
         std::cout << "Wrong number of arguments!\n";
 }
