@@ -16,11 +16,6 @@ class Harl
         Harl();
         ~Harl();
 
-        enum id
-        {
-            
-        };
-
         void complain( std::string level );
 };
 
