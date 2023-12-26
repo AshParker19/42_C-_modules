@@ -1,6 +1,12 @@
 #include <iostream>
 #include "HumanB.hpp"
 
+HumanB::HumanB(std::string new_name) :
+                      name(new_name),
+                      weapon(NULL){}
+
+HumanB::~HumanB() {};
+
 void HumanB::setWeapon(Weapon &weapon)
 {
     this->weapon = &weapon;

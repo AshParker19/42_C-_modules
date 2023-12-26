@@ -1,9 +1,9 @@
 #include <iostream>
 #include "Zombie.hpp"
 
-Zombie::Zombie()
-{
-}
+Zombie::Zombie() {}
+
+Zombie::~Zombie() {}
 
 void    Zombie::announce(void)
 {

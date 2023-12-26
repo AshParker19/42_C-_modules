@@ -10,7 +10,7 @@
 NAME = harl2_0
 
 # Compiler
-CXX = c++
+CXX = g++
 
 # Flags
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror

@@ -35,7 +35,7 @@ void Harl::complain( std::string level )
     switch(index)
     {
         case 'D':
-            (this->*complaints[0])(); // TODO: know about this syntax better
+            (this->*complaints[0])();
             break ;
 
         case 'I':

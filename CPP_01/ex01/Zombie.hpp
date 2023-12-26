@@ -10,7 +10,7 @@ class Zombie
     
     public:
         Zombie();
-        // ~Zombie(); TODO: know if we still need to have a destructor because we're not asked to print anything when an object is destroyed
+        ~Zombie();
 
         void announce( void );
         void set_name(const std::string &name);

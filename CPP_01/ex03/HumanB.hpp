@@ -11,10 +11,8 @@ class HumanB
         Weapon *weapon;
     
     public:
-        HumanB(std::string new_name) :
-            name(new_name),
-            weapon(NULL)
-        {}
+        HumanB(std::string new_name);
+        ~HumanB();
 
         void setWeapon(Weapon &weapon);
         void unsetWeapon();

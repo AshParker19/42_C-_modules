@@ -9,7 +9,7 @@ class Zombie
         std::string name;
     
     public:
-        Zombie(std::string new_name) : name(new_name) {} // TODO: know if can we have initializing list in a header
+        Zombie(const std::string &new_name);
         ~Zombie();
 
         void announce( void );
