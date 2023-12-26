@@ -11,6 +11,7 @@ class Harl
         void warning( void );
         void error( void );
         static std::string complaints[4];
+        static void (Harl::*funcs[])();
     
     public:
         Harl();

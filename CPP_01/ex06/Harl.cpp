@@ -2,11 +2,13 @@
 #include <iostream>
 #include "Harl.hpp"
 
-std::string Harl::complaints[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
-
 Harl::Harl() {}
 
 Harl::~Harl() {}
+
+std::string Harl::complaints[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+
+void (Harl::*Harl::funcs[])() = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
 
 void Harl::debug( void )
 {
@@ -38,8 +40,6 @@ void Harl::error( void )
 
 void Harl::complain( std::string level )
 {
-    void (Harl::*funcs[])() = { &Harl::debug, &Harl::info, &Harl::warning, &Harl::error };
-
     int i;
     for (i = 0; i < 4; i++)
     {
