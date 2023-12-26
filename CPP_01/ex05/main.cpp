@@ -1,11 +1,15 @@
+#include <iostream>
+#include <string>
 #include "Harl.hpp"
 
-int main()
+int main(int ac, char **av)
 {
     Harl harl;
 
-    harl.complain("DEBUG");
-    harl.complain("INFO");
-    harl.complain("WARNING");
-    harl.complain("ERROR");
+    if (ac != 2)
+    {
+        std::cout << "[ Unacceptable amount of complaints too handle ]" << std::endl;
+        return (1);
+    }
+    harl.complain(av[1]);
 }

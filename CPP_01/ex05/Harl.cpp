@@ -2,6 +2,12 @@
 #include <iostream>
 #include "Harl.hpp"
 
+std::string Harl::complaints[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+
+Harl::Harl() {}
+
+Harl::~Harl() {}
+
 void Harl::debug( void )
 {
     std::cout   << "I love having extra bacon for my 7XL-double-cheese-triple-pickle-specialketchup burger. I really do!"
@@ -25,28 +31,18 @@ void Harl::error( void )
     std::cout   << "This is unacceptable! I want to speak to the manager now."
                 << std::endl;
 }
-    
+
 void Harl::complain( std::string level )
 {
-    void (Harl::*complaints[])() = { &Harl::debug, &Harl::info, &Harl::warning, &Harl::error };
-    char    index = level[0];
+    void (Harl::*funcs[])() = { &Harl::debug, &Harl::info, &Harl::warning, &Harl::error };
 
-    switch(index)
+    for (int i = 0; i < 4; i++)
     {
-        case 'D':
-            (this->*complaints[0])();
-            break ;
-
-        case 'I':
-            (this->*complaints[1])();
-            break ;
-        
-        case 'W':   
-            (this->*complaints[2])();
-            break ;
-        
-        case 'E':
-            (this->*complaints[3])();
-            break ;
+        if (level == complaints[i])
+        {
+            (this->*funcs[i])();
+            return ;
+        }
     }
+    std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
 }

@@ -4,10 +4,12 @@
 
 int main(int ac, char **av)
 {
-    if (ac == 2)
-    {
-        Harl harl;
+    Harl harl;
 
-        harl.complain(av[1]);
+    if (ac != 2)
+    {
+        std::cout << "[ Unacceptable amount of complaints too handle ]" << std::endl;
+        return (1);
     }
+    harl.complain(av[1]);
 }

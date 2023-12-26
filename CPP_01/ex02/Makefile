@@ -10,7 +10,7 @@
 NAME = hi_this_is_brain
 
 # Compiler
-CXX = g++
+CXX = c++
 
 # Flags
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror

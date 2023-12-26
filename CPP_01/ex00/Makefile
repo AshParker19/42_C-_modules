@@ -10,7 +10,7 @@
 NAME = braiiiiiiinnnzzzz
 
 # Compiler
-CXX = g++  # TODO: change back to c++
+CXX = c++
 
 # Flags
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror

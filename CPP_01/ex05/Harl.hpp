@@ -10,8 +10,12 @@ class Harl
         void info( void );
         void warning( void );
         void error( void );
+        static std::string complaints[4];
     
     public:
+        Harl();
+        ~Harl();
+
         void complain( std::string level );
 };
 
