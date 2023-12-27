@@ -3,14 +3,14 @@
 > This module is an introduction to C++ at 42.
 
 ### Concepts
-* C++ streams
-* C++ class
-* C++ class constructor and destructor
-* C++ class attributes
-* C++ class member functions
-* C++ class accessors
-* C++ string class
-* C++ class methods
+* streams
+* class
+* class constructor and destructor
+* class attributes
+* class member functions
+* class accessors
+* string class
+* class methods
 
 ### ex00
 In this exersice we learn how to use "streams" in C++ as we use "printf" in C. Also we learn how to use "string" class, ans how to call methods of a class.
