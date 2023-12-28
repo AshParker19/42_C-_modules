@@ -50,7 +50,7 @@ void Fixed::setRawBits( int const raw )
 
 float Fixed::toFloat( void ) const
 {
-    float f = fixed_point / (1.0 * (1 << frac_bit));
+    float f = fixed_point / (static_cast<float>(1 << frac_bit));
     return (static_cast<float>(f));
 }
 
@@ -59,6 +59,11 @@ int Fixed::toInt( void ) const
     return (fixed_point >> frac_bit);
 }
 
+/* 
+    we need to return a ref to the same output stream object here to enable
+    chaining of the operator
+    std::cout << fixedObj1 << " " << fixedObj2 << std::endl;
+*/
 std::ostream &operator<<(std::ostream &os, const Fixed &fixed)
 {
     os << fixed.toFloat();
