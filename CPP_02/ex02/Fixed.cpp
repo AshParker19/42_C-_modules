@@ -16,14 +16,11 @@ Fixed::Fixed(const float f)
 
 Fixed::Fixed(const Fixed &other)
 {
-    std::cout << "Copy constructor called" << std::endl;
     *this = other;
 }
 
 Fixed &Fixed::operator=(const Fixed &other)
 {
-    std::cout << "Copy assignment operator called" << std::endl;
-
     fixed_point = other.getRawBits();
     return (*this);
 }
@@ -58,10 +55,55 @@ bool Fixed::operator!=(const Fixed &other) const
     return (!(*this == other));
 }
 
-Fixed::~Fixed()
+Fixed Fixed::operator+(const Fixed &other) const
 {
-    std::cout << "Destructor called" << std::endl;
+    return (Fixed(this->fixed_point + other.fixed_point));
 }
+
+Fixed Fixed::operator-(const Fixed &other) const
+{
+    return (Fixed(this->fixed_point - other.fixed_point));
+}
+
+Fixed Fixed::operator*(const Fixed &other) const
+{
+    return (Fixed(this->fixed_point * other.fixed_point));
+}
+
+Fixed Fixed::operator/(const Fixed &other) const
+{
+    return (Fixed(this->fixed_point / other.fixed_point));
+}
+
+float Fixed::operator++()
+{
+    ++fixed_point;
+    return (toFloat());
+}
+
+float Fixed::operator++(int)
+{
+    Fixed orig(*this);
+
+    this->fixed_point++;
+    return (orig.toFloat());
+}
+
+float Fixed::operator--()
+{
+    --fixed_point;
+    return (toFloat());
+}
+
+float Fixed::operator--(int)
+{
+    Fixed orig(*this);
+
+    this->fixed_point--;
+    return (orig.toFloat());
+}
+
+Fixed::~Fixed() {}
 
 int Fixed::getRawBits( void ) const
 {
