@@ -2,20 +2,15 @@
 #include <cmath>
 #include "Fixed.hpp"
 
-Fixed::Fixed() : fixed_point(0)
-{
-    std::cout << "Default constructor called" << std::endl;
-}
+Fixed::Fixed() : fixed_point(0) {}
 
 Fixed::Fixed(const int n) 
 {
-    std::cout << "Int constructor called" << std::endl;
     fixed_point = n << frac_bit;
 }
 
 Fixed::Fixed(const float f)
 {
-    std::cout << "Float constructor called" << std::endl;
     fixed_point = roundf(f * (1 << frac_bit));
 }
 
@@ -31,6 +26,36 @@ Fixed &Fixed::operator=(const Fixed &other)
 
     fixed_point = other.getRawBits();
     return (*this);
+}
+
+bool Fixed::operator>(const Fixed &other) const
+{
+    return (this->fixed_point > other.fixed_point);
+}
+
+bool Fixed::operator<(const Fixed &other) const
+{
+    return (this->fixed_point < other.fixed_point);
+}
+
+bool Fixed::operator>=(const Fixed &other) const
+{
+    return (this->fixed_point >= other.fixed_point);
+}
+
+bool Fixed::operator<=(const Fixed &other) const
+{
+    return (this->fixed_point <= other.fixed_point);
+}
+
+bool Fixed::operator==(const Fixed &other) const
+{
+    return (this->fixed_point == other.fixed_point);
+}
+
+bool Fixed::operator!=(const Fixed &other) const
+{
+    return (!(*this == other));
 }
 
 Fixed::~Fixed()
