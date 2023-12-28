@@ -67,6 +67,7 @@ Fixed Fixed::operator-(const Fixed &other) const
 
 Fixed Fixed::operator*(const Fixed &other) const
 {
+    
     return (Fixed(this->fixed_point * other.fixed_point));
 }
 
@@ -124,6 +125,26 @@ float Fixed::toFloat( void ) const
 int Fixed::toInt( void ) const
 {
     return (fixed_point >> frac_bit);
+}
+
+Fixed &Fixed::min(Fixed &x, Fixed &y)
+{
+    return ((x < y) ? x : y);
+}
+
+const Fixed &Fixed::min(const Fixed &x, const Fixed &y)
+{
+    return ((x < y) ? x : y);
+}
+
+Fixed &Fixed::max(Fixed &x, Fixed &y)
+{
+    return (x.toFloat() > y.toFloat() ? x : y);
+}
+
+const Fixed &Fixed::max(const Fixed &x, const Fixed &y)
+{
+    return (x.toFloat() > y.toFloat() ? x : y);
 }
 
 /* 
