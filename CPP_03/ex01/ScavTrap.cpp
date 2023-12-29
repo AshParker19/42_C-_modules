@@ -6,7 +6,6 @@ ScavTrap::ScavTrap(){} // :ClapTrap() TODO: should we call ClapTrap constructor 
 
 ScavTrap::ScavTrap(const std::string &new_name) : ClapTrap(new_name) // TODO: how to give ClapTrap different name?
 {
-    name = new_name;
     hit_points = 100;
     energy_points = 50;
     attack_damage = 20;

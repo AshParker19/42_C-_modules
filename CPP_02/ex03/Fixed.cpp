@@ -75,32 +75,32 @@ Fixed Fixed::operator/(const Fixed &other) const
     return (Fixed(this->toFloat() / other.toFloat()));
 }
 
-float Fixed::operator++()
+Fixed Fixed::operator++()
 {
     ++fixed_point;
     return (toFloat());
 }
 
-float Fixed::operator++(int)
+Fixed Fixed::operator++(int)
 {
     Fixed orig(*this);
 
     this->fixed_point++;
-    return (orig.toFloat());
+    return (orig);
 }
 
-float Fixed::operator--()
+Fixed Fixed::operator--()
 {
     --fixed_point;
     return (toFloat());
 }
 
-float Fixed::operator--(int)
+Fixed Fixed::operator--(int)
 {
     Fixed orig(*this);
 
     this->fixed_point--;
-    return (orig.toFloat());
+    return (orig);
 }
 
 Fixed::~Fixed() {}
@@ -138,12 +138,12 @@ const Fixed &Fixed::min(const Fixed &x, const Fixed &y)
 
 Fixed &Fixed::max(Fixed &x, Fixed &y)
 {
-    return (x.toFloat() > y.toFloat() ? x : y);
+    return (x > y ? x : y);
 }
 
 const Fixed &Fixed::max(const Fixed &x, const Fixed &y)
 {
-    return (x.toFloat() > y.toFloat() ? x : y);
+    return (x > y ? x : y);
 }
 
 /* 
