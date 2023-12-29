@@ -2,14 +2,29 @@
 #include <string>
 #include "ClapTrap.hpp"
 
+ClapTrap::ClapTrap() {}
+
 ClapTrap::ClapTrap(std::string new_name) :
                     name(new_name),
                     hit_points(10),
                     energy_points(10),
                     attack_damage(0)
-
 {
     std::cout << "ClapTrap " << GREEN << name << RESET << " is ready to fight!" << std::endl;
+}
+
+ClapTrap::ClapTrap(const ClapTrap &other)
+{
+    *this = other;
+}
+
+ClapTrap &ClapTrap::operator=(const ClapTrap &other)
+{
+    this->name = other.name;
+    this->hit_points = other.hit_points;
+    this->energy_points = other.energy_points;
+    this->attack_damage = other.attack_damage;
+    return (*this);
 }
 
 ClapTrap::~ClapTrap()
