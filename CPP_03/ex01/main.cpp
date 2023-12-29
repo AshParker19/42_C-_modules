@@ -1,10 +1,11 @@
 #include <iostream>
 #include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 
 int main()
 {
-    ClapTrap bro("bro");
-    ClapTrap dude("dude");
+    ScavTrap bro("bro");
+    ScavTrap dude("dude");
 
     bro.attack("dude");
     dude.takeDamage(5);

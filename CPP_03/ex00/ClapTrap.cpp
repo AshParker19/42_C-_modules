@@ -4,7 +4,7 @@
 
 ClapTrap::ClapTrap() {}
 
-ClapTrap::ClapTrap(std::string new_name) :
+ClapTrap::ClapTrap(const std::string &new_name) :
                     name(new_name),
                     hit_points(10),
                     energy_points(10),
@@ -52,7 +52,7 @@ void ClapTrap::attack(const std::string& target)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-    std::cout << "ClapTrap " << PURPLE << name << RESET << " has suffered " << RED
+    std::cout << "ClapTrap " << YELLOW << name << RESET << " has suffered " << RED
               << amount << RESET<< " points of damage!" << std::endl;
     hit_points -= amount;
     if (hit_points <= 0)

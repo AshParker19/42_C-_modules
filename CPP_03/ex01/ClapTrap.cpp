@@ -2,9 +2,12 @@
 #include <string>
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap() {}
+ClapTrap::ClapTrap() 
+{
+    std::cout << "ClapTrap " << GREEN << name << RESET << " is ready to fight!" << std::endl;
+}
 
-ClapTrap::ClapTrap(std::string new_name) :
+ClapTrap::ClapTrap(const std::string &new_name) :
                     name(new_name),
                     hit_points(10),
                     energy_points(10),
