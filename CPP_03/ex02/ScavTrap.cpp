@@ -2,7 +2,7 @@
 #include <string>
 #include "ScavTrap.hpp"
 
-ScavTrap::ScavTrap(){} // :ClapTrap() TODO: should we call ClapTrap constructor even if we don't use this constructor?
+ScavTrap::ScavTrap() {} // :ClapTrap() TODO: should we call ClapTrap constructor even if we don't use this constructor?
 
 ScavTrap::ScavTrap(const std::string &new_name) : ClapTrap(new_name) // TODO: how to give ClapTrap different name?
 {
@@ -54,5 +54,5 @@ void ScavTrap::attack(const std::string& target)
 
 void ScavTrap::guardGate()
 {
-    std::cout << "ScavTrap " << YELLOW << name << RESET << " is guarding the gate now. No one goes through!" << std::endl;
+    std::cout << "ScavTrap " << BLUE << name << RESET << " is guarding the gate now. No one goes through!" << std::endl;
 }
