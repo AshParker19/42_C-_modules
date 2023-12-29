@@ -20,7 +20,7 @@ FragTrap::FragTrap(const FragTrap &other) : ClapTrap (other)
 
 FragTrap &FragTrap::operator=(const FragTrap &other)
 {
-    ClapTrap::operator=(other);
+    this->ClapTrap::operator=(other);
     return (*this);
 }
 

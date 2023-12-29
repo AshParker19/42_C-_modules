@@ -84,7 +84,7 @@ void    PhoneBook::add()
             user_input.clear();
             std::getline(std::cin, user_input);
             if (std::cin.eof())
-                exit (0);
+                return ;
             if (std::isspace(user_input[0]))
                 user_input = truncate_space(user_input);
             if (j == 3 && !is_numeric(user_input))
@@ -186,7 +186,7 @@ void    PhoneBook::search()
         std::stringstream p(input);
         p >> index;
         if (std::cin.eof())
-            exit (0);
+            return ;
         if (p.fail() || index < 0 || index > 7)
             put_msg(wrong_index, 2, RED);
         else if (contacts[index].name_is_empty())
