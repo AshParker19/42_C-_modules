@@ -57,12 +57,12 @@ bool Fixed::operator!=(const Fixed &other) const
 
 Fixed Fixed::operator+(const Fixed &other) const
 {
-    return (Fixed(this->fixed_point + other.fixed_point));
+    return (Fixed(this->toFloat() + other.toFloat()));
 }
 
 Fixed Fixed::operator-(const Fixed &other) const
 {
-    return (Fixed(this->fixed_point - other.fixed_point));
+    return (Fixed(this->toFloat() - other.toFloat()));
 }
 
 Fixed Fixed::operator*(const Fixed &other) const
