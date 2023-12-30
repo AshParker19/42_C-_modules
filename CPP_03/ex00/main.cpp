@@ -6,11 +6,16 @@ int main()
     ClapTrap bro("bro");
     ClapTrap dude("dude");
 
-    bro.attack("dude");  // TODO: make a getter here to actually
-    dude.takeDamage(bro.getAttackDamage());
-    dude.attack("bro"); //TODO: use a for loop and random value using rand() for damage
-    bro.takeDamage(7);
-    
-    bro.attack("dude");
-    dude.takeDamage(10);
+    for (int i = 0; i < 11; i++)
+    {
+        bro.attack("dude");
+        dude.takeDamage(bro.getAttackDamage());
+        if (i % 8 == 0)
+            dude.beRepaired(i);
+
+        dude.attack("bro");
+        bro.takeDamage(dude.getAttackDamage());
+        if (i % 8 == 0)
+            bro.beRepaired(i);
+    }
 }
