@@ -12,7 +12,7 @@ int main( void )
     std::cout << "b: x --> " << b.getX() << " | y --> " << b.getY() << std::endl;   
     std::cout << "c: x --> " << c.getX() << " | y --> " << c.getY() << std::endl; 
     std::cout << "point: x --> " << point.getX() << " | y --> " << point.getY() << std::endl;
-    
+
     if (bsp(a, b, c, point))
         std::cout << "Point is inside the triangle" << std::endl;
     else
