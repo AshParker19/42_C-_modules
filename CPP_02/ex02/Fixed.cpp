@@ -84,7 +84,10 @@ Fixed Fixed::operator++()
 Fixed Fixed::operator++(int)
 {
     Fixed orig(*this);
-
+    /*
+                       (256 if fraction part is  8)
+       fixed_point + 1/(1 << frac_bit))
+    */
     this->fixed_point++;
     return (orig);
 }

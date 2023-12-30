@@ -6,8 +6,8 @@ int main()
     ClapTrap bro("bro");
     ClapTrap dude("dude");
 
-    bro.attack("dude");  // TODO: can we affect damage here?
-    dude.takeDamage(5);
+    bro.attack("dude");  // TODO: make a getter here to actually
+    dude.takeDamage(bro.getAttackDamage());
     dude.attack("bro"); //TODO: use a for loop and random value using rand() for damage
     bro.takeDamage(7);
     
