@@ -10,7 +10,7 @@ ClapTrap::ClapTrap(const std::string &new_name) :
                    energy_points(10),
                    attack_damage(0)
 {
-    std::cout << "ClapTrap " << GREEN << name << RESET << " is ready to fight!" << std::endl; // TODO: remove space in all the files
+    std::cout << "ClapTrap " << GREEN << name << RESET << " is ready to fight!" << std::endl;
 }
 
 ClapTrap::ClapTrap(const ClapTrap &other)
