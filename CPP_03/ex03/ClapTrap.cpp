@@ -37,14 +37,12 @@ void ClapTrap::attack(const std::string& target)
     if (energy_points <= 0)
         std::cout << YELLOW << name << RESET << " has no more energy to attack!" << std::endl; 
     else
-    {
-        energy_points--;
         if (hit_points > 0)
+        {
             std::cout   << "ClapTrap " << BLUE << name << RESET <<  " aggressively attacking ClapTrap "
                         << PURPLE << target << RESET << std::endl;
-        else
-            std::cout << YELLOW << name << RESET << " ran out of hit point!" << std::endl;
-    }
+            energy_points--;
+        }
 }
 
 int  ClapTrap::getAttackDamage() const
@@ -64,7 +62,7 @@ int ClapTrap::getEnergyPoints() const
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-    std::cout << "ClapTrap " << YELLOW << name << RESET << " has suffered " << RED
+    std::cout << YELLOW << name << RESET << " has suffered " << RED
               << amount << RESET<< " points of damage!" << std::endl;
     hit_points -= amount;
     if (hit_points <= 0)
