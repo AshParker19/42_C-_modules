@@ -34,10 +34,11 @@ ClapTrap::~ClapTrap()
 
 void ClapTrap::attack(const std::string& target)
 {
-    if (energy_points-- <= 0)
-        std::cout << YELLOW << name << RESET << " ran out of energy!" << std::endl; 
+    if (energy_points <= 0)
+        std::cout << YELLOW << name << RESET << " has no more energy to attack!" << std::endl; 
     else
     {
+        energy_points--;
         if (hit_points > 0)
             std::cout   << "ClapTrap " << BLUE << name << RESET <<  " aggressively attacking ClapTrap "
                         << PURPLE << target << RESET << std::endl;
@@ -72,13 +73,20 @@ void ClapTrap::takeDamage(unsigned int amount)
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
-    if (energy_points-- <= 0)
-        std::cout << YELLOW << name << RESET << " ran out of energy!" << std::endl; 
+    if (energy_points <= 0)
+        std::cout << YELLOW << name << RESET << " has no energy left to repair!" << std::endl; 
     else
     {
+        energy_points--;
         hit_points += amount;
         std::cout   << "ClapTrap " << GREEN << name << RESET << " is being repared and getting "
-                    PURPLE << amount << RESET << " points back!"
-                    << " Total hit points: " << GREEN << hit_points << RESET << std::endl;
+                    PURPLE << amount << RESET << " points back!" << std::endl;
     }
+}
+
+void ClapTrap::roundResult() const
+{
+    std::cout   << BLUE << name << RESET << "  --> " << YELLOW << hit_points 
+                << RESET << " hit points and " << YELLOW << energy_points
+                << RESET <<  " energy points" << std::endl;
 }
