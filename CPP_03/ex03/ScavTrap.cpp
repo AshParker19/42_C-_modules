@@ -6,7 +6,6 @@ ScavTrap::ScavTrap() : ClapTrap() {}
 
 ScavTrap::ScavTrap(const std::string &new_name) : ClapTrap(new_name)
 {
-    // this->name = new_name;
     hit_points = 100;
     energy_points = 50;
     attack_damage = 20;

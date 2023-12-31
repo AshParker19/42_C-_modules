@@ -69,7 +69,7 @@ void ClapTrap::beRepaired(unsigned int amount)
 
 int  ClapTrap::getAttackDamage() const
 {
-    return (attack_damage);
+    return (tattack_damage);
 }
 
 int  ClapTrap::getHitPoints() const
