@@ -2,11 +2,11 @@
 #include <string>
 #include "FragTrap.hpp"
 
-FragTrap::FragTrap() {}
+FragTrap::FragTrap() : ClapTrap() {}
 
 FragTrap::FragTrap(const std::string &new_name) : ClapTrap(new_name)
 {
-    name = new_name;
+    // name = new_name;
     hit_points = 100;
     energy_points = 100;
     attack_damage = 30;

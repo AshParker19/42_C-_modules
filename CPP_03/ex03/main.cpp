@@ -4,9 +4,9 @@
 int main()
 {
     DiamondTrap bro("bro");
-    std::cout << "Hit Points " << bro.hit_points << "\n";
-    std::cout << "Energy " << bro.energy_points << "\n"; 
-    std::cout << "Attack dmage " << bro.attack_damage << "\n";
+    std::cout << "Hit Points " << bro.getHitPoints() << "\n";
+    std::cout << "Energy " << bro.getEnergyPoints() << "\n"; 
+    std::cout << "Attack damage " << bro.getAttackDamage() << "\n";
     bro.attack("dude");
     bro.whoAmI();
 }
