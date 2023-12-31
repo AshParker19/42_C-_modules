@@ -1,18 +1,12 @@
 #include <iostream>
-#include "ClapTrap.hpp"
-#include "FragTrap.hpp"
+#include "DiamondTrap.hpp"
 
 int main()
 {
-    FragTrap bro("bro");
-    FragTrap dude("dude");
-
-    dude.highFivesGuys();
+    DiamondTrap bro("bro");
+    std::cout << "Hit Points " << bro.hit_points << "\n";
+    std::cout << "Energy " << bro.energy_points << "\n"; 
+    std::cout << "Attack dmage " << bro.attack_damage << "\n";
     bro.attack("dude");
-    dude.takeDamage(5);
-    dude.attack("bro");
-    bro.takeDamage(7);
-    
-    bro.attack("dude");
-    dude.takeDamage(10);
+    bro.whoAmI();
 }
