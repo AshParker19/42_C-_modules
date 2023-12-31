@@ -14,6 +14,7 @@ int main()
     ScavTrap bro("bro");
     ScavTrap dude("dude");
 
+    dude.guardGate();
     std::cout << std::endl;
     for (int i = 0; i < 6; i++)
     {

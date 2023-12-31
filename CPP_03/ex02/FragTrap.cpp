@@ -13,6 +13,19 @@ FragTrap::FragTrap(const std::string &new_name) : ClapTrap(new_name)
     std::cout << "FragTrap " << GREEN << name << RESET << " is here for a clash!" << std::endl;
 }
 
+void FragTrap::attack(const std::string& target)
+{
+    if (energy_points <= 0)
+        std::cout << YELLOW << name << RESET << " has no more energy to attack!" << std::endl; 
+    else
+        if (hit_points > 0)
+        {
+            std::cout   << "FragTrap " << BLUE << name << RESET <<  " aggressively attacking ClapTrap "
+                        << PURPLE << target << RESET << std::endl;
+            energy_points--;
+        }
+}
+
 FragTrap::FragTrap(const FragTrap &other) : ClapTrap (other)
 {
     *this = other;
@@ -20,7 +33,7 @@ FragTrap::FragTrap(const FragTrap &other) : ClapTrap (other)
 
 FragTrap &FragTrap::operator=(const FragTrap &other)
 {
-    this->ClapTrap::operator=(other);
+    ClapTrap::operator=(other);
     return (*this);
 }
 
