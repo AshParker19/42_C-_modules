@@ -45,21 +45,6 @@ void ClapTrap::attack(const std::string& target)
         }
 }
 
-int  ClapTrap::getAttackDamage() const
-{
-    return (attack_damage);
-}
-
-int  ClapTrap::getHitPoints() const
-{
-    return (hit_points);
-}
-
-int ClapTrap::getEnergyPoints() const
-{
-    return (energy_points);
-}
-
 void ClapTrap::takeDamage(unsigned int amount)
 {
     std::cout << "ClapTrap " << YELLOW << name << RESET << " has suffered " << RED
@@ -80,6 +65,21 @@ void ClapTrap::beRepaired(unsigned int amount)
         std::cout   << "ClapTrap " << GREEN << name << RESET << " is being repared and getting "
                     PURPLE << amount << RESET << " points back!" << std::endl;
     }
+}
+
+int  ClapTrap::getAttackDamage() const
+{
+    return (attack_damage);
+}
+
+int  ClapTrap::getHitPoints() const
+{
+    return (hit_points);
+}
+
+int ClapTrap::getEnergyPoints() const
+{
+    return (energy_points);
 }
 
 void ClapTrap::roundResult() const

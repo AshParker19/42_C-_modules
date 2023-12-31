@@ -20,11 +20,6 @@ ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other)
 ScavTrap &ScavTrap::operator=(const ScavTrap &other)
 {
     ClapTrap::operator=(other);
-    /*
-        '=' operator of a base class copies only base class related data
-        this is called object-slicing, we need to avoid it ny assigning all the derive
-        class related members manually
-    */
     return (*this);
 }
 
@@ -38,14 +33,12 @@ void ScavTrap::attack(const std::string& target)
     if (energy_points <= 0)
         std::cout << YELLOW << name << RESET << " has no more energy to attack!" << std::endl; 
     else
-    {
-        energy_points--;
         if (hit_points > 0)
+        {
             std::cout   << "ScavTrap " << BLUE << name << RESET <<  " ruthlessly striking ScavTrap "
                         << PURPLE << target << RESET << std::endl;
-        else
-            std::cout << YELLOW << name << RESET << " ran out of hit point!" << std::endl;
-    }             
+            energy_points--;
+        }
 }
 
 void ScavTrap::guardGate()

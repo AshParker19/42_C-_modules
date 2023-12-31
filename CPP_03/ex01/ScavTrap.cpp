@@ -38,14 +38,12 @@ void ScavTrap::attack(const std::string& target)
     if (energy_points <= 0)
         std::cout << YELLOW << name << RESET << " has no more energy to attack!" << std::endl; 
     else
-    {
-        energy_points--;
         if (hit_points > 0)
+        {
             std::cout   << "ScavTrap " << BLUE << name << RESET <<  " ruthlessly striking ScavTrap "
                         << PURPLE << target << RESET << std::endl;
-        else
-            std::cout << YELLOW << name << RESET << " ran out of hit point!" << std::endl;
-    }             
+            energy_points--;
+        }
 }
 
 void ScavTrap::guardGate()

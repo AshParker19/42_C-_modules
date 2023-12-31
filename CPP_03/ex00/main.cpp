@@ -1,6 +1,13 @@
 #include <iostream>
 #include "ClapTrap.hpp"
 
+void put_line(bool nl)
+{
+    std::cout << GREEN << "**************************************************" << RESET << std::endl;
+    if (nl)
+        std::cout << std::endl;
+}
+
 int main()
 {
     ClapTrap bro("bro");
@@ -9,7 +16,7 @@ int main()
     std::cout << std::endl;
     for (int i = 0; i < 11; i++)
     {
-        std::cout << GREEN << "**************************************************" << RESET << std::endl;
+        put_line(false);
         bro.attack("dude");
         if (bro.getEnergyPoints() > 0)
             dude.takeDamage(bro.getAttackDamage());
@@ -26,6 +33,6 @@ int main()
                     << GREEN << " <<<<<<<<<<<<<<<<<<" << RESET << std::endl;
         bro.roundResult();
         dude.roundResult();
-        std::cout << GREEN << "**************************************************\n" << RESET << std::endl;
+        put_line(true);
     }
 }
