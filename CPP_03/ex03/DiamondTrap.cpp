@@ -11,26 +11,22 @@ DiamondTrap::DiamondTrap(const std::string &new_name) :
     std::cout << "DiamontTrap " << GREEN << name << RESET << " has gained all the wisdom and ready for combat!" << std::endl;
 }
 
-// DiamondTrap::DiamondTrap(const DiamondTrap &other) : 
-//                          ClapTrap(other),
-//                          ScavTrap(other),
-//                          FragTrap(other)
-// {
-//         *this = other;
-// }
+DiamondTrap::DiamondTrap(const DiamondTrap &other) : 
+                         ClapTrap(other),
+                         ScavTrap(other),
+                         FragTrap(other)
+{
+        *this = other;
+}
 
-// DiamondTrap &DiamondTrap::operator=(const DiamondTrap &other)
-// {
-//     if (this != &other) // TODO:add this protection
-//     {
-//         this->attack_damage = other.
-//     }
-//     ClapTrap::operator=(other);
-//     ScavTrap::operator=(other);
-//     FragTrap::operator=(other);
-    
-//     return (*this);
-// }
+DiamondTrap &DiamondTrap::operator=(const DiamondTrap &other)
+{
+    // if (this != &other) // TODO:add this protection
+    ScavTrap::operator=(other);
+    FragTrap::operator=(other);
+    this->name = other.name;
+    return (*this);
+}
 
 DiamondTrap::~DiamondTrap()
 {

@@ -32,3 +32,4 @@ void FragTrap::highFivesGuys(void)
 {
     std::cout << "FragTrap " << YELLOW << name << RESET << " is requesting a high five! Who's in for some team spirit?" << std::endl; 
 }
+
