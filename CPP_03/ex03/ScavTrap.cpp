@@ -6,9 +6,9 @@ ScavTrap::ScavTrap() : ClapTrap() {}
 
 ScavTrap::ScavTrap(const std::string &new_name) : ClapTrap(new_name)
 {
-    hit_points = 100;
-    energy_points = 50;
-    attack_damage = 20;
+    this->hit_points = 100;
+    this->energy_points = 50;
+    this->attack_damage = 20;
     std::cout << "ScavTrap " << GREEN << name << RESET << " is thrilled to punch some faces!" << std::endl;
 }
 

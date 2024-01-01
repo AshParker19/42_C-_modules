@@ -6,9 +6,9 @@ FragTrap::FragTrap() : ClapTrap() {}
 
 FragTrap::FragTrap(const std::string &new_name) : ClapTrap(new_name)
 {
-    hit_points = 100;
-    energy_points = 100;
-    attack_damage = 30;
+    this->hit_points = 100;
+    this->energy_points = 100;
+    this->attack_damage = 30;
     std::cout << "FragTrap " << GREEN << name << RESET << " is here for a clash!" << std::endl;
 }
 
