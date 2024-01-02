@@ -5,6 +5,9 @@
 
 class ScavTrap : virtual public ClapTrap
 {
+    protected:
+        static const int ENERGY_POINTS;
+    
     public:
         ScavTrap();
         ScavTrap(const std::string &new_name);

@@ -19,7 +19,9 @@ ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other)
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &other)
 {
-    ClapTrap::operator=(other);
+    if (this == &other)
+        return (*this);
+    this->ClapTrap::operator=(other);
     /*
         '=' operator of a base class copies only base class related data
         this is called object-slicing, we need to avoid it by assigning all the derive

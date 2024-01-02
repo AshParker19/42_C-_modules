@@ -2,6 +2,8 @@
 #include <string>
 #include "ScavTrap.hpp"
 
+const int ScavTrap::ENERGY_POINTS = 50; 
+
 ScavTrap::ScavTrap() : ClapTrap() {}
 
 ScavTrap::ScavTrap(const std::string &new_name) : ClapTrap(new_name)
@@ -19,7 +21,9 @@ ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other)
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &other)
 {
-    ClapTrap::operator=(other);
+    if (this == &other)
+        return (*this);
+    this->ClapTrap::operator=(other);
     return (*this);
 }
 

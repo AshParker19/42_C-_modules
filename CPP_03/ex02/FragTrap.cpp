@@ -32,7 +32,9 @@ FragTrap::FragTrap(const FragTrap &other) : ClapTrap (other)
 
 FragTrap &FragTrap::operator=(const FragTrap &other)
 {
-    ClapTrap::operator=(other);
+    if (this == &other)
+        return (*this);
+    this->ClapTrap::operator=(other);
     return (*this);
 }
 

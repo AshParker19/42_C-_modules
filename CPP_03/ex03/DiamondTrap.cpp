@@ -8,6 +8,7 @@ DiamondTrap::DiamondTrap(const std::string &new_name) :
                          FragTrap(new_name),
                          name(new_name)
 {
+    this->energy_points = ScavTrap::ENERGY_POINTS;
     std::cout << "DiamontTrap " << GREEN << name << RESET << " has gained all the wisdom and ready for combat!" << std::endl;
 }
 
@@ -21,9 +22,10 @@ DiamondTrap::DiamondTrap(const DiamondTrap &other) :
 
 DiamondTrap &DiamondTrap::operator=(const DiamondTrap &other)
 {
-    // if (this != &other) // TODO:add this protection
-    ScavTrap::operator=(other);
-    FragTrap::operator=(other);
+    if (this == &other)
+        return (*this);
+    this->ScavTrap::operator=(other);
+    this->FragTrap::operator=(other);
     this->name = other.name;
     return (*this);
 }
