@@ -2,7 +2,7 @@
 #include <string>
 #include "FragTrap.hpp"
 
-FragTrap::FragTrap() {}
+FragTrap::FragTrap() : ClapTrap() {}
 
 FragTrap::FragTrap(const std::string &new_name) : ClapTrap(new_name)
 {
