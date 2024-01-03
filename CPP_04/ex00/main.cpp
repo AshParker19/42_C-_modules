@@ -18,7 +18,7 @@ int main()
     delete j;
     delete meta;
 
-    std::cout << "************* My tests *************" << std::endl;
+    std::cout << "\n************* My tests *************\n" << std::endl;
 
     const WrongAnimal* wrongMeta = new WrongAnimal();
     const WrongAnimal* wrongJ = new WrongCat();
