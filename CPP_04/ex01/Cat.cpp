@@ -17,11 +17,8 @@ Cat &Cat::operator=(const Cat &other)
     if (this == &other)
         return (*this);
     this->Animal::operator=(other);
-    Brain *temp = new Brain();
-    *temp = *other.brain;
-    if (this->brain)
-        delete this->brain; // we need to fre old data because we want to rewrite it but now we don't have memory leak
-    this->brain = temp;
+        delete this->brain;
+    this->brain = new Brain(*other.brain);
     
     return (*this);
 }
@@ -34,5 +31,10 @@ Cat::~Cat()
 
 void Cat::makeSound() const
 {
-    std::cout << YELLOW << "Meow meow!" << RESET << std::endl;
+    std::cout << PURPLE << "Meow meow!" << RESET << std::endl;
+}
+
+Brain*  Cat::getBrain() const
+{
+    return (this->brain);
 }

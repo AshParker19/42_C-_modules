@@ -1,4 +1,6 @@
+#include "Animal.hpp"
 #include "Brain.hpp"
+#include <exception>
 
 Brain::Brain()
 {
@@ -26,10 +28,17 @@ Brain::~Brain()
 
 const std::string &Brain::getIdea(int index) const
 {
+    if (index < 0 || index >= 100)
+        throw std::runtime_error("Out Of Bounds Exception");
     return (this->ideas[index]);
 }
 
 void Brain::setIdea(int index, const std::string &idea)
 {
+    if (index < 0 || index >= 100)
+    {
+        std::cout << RED << "Wrong index!" << RESET << std::endl;
+        return ;
+    }
     this->ideas[index] = idea;
 }
