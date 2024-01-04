@@ -12,7 +12,7 @@ int main()
 
     std::cout << "\n*********** My tests ***********\n" << std::endl;
 
-    Animal **animals = new Animal*[10];
+    Animal *animals[10];
     
     int x = 0;
     for (x = 0; x < 5; x++)
@@ -23,8 +23,6 @@ int main()
         animals[k]->makeSound();
     for (int k = 0; k < 10; k++)
         delete animals[k];
-
-    delete[] animals;
 
     std::cout << "\n***** Copy and assignment tests *****\n" << std::endl;
 
