@@ -18,7 +18,7 @@ class AMateria
         
         std::string const & getType() const;
         virtual AMateria* clone() const = 0;
-        virtual void use(ICharacter& target);
+        virtual void use(ICharacter& target); // this function accepts a reference to an interface which means it can accept any class that implements that interface
 };
 
 #endif
