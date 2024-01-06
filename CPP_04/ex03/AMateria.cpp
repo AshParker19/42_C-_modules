@@ -12,7 +12,7 @@ AMateria::AMateria(const AMateria &other)
     *this = other;
 }
 
-AMateria &AMateria::operator=(const AMateria &other)
+AMateria &AMateria::operator=(const AMateria &)
 {
     return (*this);
 }

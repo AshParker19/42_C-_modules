@@ -1,11 +1,20 @@
 #include "Character.hpp"
 
-Character::Character() {}
+Character::Character() {
+    for (int i = 0; i < 4; i++)
+    {
+        materials[i] = NULL;
+        trash[i] = NULL;
+    }
+}
 
 Character::Character(const std::string &new_name) : name(new_name), index(0), trash_index(0)
 {
     for (int i = 0; i < 4; i++)
+    {
         materials[i] = NULL;
+        trash[i] = NULL;
+    }
 }
 
 Character::Character(const Character &other)
@@ -17,13 +26,16 @@ Character &Character::operator=(const Character &other)
 {
     if (this == &other)
         return (*this);
-    AMateria *copy[4];
+
     for (int i = 0; i < 4; i++)
     {
         delete materials[i];
         if (other.materials[i])
-            copy[i] = other.materials[i]->clone();
+            this->materials[i] = other.materials[i]->clone();
+        else
+            this->materials[i] = NULL;
     }
+    this->index = other.index;
     return (*this);
 }
 
@@ -51,7 +63,7 @@ void Character::equip(AMateria* m)
 
 void Character::unequip(int idx)
 {
-    if (idx > 0 && idx < 4)
+    if (idx >= 0 && idx < 4)
     {
         AMateria *m = this->materials[idx];
         if (!m)
@@ -68,7 +80,7 @@ void Character::unequip(int idx)
 
 void Character::use(int idx, ICharacter& target)
 {
-    if (idx > 0 && index < 4)
+    if (idx >= 0 && index < 4)
     {
         AMateria *to_use = materials[idx];
         if (!to_use)

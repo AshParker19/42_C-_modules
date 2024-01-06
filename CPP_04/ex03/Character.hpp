@@ -4,7 +4,7 @@
 #include "ICharacter.hpp"
 #include "AMateria.hpp"
 
-class Character
+class Character : public ICharacter
 {
     private:
         AMateria *materials[4];

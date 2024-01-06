@@ -13,10 +13,16 @@ NAME = interface
 CXX = c++
 
 # Flags
-CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
+CXXFLAGS = -std=c++98 -Wall -Wextra -Werror -g
 
 # Sources
 SRC = main.cpp			\
+	  AMateria.cpp		\
+	  Character.cpp		\
+	  Cure.cpp			\
+	  Ice.cpp			\
+	  MateriaSource.cpp \
+
 
 # Objects
 OBJ = $(SRC:%.cpp=obj/%.o)
