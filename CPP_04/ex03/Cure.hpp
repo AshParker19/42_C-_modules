@@ -12,7 +12,7 @@ class Cure : public AMateria
         ~Cure();
 
         void use(ICharacter& target);
-        // clone();
+        AMateria *clone() const ;
 };
 
 #endif

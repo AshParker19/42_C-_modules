@@ -8,7 +8,10 @@ class Character
 {
     private:
         AMateria *materials[4];
+        AMateria *trash[4];
         const std::string name;
+        std::size_t index;
+        std::size_t trash_index;
 
     public:
         Character();

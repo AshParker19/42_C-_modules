@@ -12,7 +12,7 @@ class Ice : public AMateria
         ~Ice();
     
         void use(ICharacter& target);
-        // Amateria clone(); TODO:
+        AMateria *clone() const;
 };
 
 #endif
