@@ -13,7 +13,7 @@ NAME = world_on_fire
 CXX = c++
 
 # Flags
-CXXFLAGS = -std=c++98 -Wall -Wextra -Werror -g
+CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # Sources
 SRC = main.cpp			\
