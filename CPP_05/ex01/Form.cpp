@@ -3,7 +3,8 @@
 Form::Form() : signGrade(0), execGrade(0) {}
 
 Form::Form(const std::string &newName, int newSignGrade, int newExecGrade) :
-           name(newName), sign(false), signGrade(newSignGrade), execGrade(newExecGrade) {}
+           name(newName), sign(false), signGrade(newSignGrade), execGrade(newExecGrade)
+{ }
 
 const std::string &Form::getName() const
 {
@@ -24,7 +25,6 @@ int Form::getExecGrade() const
 {
     return (execGrade);
 }
-
 
 std::ostream &operator<<(std::ostream& os, const Form &f)
 {
