@@ -5,7 +5,7 @@
 #include <string>
 #include <exception>
 #include <cstdlib>
-#include "Form.hpp"
+#include "AForm.hpp"
 
 class Bureaucrat
 {

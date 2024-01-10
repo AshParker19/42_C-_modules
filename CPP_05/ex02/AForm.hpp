@@ -27,8 +27,9 @@ class AForm
         int getSignGrade() const;
         int getExecGrade() const;
         void beSigned(const Bureaucrat &b);
+        virtual void execute(Bureaucrat const & executor) const = 0;
 
-        class GradeTooHighException : public std::exception
+        class GradeTooHighException : public std::exception //TODO:move definition to .cpp  
         {
             public:
                 const char *what(void) const throw();
