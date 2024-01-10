@@ -2,6 +2,7 @@
 
 int main(int ac, char **av)
 {
+    //TODO:add instruction
     if (ac != 3 && ac != 4)
         return (1);
 
@@ -31,12 +32,12 @@ int main(int ac, char **av)
     }
     catch (const Bureaucrat::GradeTooHighException& e)
     {
-        std::cout << "Error: " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         return (2);
     }
     catch (const Bureaucrat::GradeTooLowException& e)
     {
-        std::cout << "Error: " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         return (3);
     }
 }
