@@ -12,6 +12,22 @@ Form::Form(const std::string &newName, int newSignGrade, int newExecGrade) :
         throw Form::GradeTooLowException();
 }
 
+Form::Form(const Form &other) : 
+           name(other.name), signGrade(other.signGrade), execGrade(other.execGrade) 
+{
+    *this = other;
+}
+
+Form &Form::operator=(const Form &other)
+{
+    if (this == &other)
+        return (*this);
+    this->sign = other.sign;
+    return (*this);
+}
+
+Form::~Form() {}
+
 const std::string &Form::getName() const
 {
     return (name); 
