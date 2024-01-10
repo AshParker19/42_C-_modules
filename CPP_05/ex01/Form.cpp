@@ -1,7 +1,7 @@
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
 
-Form::Form() : name(""), sign(false), signGrade(0), execGrade(0) {}
+Form::Form() : name(""), sign(false), signGrade(1), execGrade(1) {}
 
 Form::Form(const std::string &newName, int newSignGrade, int newExecGrade) :
            name(newName), sign(false), signGrade(newSignGrade), execGrade(newExecGrade)
@@ -43,7 +43,7 @@ std::ostream &operator<<(std::ostream& os, const Form &f)
 
 const char *Form::GradeTooHighException::what() const throw()
 {
-    return ("Grade is to hight");
+    return ("Grade is to high for");
 }
 
 const char *Form::GradeTooLowException::what() const throw()

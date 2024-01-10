@@ -2,7 +2,6 @@
 
 int main(int ac, char **av)
 {
-    //TODO:add instruction
     if (ac != 3 && ac != 4)
         return (1);
 
