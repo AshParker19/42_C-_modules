@@ -27,7 +27,8 @@ class AForm
         int getSignGrade() const;
         int getExecGrade() const;
         void beSigned(const Bureaucrat &b);
-        virtual void execute(Bureaucrat const & executor) const = 0;
+        void canExecute(const Bureaucrat& b) const;
+        virtual void execute(Bureaucrat const &executor) const = 0;
 
         class GradeTooHighException : public std::exception //TODO:move definition to .cpp  
         {
@@ -42,6 +43,12 @@ class AForm
         };
 
         class FormAlreadySignedException : public std::exception
+        {
+            public:
+                const char *what(void) const throw();
+        };
+
+        class FormNotSignedException : public std::exception
         {
             public:
                 const char *what(void) const throw();

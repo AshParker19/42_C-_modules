@@ -26,3 +26,27 @@ std::string const &ShrubberyCreationForm::getTarget(void) const
     return (this->target);
 }
 
+const char *ShrubberyCreationForm::CouldNotOpenFileException::what() const throw()
+{
+    return ("Could not open file");
+}
+
+void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
+{
+    this->canExecute(executor);
+    std::string name = target;
+    name += "_shrubbery";
+    std::ofstream outfile(name.c_str());
+    if (outfile.fail())
+        throw ShrubberyCreationForm::CouldNotOpenFileException();
+    outfile << "      /\\\\" << std::endl;
+    outfile << "     //\\\\" << "\\" << std::endl;
+    outfile << "    //  \\\\" << "\\" << std::endl;
+    outfile << "   //    \\\\" << "\\" << std::endl;
+    outfile << "  //______\\\\" << "\\" << std::endl;
+    outfile << "     [\"\"]" << std::endl;
+    outfile << "     [\"\"]" << std::endl;
+    outfile << "     [\"\"]" << std::endl;
+
+    outfile.close();
+}

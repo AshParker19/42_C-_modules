@@ -72,6 +72,11 @@ const char *AForm::FormAlreadySignedException::what() const throw()
     return ("Form is already signed");
 }
 
+const char *AForm::FormNotSignedException::what() const throw()
+{
+    return ("Form is not signed");
+}
+
 void AForm::beSigned(const Bureaucrat &b)
 {
     if (sign == true)
@@ -79,4 +84,12 @@ void AForm::beSigned(const Bureaucrat &b)
     if (b.getGrade() > signGrade)
         throw AForm::GradeTooLowException();
     sign = true;
+}
+
+void AForm::canExecute(const Bureaucrat& b) const
+{
+    if (sign != true)
+        throw AForm::FormNotSignedException();
+    if (b.getGrade() > execGrade)
+        throw AForm::GradeTooLowException();
 }

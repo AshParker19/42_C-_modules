@@ -2,6 +2,7 @@
 #define SHRUBBERYCREATIONFORM_HPP
 
 #include <iostream>
+#include <fstream>
 #include "AForm.hpp"
 
 class ShrubberyCreationForm : public AForm
@@ -18,6 +19,12 @@ class ShrubberyCreationForm : public AForm
 
         std::string const &getTarget(void) const;
         void execute(Bureaucrat const &executor) const;
+
+        class CouldNotOpenFileException : public std::exception
+        {
+            public:
+                const char *what(void) const throw();
+        };
 };
 
 #endif

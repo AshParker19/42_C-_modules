@@ -25,3 +25,13 @@ std::string const &RobotomyRequestForm::getTarget(void) const
 {
     return (this->target);
 }
+
+void RobotomyRequestForm::execute(Bureaucrat const &executor) const
+{
+    this->canExecute(executor);
+    srand(std::time(0));
+    if (rand() % 2 == 0)
+        std::cout << target << " has been robotomized successfully" << std::endl;
+    else
+        std::cout << "The robotomy of " << target << " failed" << std::endl;
+}
