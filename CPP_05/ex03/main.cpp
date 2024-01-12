@@ -1,61 +1,20 @@
 #include "Bureaucrat.hpp"
-#include "ShrubberyCreationForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
-/*
-     ShrubberyCreationForm: sign 145, exec 137
-       RobotomyRequestForm: sign 72, exec 45
-    PresidentialPardonForm: sign 25, exec 5
-*/
 int main()
 {
-    try //ShrubberyCreationForm
+    Intern someRandomIntern;
+
+    try 
     {
-        std::cout << "-----------------ShrubberyCreationForm-----------------\n\n";
-        ShrubberyCreationForm doc1("doc1");
-        {
-            Bureaucrat bob("Bob", 150);
-            bob.signForm(doc1);
-            bob.executeForm(doc1);
-        }
-        std::cout << "\n";
-        {
-            Bureaucrat bob("Bob", 138);
-            bob.executeForm(doc1);
-        }
-        std::cout << "\n";
-        {
-            Bureaucrat bob("Bob", 138);
-            bob.signForm(doc1); // will be signed in the next scope
-            bob.executeForm(doc1);
-        }
-        std::cout << "\n";
-        {
-            Bureaucrat bob("Bob", 100);
-            bob.executeForm(doc1);
-        }
-        std::cout << "\n-----------------RobotomyRequestForm-----------------\n\n";
-        RobotomyRequestForm doc2("doc2");
-        {
-            Bureaucrat jim("Jim", 55);
-            jim.signForm(doc2);
-            jim.executeForm(doc2);
-        }
-        std::cout << "\n";
-        {
-            Bureaucrat jim("Jim", 42);
-            jim.executeForm(doc2);
-        }
-        std::cout << "\n-----------------PresidentialPardonFormquestForm-----------------\n\n";
-        PresidentialPardonForm doc3("doc3");
-        Bureaucrat tim("Tim", 1);
-        tim.signForm(doc3);
-        tim.executeForm(doc3);
+        AForm* rrf;
+        Bureaucrat bob("bob", 42);
+        rrf = someRandomIntern.makeForm("robotomy request", "Bender");
+        rrf->beSigned(bob); // we cant use signForm because it accpets const AForm, so we sign it within a form
+        rrf->execute(bob);
     }
     catch (const std::exception &e)
     {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return (1);
+        std::cout << "Error: " << e.what() << std::endl;
     }
 }

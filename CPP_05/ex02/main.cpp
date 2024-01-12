@@ -10,7 +10,7 @@
 */
 int main()
 {
-    try //ShrubberyCreationForm
+    try
     {
         std::cout << "-----------------ShrubberyCreationForm-----------------\n\n";
         ShrubberyCreationForm doc1("doc1");

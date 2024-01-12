@@ -3,15 +3,29 @@
 
 #include <string>
 #include "AForm.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
-class Inter
+class Intern
 {
+    private:
+        static AForm *(*formConstructors[3])(const std::string &target);
+        static std::string formNames[3];
+
     public:
-        Inter();
-        Inter(const Inter &other);
-        Inter &operator=(const Inter &other);
-        ~Inter();
-        AForm *makeForm(std::string formName, std::string target);
+        Intern();
+        Intern(const Intern &other);
+        Intern &operator=(const Intern &other);
+        ~Intern();
+        
+        AForm *makeForm(const std::string &formName, const std::string &target);
+
+        class FormDoesNotExist : public std::exception
+        {
+            public:
+                const char *what(void) const throw();
+        };
 };
 
 #endif
