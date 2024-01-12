@@ -1,9 +1,8 @@
 ## C++ Modules
 
-At 42 we study C++ of 98 standard. The idea is to learn the basics of the language and then move on to the more modern standards. This repository contains modules of C++ piscine at 42. Each module is dedicated to a specific topic.
+The idea is to learn the basics of the language and then move on to the more modern standards, this why at 42 we study C++ of 98 standard.
 
----
-
+This repository contains modules of C++ piscine at 42. Each module is dedicated to a specific topic.
 There are 10 modules in total. Each module contains a set of exercises and a README.md file which contains a description of the exercises and a list of concepts that we learn in the module.
 
 ## Table of Contents
