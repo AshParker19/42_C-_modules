@@ -20,7 +20,7 @@ class AForm
         AForm(const std::string &newName, int newSignGrade, int newExecGrade);
         AForm(const AForm &other);
         AForm &operator=(const AForm &other);
-        ~AForm();
+        virtual ~AForm();
 
         const std::string &getName() const;
         bool getSign() const;
