@@ -1,13 +1,13 @@
 ## C++ Modules
 
-The idea is to learn the basics of the language and then move on to the more modern standards, this why at 42 we study C++ of 98 standard.
+At 42, we maintain the idea of learning the basics of the language and then moving on to the more modern standards. This is why we study C++ of the 98 standard.
+Our background in C helps us pick up the basics of C++ faster. The main difference is that C++ is object-oriented. Thanks to the 42 learning model, we don't get overwhelmed by new concepts. We begin with the basics and then tackle more complex topics.
 
 <p align="center">
   <img src="https://github.com/AshParker19/42_CPP_modules/assets/117525743/e59d6a52-0d82-40b0-8257-54937e180677" alt="Plus Logo">
 </p> 
 
-This repository contains modules of C++ piscine at 42. Each module is dedicated to a specific topic.
-There are 10 modules in total. Each module contains a set of exercises and a README.md file which contains a description of the exercises and a list of concepts that we learn in the module.
+This repository contains 10 modules of C++ piscine at 42. Each module is dedicated to a specific topic and contains a set of exercises and a README.md file which contains a description of the exercises and a list of concepts that we learn in the module. Also there is a knowledge section where I collect some useful information about the topic.
 
 ## Table of Contents
 | Module | Description |
