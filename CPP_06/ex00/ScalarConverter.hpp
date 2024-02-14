@@ -19,11 +19,10 @@ class ScalarConverter
         static void convertToFloat(const std::string &str);
         static void convertToDouble(const std::string &str);
 
-        static void convertMain(const std::string &str);
-        static int  determineType(const std::string &str);
-        static bool isChar(const std::string &str);
-        static bool isInt(const std::string &str);
-        static bool isFloatDouble(const std::string &str, int type);
+        static int validateChar(const std::string &str);
+        static bool validateInt(const std::string &str);
+        static bool validateLimits(const std::string &str);
+        static bool validateFloatDouble(const std::string &str, int type);
 };
 
 #endif
