@@ -107,7 +107,25 @@ bool ScalarConverter::validateInt(const std::string &str)
 
 bool ScalarConverter::validateFloatDouble(const std::string &str, int type)
 {
-    (void)str;
-    (void)type;
+    std::string trimmed = str;
+    std::size_t dotPos;
+
+    if (str.empty())
+        return (false);
+    if (str[0] == '-' || str[0] == '+')
+        trimmed = str.substr(1);
+    dotPos = trimmed.find('.');
+    if (dotPos == std::string::npos)
+        return (false);
+    if (type == 1)
+    {
+        if (trimmed.length() - dotPos > 7)
+            return (false);
+    }
+    else
+    {
+        if (trimmed.length() - dotPos > 16)
+            return (false);
+    }
     return (true);
 }
