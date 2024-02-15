@@ -8,6 +8,8 @@ int main()
     std::cout << "Original: " << data << std::endl;
     std::cout << "Serialized: " << serialized << std::endl;
     std::cout << "Deserialized: " << deserialized << std::endl;
+    deserialized->n = 42;
+    std::cout << "Deserialized->n: " << deserialized->n << std::endl;
 
     delete data;
 }
