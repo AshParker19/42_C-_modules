@@ -2,7 +2,6 @@
 
 std::string Intern::formNames[3] = {"shrubbery creation", "robotomy request", "presidential pardon"};
 
-
 Intern::Intern() {}
 
 Intern::Intern(const Intern &other)

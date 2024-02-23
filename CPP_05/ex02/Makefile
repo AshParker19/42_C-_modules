@@ -56,7 +56,7 @@ obj/%.o: %.cpp
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	@rm -rf obj
+	@rm -rf obj doc1_shrubbery
 	@echo "╔═══════════════════════════════════════════╗"
 	@echo "║               [✓]  CLEANED!               ║"
 	@echo "╚═══════════════════════════════════════════╝"
