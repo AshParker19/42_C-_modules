@@ -10,7 +10,7 @@ int main()
         AForm *rrf;
         Bureaucrat bob("bob", 1);
         rrf = someRandomIntern.makeForm("robotomy request", "Bender");
-        rrf->beSigned(bob); // we cant use signForm because it accpets const AForm, so we sign it within a form
+        rrf->beSigned(bob); // we can't use signForm because it accepts const AForm, so we sign it within a form
         rrf->execute(bob);
 
         AForm *ffr;
