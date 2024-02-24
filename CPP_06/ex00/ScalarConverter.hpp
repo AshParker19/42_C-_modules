@@ -14,15 +14,21 @@ class ScalarConverter
         ~ScalarConverter();
     
     public:
-        static void convertToChar(const std::string &str);
-        static void convertToInt(const std::string &str);
-        static void convertToFloat(const std::string &str);
-        static void convertToDouble(const std::string &str);
+        static int isChar(const std::string &str);
+        static bool isInteger(const std::string &str);
+        static int isFloatDouble(const std::string &str);
 
-        static int validateChar(const std::string &str);
-        static bool validateInt(const std::string &str);
         static bool validateLimits(const std::string &str);
-        static bool validateFloatDouble(const std::string &str, int type);
+        static int isPseudoLiteral(const std::string &str);
+        static int identifyType(const std::string &str);
+        
+        static void convertMain(const std::string &str);
+        static void convertFromChar(const std::string &str);
+        static void convertFromInt(const std::string &str);
+        static void convertFromFloat(const std::string &str);
+        static void convertFromDouble(const std::string &str);
+        static void convertFromFloatLit(const std::string &str);
+        static void convertFromDoubleLit(const std::string &str);
 };
 
 #endif

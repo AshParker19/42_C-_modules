@@ -10,9 +10,10 @@ int main()
     }
     std::cout << std::endl;
     {
-        Wrong w;
-        Base *base = &w;
+        Wrong *w = new Wrong;
+        Base *base = w;
         identify(base);
         identify(*base);
+    //TODO: check memory leaks
     }
 }
