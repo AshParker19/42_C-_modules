@@ -3,10 +3,10 @@
 int main()
 {
     {
-        srand(time(NULL));
         Base *base = generate();
         identify(base);
         identify(*base);
+        delete base;
     }
     std::cout << std::endl;
     {
@@ -14,6 +14,6 @@ int main()
         Base *base = w;
         identify(base);
         identify(*base);
-    //TODO: check memory leaks
+        delete base;
     }
 }

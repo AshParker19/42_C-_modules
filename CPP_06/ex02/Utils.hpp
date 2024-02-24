@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #include "Base.hpp"
 #include "A.hpp"
 #include "B.hpp"

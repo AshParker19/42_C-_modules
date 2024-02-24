@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <iomanip>
 
 class ScalarConverter
 {
@@ -20,7 +21,7 @@ class ScalarConverter
 
         static bool validateLimits(const std::string &str);
         static int isPseudoLiteral(const std::string &str);
-        static int identifyType(const std::string &str);
+        static void errorImpossible();
         
         static void convertMain(const std::string &str);
         static void convertFromChar(const std::string &str);

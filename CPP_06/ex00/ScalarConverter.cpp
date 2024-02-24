@@ -18,7 +18,6 @@ bool ScalarConverter::validateLimits(const std::string &str)
 
     if (str.empty())
         return (false);
-
     if (trimmed[0] == '-' || trimmed[0] == '+')
         trimmed = trimmed.substr(1);
     firstNonZero = trimmed.find_first_not_of('0');
@@ -26,7 +25,6 @@ bool ScalarConverter::validateLimits(const std::string &str)
         trimmed = trimmed.substr(firstNonZero);
     else
         trimmed = "0";
-
     if (str[0] == '-') 
     {
         if (trimmed.length() > 10) 
@@ -46,9 +44,8 @@ bool ScalarConverter::validateLimits(const std::string &str)
 
 int ScalarConverter::isChar(const std::string &str)
 {
-    if (str.empty() || str.length() != 3 || str[0] != '\'' || str[2] != '\''
-        || !isprint(str[1]))
-        return (0);
+    if (str.empty() || str.length() != 1)
+        return 0;
     return (1);
 }
 
@@ -118,38 +115,35 @@ int ScalarConverter::isPseudoLiteral(const std::string& str)
     return (0);
 }
 
-int ScalarConverter::identifyType(const std::string &str)
-{
-    if (isChar(str))
-        return (0);
-    else if (isInteger(str) && validateLimits(str))
-        return (1);
-    else if (isFloatDouble(str) == 2)
-        return (2);
-    else if (isFloatDouble(str) == 3)
-        return (3);
-    else if (isPseudoLiteral(str) == 4)
-        return (4);
-    else if (isPseudoLiteral(str) == 5)
-        return (5);
-    return (-1);
-}
-
 void ScalarConverter::convertFromChar(const std::string &str)
 {
-    char c = str[1];
+    char c = static_cast<int>(str[0]);
     int i = static_cast<int>(c);
     float f = static_cast<float>(c);
     double d = static_cast<double>(c);
 
     std::cout << "char: " << c << std::endl;
     std::cout << "int: " << i << std::endl;
+    std::cout << std::fixed << std::setprecision(1);
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
 }
 
+void ScalarConverter::errorImpossible(void)
+{
+    std::cout << "char: impossible" << std::endl;
+    std::cout << "int: impossible" << std::endl;
+    std::cout << "float: impossible" << std::endl;
+    std::cout << "double: impossible" << std::endl;
+}
+
 void ScalarConverter::convertFromInt(const std::string &str)
 {
+    if (!validateLimits(str))
+    {
+        errorImpossible();
+        return ;
+    }
     int i = std::atoi(str.c_str());
     char c = (i >= 32 && i <= 126) ? static_cast<char>(i) : '?';
     float f = static_cast<float>(i);
@@ -161,6 +155,7 @@ void ScalarConverter::convertFromInt(const std::string &str)
     else 
         std::cout << "'" << c << "'" << std::endl;
     std::cout << "int: " << i << std::endl;
+    std::cout << std::fixed << std::setprecision(1);
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
 }
@@ -178,6 +173,7 @@ void ScalarConverter::convertFromFloat(const std::string &str)
     else
         std::cout << "'" << c << "'" << std::endl;
     std::cout << "int: " << i << std::endl;
+    std::cout << std::fixed << std::setprecision(1);
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
 }
@@ -195,6 +191,7 @@ void ScalarConverter::convertFromDouble(const std::string &str)
     else 
         std::cout << "'" << c << "'" << std::endl;
     std::cout << "int: " << i << std::endl;
+    std::cout << std::fixed << std::setprecision(1);
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
 }
@@ -217,18 +214,18 @@ void ScalarConverter::convertFromDoubleLit(const std::string &str)
 
 void ScalarConverter::convertMain(const std::string &str)
 {
-    int type = identifyType(str);
-
-    if (type == 0)
-        ScalarConverter::convertFromChar(str);
-    else if (type == 1)
-        ScalarConverter::convertFromInt(str);
-    else if (type == 2)
-        ScalarConverter::convertFromFloat(str);
-    else if (type == 3)
-        ScalarConverter::convertFromDouble(str);
-    else if (type == 4)
-        ScalarConverter::convertFromFloatLit(str);
-    else if (type == 5)
-        ScalarConverter::convertFromDoubleLit(str);
+    if (isChar(str))
+        convertFromChar(str);
+    else if (isInteger(str))
+        convertFromInt(str);
+    else if (isFloatDouble(str) == 2)
+        convertFromFloat(str);
+    else if (isFloatDouble(str) == 3)
+        convertFromDouble(str);
+    else if (isPseudoLiteral(str) == 4)
+        convertFromFloatLit(str);
+    else if (isPseudoLiteral(str) == 5)
+        convertFromDoubleLit(str);
+    else
+        errorImpossible();
 }

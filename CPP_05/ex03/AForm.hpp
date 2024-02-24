@@ -30,7 +30,7 @@ class AForm
         void canExecute(const Bureaucrat& b) const;
         virtual void execute(Bureaucrat const &executor) const = 0;
 
-        class GradeTooHighException : public std::exception //TODO:move definition to .cpp  
+        class GradeTooHighException : public std::exception
         {
             public:
                 const char *what(void) const throw();
