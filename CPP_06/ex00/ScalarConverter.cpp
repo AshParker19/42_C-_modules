@@ -46,11 +46,10 @@ bool ScalarConverter::validateLimits(const std::string &str)
 
 int ScalarConverter::isChar(const std::string &str)
 {
-    if (str.empty() || str.length() != 3 || str[0] != '\'' || str[2] != '\'')
+    if (str.empty() || str.length() != 3 || str[0] != '\'' || str[2] != '\''
+        || !isprint(str[1]))
         return (0);
-    if (!isprint(str[1]))
-        return (1);
-    return (2);
+    return (1);
 }
 
 bool ScalarConverter::isInteger(const std::string& str) 
@@ -60,9 +59,12 @@ bool ScalarConverter::isInteger(const std::string& str)
     if (str.empty())
         return (false);
     if (str[0] == '+' || str[0] == '-') 
-        i = 1;
-    if (str.size() == 1)
-        return (false);
+    {
+        if (str.size() == 1)
+            return (false);
+        else
+            i = 1;
+    }
     for (; i < str.size(); i++)
     {
         if (!isdigit(str[i]))
@@ -154,8 +156,10 @@ void ScalarConverter::convertFromInt(const std::string &str)
     double d = static_cast<double>(i);
 
     std::cout << "char: ";
-    if(c == '?') std::cout << "Non displayable" << std::endl;
-    else std::cout << "'" << c << "'" << std::endl;
+    if(c == '?')
+        std::cout << "Non displayable" << std::endl;
+    else 
+        std::cout << "'" << c << "'" << std::endl;
     std::cout << "int: " << i << std::endl;
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
@@ -169,8 +173,10 @@ void ScalarConverter::convertFromFloat(const std::string &str)
     double d = static_cast<double>(f);
 
     std::cout << "char: ";
-    if(c == '?') std::cout << "Non displayable" << std::endl;
-    else std::cout << "'" << c << "'" << std::endl;
+    if(c == '?')
+        std::cout << "Non displayable" << std::endl;
+    else
+        std::cout << "'" << c << "'" << std::endl;
     std::cout << "int: " << i << std::endl;
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
@@ -184,8 +190,10 @@ void ScalarConverter::convertFromDouble(const std::string &str)
     float f = static_cast<float>(d);
 
     std::cout << "char: ";
-    if(c == '?') std::cout << "Non displayable" << std::endl;
-    else std::cout << "'" << c << "'" << std::endl;
+    if (c == '?')
+        std::cout << "Non displayable" << std::endl;
+    else 
+        std::cout << "'" << c << "'" << std::endl;
     std::cout << "int: " << i << std::endl;
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
@@ -223,6 +231,4 @@ void ScalarConverter::convertMain(const std::string &str)
         ScalarConverter::convertFromFloatLit(str);
     else if (type == 5)
         ScalarConverter::convertFromDoubleLit(str);
-    else
-        std::cout << "impossible" << std::endl;
 }
