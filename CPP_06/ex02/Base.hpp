@@ -4,9 +4,7 @@
 class Base
 {
     public:
-        virtual ~Base() {}
+        virtual ~Base();
 };
-
-TODO: where should I put all the required function?
 
 #endif

@@ -7,7 +7,7 @@
 #####----------------------------------------------------------------------#####
 
 # Name
-NAME = serializer
+NAME = identifier
 
 # Compiler
 CXX = c++
@@ -17,7 +17,9 @@ CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # Sources
 SRC = main.cpp				\
-	  Serializer.cpp		\
+	  Base.cpp				\
+	  Utils.cpp				\
+	  main.cpp				\
 
 # Objects
 OBJ = $(SRC:%.cpp=obj/%.o)
