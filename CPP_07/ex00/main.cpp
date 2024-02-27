@@ -35,5 +35,4 @@ int main( void )
         std::cout << "min( i, j ) = " << ::min( i, j ) << std::endl;
         std::cout << "max( i, j ) = " << ::max( i, j ) << std::endl;
     }
-    return 0;
 }
