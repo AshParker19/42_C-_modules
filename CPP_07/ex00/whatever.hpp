@@ -1,5 +1,5 @@
-#ifndef TEMPLATE_HPP
-#define TEMPLATE_HPP
+#ifndef WHATEVER_HPP
+#define WHATEVER_HPP
 
 template <typename T>
 void swap(T &agr1, T &arg2)
