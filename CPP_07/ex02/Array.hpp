@@ -9,7 +9,7 @@ class Array
 {
     private:
         T *elements;
-        size_t size;
+        size_t sizeN;
 
     public:
         Array();
