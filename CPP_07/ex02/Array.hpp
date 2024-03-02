@@ -17,8 +17,14 @@ class Array
         Array(const Array &other);
         Array &operator=(const Array &other);
         ~Array();
-        T &operator[](size_t index);
+        T &operator[](int index);
         size_t size() const;
+
+        class OutOfBoundException : public std::exception
+        {
+            public:
+                const char *what(void) const throw();
+        };
 };
 
 #include "Array.tpp"

@@ -35,17 +35,23 @@ Array<T>::~Array()
 }
 
 template <typename T>
-T &Array<T>::operator[](size_t index)
+T &Array<T>::operator[](int index)
 {
-    if (index >= sizeN)
-        throw (std::exception());
-    return (elements[index]);§
+    if (index < 0 || index >= static_cast<int>(sizeN))
+        throw (OutOfBoundException());
+    return (elements[index]);
 }
 
 template <typename T>
 size_t Array<T>::size() const
 {
    return (sizeN);
+}
+
+template <typename T>
+const char *Array<T>::OutOfBoundException::what(void) const throw()
+{
+    return ("Index out of bounds");
 }
 
 

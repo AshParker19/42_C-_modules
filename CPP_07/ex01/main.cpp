@@ -1,20 +1,5 @@
 #include "iter.hpp"
 
-void print(int i)
-{
-    std::cout << i << " ";
-}
-
-void print(char c)
-{
-    std::cout << c << " ";
-}
-
-void print(float f)
-{
-    std::cout << f << " ";
-}
-
 int main()
 {
     int intArray[] = {1, 2, 3, 4, 5};
@@ -22,11 +7,13 @@ int main()
     float floatArray[] = {1.1, 2.2, 3.3, 4.4, 5.5};
 
     std::cout << "intArray: ";
-    ::iter(intArray, 5, print);
+    ::iter(intArray, 5, ::example);
 
     std::cout << std::endl << "charArray: ";
-    ::iter(charArray, 5, print);
+    ::iter(charArray, 5, ::example);
 
     std::cout << std::endl << "floatArray: ";
-    ::iter(floatArray, 5, print);
+    ::iter(floatArray, 5, ::example);
+
+    std::cout << std::endl;
 }
