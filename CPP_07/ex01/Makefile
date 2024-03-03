@@ -16,7 +16,7 @@ CXX = c++
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # Sources
-SRC = 	test.cpp				\
+SRC = 	main.cpp				\
 
 # Objects
 OBJ = $(SRC:%.cpp=obj/%.o)
