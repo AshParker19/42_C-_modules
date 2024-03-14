@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <limits>
 #include <exception>
+#include <cstdlib>
+#include <ctime>
 
 class Span
 {
@@ -14,6 +16,7 @@ class Span
         std::vector<int> elements;
         unsigned int count;
         int spans[2];
+        bool spansFound;
 
     public:
         Span(unsigned int newSize);
@@ -22,6 +25,7 @@ class Span
         ~Span();
 
         void addNumber(int newNum);
+        void addNumber(std::vector<int>::iterator start, std::vector<int>::iterator end);
         int shortestSpan();
         int longestSpan();
         void findSpans();

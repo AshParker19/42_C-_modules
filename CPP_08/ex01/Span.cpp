@@ -2,7 +2,7 @@
 
 Span::Span() {}
 
-Span::Span(unsigned int N) : elements(N), count(0) {}
+Span::Span(unsigned int N) : elements(N), count(0), spansFound(false) {}
 
 Span::Span(const Span &other) : elements(other.elements) {}
 
@@ -23,16 +23,29 @@ void Span::addNumber(int newNum)
     elements[count++] = newNum;
 }
 
+void Span::addNumber(std::vector<int>::iterator start, std::vector<int>::iterator end)
+{
+    for (std::vector<int>::iterator it = start; it != end; it++)
+    {
+        if (count >= elements.size())
+            throw (NoSpaceForMoreNumbersException());
+        elements[count++] = *it;
+    }
+}
+
 void Span::findSpans()
 {
     if (count != elements.size())
         throw (VectorIsNotPopulatedException());
+    if (spansFound == true)
+        return ;
+
+    std::cout << "ERE\n";
+    int smallestSpan = std::numeric_limits<int>::max();
+    int currentSpan;
 
     std::sort(elements.begin(), elements.end());
 
-    int smallestSpan = std::numeric_limits<int>::max();
-    int currentSpan;
-    
     for (size_t i = 1; i < elements.size(); i++)
     {
         currentSpan = elements[i] - elements[i - 1];
@@ -42,6 +55,7 @@ void Span::findSpans()
 
     spans[0] = smallestSpan;
     spans[1] = elements.back() - elements.front();
+    spansFound = true;
 }
 
 int Span::shortestSpan()
