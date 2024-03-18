@@ -77,15 +77,24 @@ int main()
 //     }
 
 //     std::cout << "Stack contents using iterators:" << std::endl;
-//     for (MutantStack<int>::iterator it = mstack.begin(); it != mstack.end(); ++it)
+//     for (MutantStack<int>::iterator it = mstack.begin(); it != mstack.end(); it++)
 //         std::cout << *it << ' ';
 //     std::cout << "\n";
+
+//     std::cout << "Top --> " << mstack.top() << "\n";
+
+//     mstack.pop();
 
 //     std::vector<int> vec;
 //     std::copy(mstack.begin(), mstack.end(), std::back_inserter(vec));
 
 //     std::cout << "Copied to vector:" << std::endl;
-//     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+//     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
 //         std::cout << *it << ' ';
+//     std::cout << "\n";
+
+//     std::cout << "Reverse iterator test:" << std::endl;
+//     for (MutantStack<int>::reverse_iterator rit = mstack.rbegin(); rit != mstack.rend(); rit++)
+//         std::cout << *rit << ' ';
 //     std::cout << "\n";
 // }
