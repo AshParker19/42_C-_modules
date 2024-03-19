@@ -40,7 +40,6 @@ void Span::findSpans()
     if (spansFound == true)
         return ;
 
-    std::cout << "ERE\n";
     int smallestSpan = std::numeric_limits<int>::max();
     int currentSpan;
 
