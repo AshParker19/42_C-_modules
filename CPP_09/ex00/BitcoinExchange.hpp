@@ -21,7 +21,7 @@ class BitcoinExchange
         void validateFileDB(const std::string &path);
         void validateLine(const std::string &content);
         void validateDate(const std::string &date);
-        void validatePrice(float price);
+        void validatePrice(const std::string &date);
         void readStoreDB();
     
     class WrongDataBaseFileFormatException : public std::exception

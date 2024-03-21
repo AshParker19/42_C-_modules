@@ -38,10 +38,21 @@ void BitcoinExchange::validateFileDB(const std::string &path)
 
 void BitcoinExchange::validateDate(const std::string &date)
 {
-    (void)date;
+    size_t numHyphen = 0;
+    
+    if (date.size() != 10)
+        throw (WrongDateFormatException());
+    for (size_t i = 0; i < date.size(); i++)
+    {
+        if (date[i] == '-')
+            numHyphen++;
+    }
+    if (numHyphen != 2)
+        throw (WrongDateFormatException());
+
 }
 
-void BitcoinExchange::validatePrice(float price)
+void BitcoinExchange::validatePrice(const std::string &price)
 {
     (void)price;
 }
@@ -49,10 +60,11 @@ void BitcoinExchange::validatePrice(float price)
 void BitcoinExchange::validateLine(const std::string &content)
 {
     size_t numComma = 0;
-    size_t pos;
-    std::string date;
-    std::string price;
+    size_t commaPos;
+    size_t pricePos;
+    bool onlySpaces = false;
 
+    // check if there is only one comma
     for (size_t i = 0; i < content.size(); i++)
     {
         if (content[i] == ',')
@@ -61,12 +73,29 @@ void BitcoinExchange::validateLine(const std::string &content)
     if (numComma != 1)
         throw (DataBaseRowErrorException());
     
-    pos = content.find(',');
-    if (pos == content.size() - 1)
+    // check if comma is not the last character in a line
+    commaPos = content.find(',');
+    if (commaPos == content.size() - 1)
         throw (DataBaseRowErrorException());
-    date = content.substr(0, pos);
-    // validateDate(date);
     
+    /* 
+        check if there are any not whitespaces after comma
+        find the position of the fisrt not whitespace
+    */
+    for (size_t i = commaPos + 1; i < content.size(); i++)
+    {
+        if (!isspace(content[i]))
+        {
+            onlySpaces = true;
+            pricePos = i;
+            break;
+        }
+    }
+    if (!onlySpaces)
+        throw (DataBaseRowErrorException());
+
+    validateDate(content.substr(0, commaPos));
+    validatePrice(content.substr(pricePos));
 }
 
 void BitcoinExchange::readStoreDB()
@@ -87,11 +116,11 @@ void BitcoinExchange::readStoreDB()
     }
     catch (const std::exception &e)
     {
-        fileDB.close();
+        if (fileDB)
+            fileDB.close();
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
-
 
 
 
