@@ -1,8 +1,8 @@
 #include "BitcoinExchange.hpp"
 
-BitcoinExchange::BitcoinExchange()
+BitcoinExchange::BitcoinExchange() : tempDate(NULL), tempPrice(0.0f)
 {
-
+    
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
@@ -18,7 +18,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 
 BitcoinExchange::~BitcoinExchange()
 {
-
+    // std::cout << "Constructor called\n";
 }
 
 void BitcoinExchange::validateFileDB(const std::string &path)
@@ -35,26 +35,38 @@ void BitcoinExchange::validateFileDB(const std::string &path)
     }
 }
 
-
 void BitcoinExchange::validateDate(const std::string &date)
 {
-    size_t numHyphen = 0;
+    int yearMonthDay[3];
     
-    if (date.size() != 10)
-        throw (WrongDateFormatException());
-    for (size_t i = 0; i < date.size(); i++)
-    {
-        if (date[i] == '-')
-            numHyphen++;
-    }
-    if (numHyphen != 2)
+    // check date's structure
+    if (date.size() != 10 || date[4] != '-' || date[7] != '-')
         throw (WrongDateFormatException());
 
+    yearMonthDay[0] = atoi(date.substr(0, 4).c_str());
+    yearMonthDay[1] = atoi(date.substr(5, 2).c_str());
+    yearMonthDay[2] = atoi(date.substr(8, 2).c_str());
+
+    if (yearMonthDay[0] < 2009 || yearMonthDay[1] < 1 || yearMonthDay[2] < 1 ||
+        yearMonthDay[0] > 2024 || yearMonthDay[1] > 12 || yearMonthDay[2] > 31)
+        throw (WrongDateFormatException());
+    
+    if (yearMonthDay[0] == 2009 && yearMonthDay[2] < 2)
+        throw (BitcoinDidNotExistException());
+    tempDate = date;
 }
 
 void BitcoinExchange::validatePrice(const std::string &price)
 {
-    (void)price;
+    float floatPrice = 0.0f;
+
+    std::istringstream iss(price); // Use the price string directly
+    if (!(iss >> floatPrice) || !iss.eof()) // Check if conversion succeeds and if there's no extra data
+        throw InvalidFloatValueException();
+    
+     if (floatPrice < 0.0f)
+        throw InvalidPriceException();
+    tempPrice = floatPrice;
 }
 
 void BitcoinExchange::validateLine(const std::string &content)
@@ -80,7 +92,7 @@ void BitcoinExchange::validateLine(const std::string &content)
     
     /* 
         check if there are any not whitespaces after comma
-        find the position of the fisrt not whitespace
+        find the position of the first not whitespace
     */
     for (size_t i = commaPos + 1; i < content.size(); i++)
     {
@@ -112,6 +124,7 @@ void BitcoinExchange::readStoreDB()
             if (content.empty())
                 throw (DataBaseRowErrorException());
             validateLine(content);
+            // DB[]
         }
     }
     catch (const std::exception &e)
@@ -121,7 +134,6 @@ void BitcoinExchange::readStoreDB()
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
-
 
 
 const char *BitcoinExchange::WrongDataBaseFileFormatException::what(void) const throw()
@@ -144,7 +156,17 @@ const char *BitcoinExchange::WrongDateFormatException::what(void) const throw()
     return ("Wrong date format");
 }
 
+const char *BitcoinExchange::InvalidFloatValueException::what(void) const throw()
+{
+    return ("Invalid float value");
+}
+
 const char *BitcoinExchange::InvalidPriceException::what(void) const throw()
 {
     return ("Invalid price");
+}
+
+const char *BitcoinExchange::BitcoinDidNotExistException::what(void) const throw()
+{
+    return ("Bitcoin was created on 2009-01-02");
 }

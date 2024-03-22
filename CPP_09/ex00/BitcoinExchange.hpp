@@ -3,13 +3,17 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <map>
 #include <exception>
+
 
 class BitcoinExchange
 {
     private:
         std::ifstream fileDB;
+        std::string tempDate;
+        float tempPrice;
         std::map<std::string, float> DB;
     
     public:
@@ -21,7 +25,7 @@ class BitcoinExchange
         void validateFileDB(const std::string &path);
         void validateLine(const std::string &content);
         void validateDate(const std::string &date);
-        void validatePrice(const std::string &date);
+        void validatePrice(const std::string &price);
         void readStoreDB();
     
     class WrongDataBaseFileFormatException : public std::exception
@@ -47,7 +51,19 @@ class BitcoinExchange
             const char *what(void) const throw();
     };
 
+    class InvalidFloatValueException : public std::exception
+    {
+        public:
+            const char *what(void) const throw();
+    };
+
     class InvalidPriceException : public std::exception
+    {
+        public:
+            const char *what(void) const throw();
+    };
+
+    class BitcoinDidNotExistException : public std::exception
     {
         public:
             const char *what(void) const throw();
