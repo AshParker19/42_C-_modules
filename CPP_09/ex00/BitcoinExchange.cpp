@@ -58,15 +58,30 @@ void BitcoinExchange::validateDate(const std::string &date)
 
 void BitcoinExchange::validatePrice(const std::string &price)
 {
-    float floatPrice = 0.0f;
+    int dollars;
+    int cents;
+    int numDot = 0;
+    int totalCents;
+    size_t dotPos;
 
-    std::istringstream iss(price); // Use the price string directly
-    if (!(iss >> floatPrice) || !iss.eof()) // Check if conversion succeeds and if there's no extra data
-        throw InvalidFloatValueException();
-    
-     if (floatPrice < 0.0f)
+    for (size_t i = 0; i < price.size(); i++)
+    {
+        if (price[i] == ',')
+            numDot++;
+    }
+    if (numDot != 0 && numDot != 1)
+        throw (DataBaseRowErrorException());
+
+    dotPos = price.find('.');
+    if (dotPos == price.size() - 1)
+        throw (DataBaseRowErrorException());
+    dollars = atoi(price.substr(0, dotPos).c_str());
+    cents = atoi(price.substr(dotPos + 1).c_str());
+    totalCents = dollars * 100 + cents;
+
+     if (totalCents < 0)
         throw InvalidPriceException();
-    tempPrice = floatPrice;
+    tempPrice = totalCents;
 }
 
 void BitcoinExchange::validateLine(const std::string &content)

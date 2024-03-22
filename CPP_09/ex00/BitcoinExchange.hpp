@@ -3,18 +3,16 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <map>
 #include <exception>
-
 
 class BitcoinExchange
 {
     private:
         std::ifstream fileDB;
         std::string tempDate;
-        float tempPrice;
-        std::map<std::string, float> DB;
+        int tempPrice;
+        std::map<std::string, int> DB;
     
     public:
         BitcoinExchange();
