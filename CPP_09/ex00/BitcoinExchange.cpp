@@ -1,6 +1,6 @@
 #include "BitcoinExchange.hpp"
 
-BitcoinExchange::BitcoinExchange() : tempDate(NULL), tempPrice(0.0f)
+BitcoinExchange::BitcoinExchange()
 {
     
 }
@@ -51,7 +51,7 @@ void BitcoinExchange::validateDate(const std::string &date)
         yearMonthDay[0] > 2024 || yearMonthDay[1] > 12 || yearMonthDay[2] > 31)
         throw (WrongDateFormatException());
     
-    if (yearMonthDay[0] == 2009 && yearMonthDay[2] < 2)
+    if (yearMonthDay[0] == 2009 && yearMonthDay[1] == 1 && yearMonthDay[2] < 2)
         throw (BitcoinDidNotExistException());
     tempDate = date;
 }
@@ -124,7 +124,7 @@ void BitcoinExchange::readStoreDB()
             if (content.empty())
                 throw (DataBaseRowErrorException());
             validateLine(content);
-            // DB[]
+            DB[tempDate] = tempPrice;
         }
     }
     catch (const std::exception &e)
@@ -134,6 +134,7 @@ void BitcoinExchange::readStoreDB()
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
+
 
 
 const char *BitcoinExchange::WrongDataBaseFileFormatException::what(void) const throw()
