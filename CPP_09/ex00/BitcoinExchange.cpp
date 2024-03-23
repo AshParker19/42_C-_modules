@@ -117,7 +117,6 @@ bool BitcoinExchange::validateAmount(const std::string &amount, int flag)
         throw (InvalidPriceException());
     if (flag == 1 && totalCents > 10000)
         return (false);
-
     tempAmount = totalCents;
     return (true);
 }
@@ -172,7 +171,7 @@ bool BitcoinExchange::validateLine(const std::string &content, int flag, char se
     }
     if (!onlySpaces)
     {
-        if (flag == 0) // TODO: an exception which accepts flag and puts an according meessage
+        if (flag == 0) // TODO:creat an exception which accepts flag and puts an according meessage
             throw (DataBaseRowErrorException());
         else
             return (false);
@@ -236,8 +235,6 @@ void BitcoinExchange::proceedInputFile()
                 continue;
 
             validateLine(content, 1, '|');
-
-            std::cout << "Date --> " << tempDate << " | " << "Amount --> " << tempAmount << "\n";
         }
     }
     catch (const std::exception &e)
@@ -252,17 +249,12 @@ std::string BitcoinExchange::trim(const std::string& str)
 {
     const std::string whitespace = " \t\n\r\f\v";
 
-    // Find the first character position after excluding leading whitespace characters
     size_t start = str.find_first_not_of(whitespace);
-    if (start == std::string::npos) {
-        return ""; // No non-whitespace characters
-    }
+    if (start == std::string::npos)
+        return ("");
 
-    // Find the last character position before excluding trailing whitespace characters
     size_t end = str.find_last_not_of(whitespace);
-
-    // Calculate the range and extract the substring
-    return str.substr(start, end - start + 1);
+    return (str.substr(start, end - start + 1));
 }
 
 const char *BitcoinExchange::WrongDataBaseFileFormatException::what(void) const throw()
