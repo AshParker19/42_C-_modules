@@ -17,20 +17,19 @@
 #include "BitcoinExchange.hpp"
 
 int main(int ac, char **av)
-{
-    BitcoinExchange b;
-
-    if (ac != 2)
-    {
-        std::cerr << "Wrong number of arguments!" << std::endl;
-        return (1);
-    }
-    
+{    
     try 
     {
-        b.validateFileDB(av[1]);
-        b.readStoreDB();
+        if (ac != 2)
+            throw (BitcoinExchange::CouldNotOpenFileException());
 
+        BitcoinExchange btc;
+
+        btc.validateInputFile(av[1]);
+        btc.validateFileDB();
+        btc.readStoreDB();
+        std::cout << "==================\n";
+        btc.proceedInputFile();
     }
     catch (const std::exception &e)
     {

@@ -9,9 +9,10 @@
 class BitcoinExchange
 {
     private:
+        std::ifstream inputFile;
         std::ifstream fileDB;
         std::string tempDate;
-        int tempPrice;
+        int tempAmount;
         std::map<std::string, int> DB;
     
     public:
@@ -20,11 +21,15 @@ class BitcoinExchange
         BitcoinExchange &operator=(const BitcoinExchange &other);
         ~BitcoinExchange();
 
-        void validateFileDB(const std::string &path);
-        void validateLine(const std::string &content);
-        void validateDate(const std::string &date);
-        void validatePrice(const std::string &price);
+        void validateInputFile(const std::string &path);
+        void validateFileDB();
+        bool validateLine(const std::string &content, int flag, char sepcontent);
+        bool validateDate(const std::string &date, int flag);
+        bool validateAmount(const std::string &price, int flag);
         void readStoreDB();
+        void proceedInputFile();
+        void putError(int flag);
+        std::string trim(const std::string &str);
     
     class WrongDataBaseFileFormatException : public std::exception
     {
@@ -66,6 +71,31 @@ class BitcoinExchange
         public:
             const char *what(void) const throw();
     };
+
+    class CouldNotOpenFileException : public std::exception
+    {
+        public:
+            const char *what(void) const throw();
+    };
+
+    class WrongHeadingException : public std::exception
+    {
+        public:
+            const char *what(void) const throw();
+    };
+
+    class InputFileRowErrorException : public std::exception
+    {
+        public:
+            const char *what(void) const throw();
+    };
+
+    class OutOfLimitsAmountException : public std::exception
+    {
+        public:
+            const char *what(void) const throw();
+    };
+
 };
 
 #endif
