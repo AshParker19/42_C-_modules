@@ -40,7 +40,7 @@ void BitcoinExchange::validateFileDB()
     }
 }
 
-bool BitcoinExchange::validateDate(const std::string &date, int flag)
+std::string BitcoinExchange::validateDate(const std::string &date, int flag)
 {
     int yearMonthDay[3];
     
@@ -49,10 +49,7 @@ bool BitcoinExchange::validateDate(const std::string &date, int flag)
     {
         if (flag == 0)
             throw (WrongDateFormatException());
-        else
-        {
-            return (false);
-        }
+        return ("Wrong date format.");
     }
 
     yearMonthDay[0] = atoi(date.substr(0, 4).c_str());
@@ -63,20 +60,18 @@ bool BitcoinExchange::validateDate(const std::string &date, int flag)
     {
         if (flag == 0)
             throw (BitcoinDidNotExistException());
-        else
-            return (false);
+        return ("Bitcoin was created on 2009-01-02.");
     }
     if (yearMonthDay[0] < 2009 || yearMonthDay[1] < 1 || yearMonthDay[2] < 1 ||
         yearMonthDay[0] > 2024 || yearMonthDay[1] > 12 || yearMonthDay[2] > 31)
     {
         if (flag == 0)
             throw (WrongDateFormatException());
-        else
-            return (false);
+        return ("Wrong date format.");
     }
     
     tempDate = date;
-    return (true);
+    return ("");
 }
 
 bool BitcoinExchange::validateAmount(const std::string &amount, int flag)
@@ -97,8 +92,7 @@ bool BitcoinExchange::validateAmount(const std::string &amount, int flag)
     {
         if (flag == 0)
             throw (DataBaseRowErrorException());
-        else
-            return (false);
+        return (false);
     }
     
     dotPos = amount.find('.');
@@ -106,8 +100,7 @@ bool BitcoinExchange::validateAmount(const std::string &amount, int flag)
     {
         if (flag == 0)
             throw (DataBaseRowErrorException());
-        else
-            return (false);
+        return (false);
     }
     dollars = atoi(amount.substr(0, dotPos).c_str());
     cents = atoi(amount.substr(dotPos + 1).c_str());
@@ -115,46 +108,30 @@ bool BitcoinExchange::validateAmount(const std::string &amount, int flag)
 
     if (flag == 0 && totalCents < 0) //TODO: add a limit for BTC ATH at the day of submission
         throw (InvalidPriceException());
-    if (flag == 1 && totalCents > 10000)
+    if (flag == 1 && totalCents < 0 && totalCents > 10000)
         return (false);
     tempAmount = totalCents;
     return (true);
 }
 
-/*
-    flag 0 = Database
-    flag 1 = Inputfile
-*/
-bool BitcoinExchange::validateLine(const std::string &content, int flag, char sep)
+void BitcoinExchange::validateDBLine(const std::string &content)
 {
     size_t numSep = 0;
     size_t sepPos;
     size_t amountPos;
     bool onlySpaces = false;
 
-    // check if there is only one comma
     for (size_t i = 0; i < content.size(); i++)
     {
-        if (content[i] == sep)
+        if (content[i] == ',')
             numSep++;
     }
     if (numSep != 1)
-    {
-        if (flag == 0)
             throw (DataBaseRowErrorException());
-        else
-            return (false);
-    }
 
-    // check if comma is not the last character in a line
-    sepPos = content.find(sep);
+    sepPos = content.find(',');
     if (sepPos == content.size() - 1)
-    {
-        if (flag == 0)
-            throw (DataBaseRowErrorException());
-        else
-            return (false);
-    }
+        throw (DataBaseRowErrorException());
     
     /* 
         check if there are any not whitespaces after comma
@@ -170,24 +147,10 @@ bool BitcoinExchange::validateLine(const std::string &content, int flag, char se
         }
     }
     if (!onlySpaces)
-    {
-        if (flag == 0) // TODO:creat an exception which accepts flag and puts an according meessage
-            throw (DataBaseRowErrorException());
-        else
-            return (false);
-    }
+        throw (DataBaseRowErrorException());
     
-    if (flag == 0)
-    {
-        validateDate(trim(content.substr(0, sepPos)), 0);
-        validateAmount(trim(content.substr(amountPos)), 0);
-    }
-    if (flag == 1 && (!validateDate(trim(content.substr(0, sepPos)), 1) || 
-        !validateAmount(trim(content.substr(amountPos)), 1)))
-    {
-        return (false);
-    }
-    return (true);
+    validateDate(trim(content.substr(0, sepPos)), 0);
+    validateAmount(trim(content.substr(amountPos)), 0);
 }
 
 void BitcoinExchange::readStoreDB()
@@ -205,17 +168,71 @@ void BitcoinExchange::readStoreDB()
         {
             if (content.empty())
                 continue;
-            validateLine(content, 0, ',');
+            validateDBLine(content);
             DB[tempDate] = tempAmount;
         }
         fileDB.close();
     }
     catch (const std::exception &e)
     {
-        if (fileDB)
-            fileDB.close();
         std::cerr << "Error: " << e.what() << std::endl;
     }
+}
+
+bool BitcoinExchange::calculateResult() // handle wrong date, before and after bitcoinn was created
+{
+    std::map<std::string, int>::iterator it = DB.lower_bound(tempDate);
+    it--;
+
+
+}
+
+void BitcoinExchange::validateInputFileLine(const std::string &content)
+{
+    size_t numSep = 0;
+    size_t sepPos;
+    size_t amountPos;
+    bool onlySpaces = false;
+
+    for (size_t i = 0; i < content.size(); i++)
+    {
+        if (content[i] == '|')
+            numSep++;
+    }
+    if (numSep != 1)
+    {
+        throw (CalculationErrorException("bad input => " + content)); //bad input => {value}
+    }
+
+    sepPos = content.find('|');
+    if (sepPos == content.size() - 1)
+        throw (DataBaseRowErrorException());
+    
+    /* 
+        check if there are any not whitespaces after comma
+        find the position of the first not whitespace
+    */
+    for (size_t i = sepPos + 1; i < content.size(); i++)
+    {
+        if (!isspace(content[i]))
+        {
+            onlySpaces = true;
+            amountPos = i;
+            break;
+        }
+    }
+    if (!onlySpaces)
+        throw (DataBaseRowErrorException());
+    
+    validateDate(trim(content.substr(0, sepPos)), 1);
+    validateAmount(trim(content.substr(amountPos)), 1);
+    // if (flag == 1)
+    // {
+    //     if (!validateDate(trim(content.substr(0, sepPos)), 1))
+    //         return ("");
+    //     if (!validateAmount(trim(content.substr(amountPos)), 1))
+    //         return ("");
+    // }
 }
 
 void BitcoinExchange::proceedInputFile()
@@ -233,8 +250,8 @@ void BitcoinExchange::proceedInputFile()
         {
             if (content.empty())
                 continue;
-
-            validateLine(content, 1, '|');
+            validateInputFileLine(content);
+            calculateResult();
         }
     }
     catch (const std::exception &e)
@@ -250,9 +267,6 @@ std::string BitcoinExchange::trim(const std::string& str)
     const std::string whitespace = " \t\n\r\f\v";
 
     size_t start = str.find_first_not_of(whitespace);
-    if (start == std::string::npos)
-        return ("");
-
     size_t end = str.find_last_not_of(whitespace);
     return (str.substr(start, end - start + 1));
 }
@@ -310,4 +324,14 @@ const char *BitcoinExchange::InputFileRowErrorException::what(void) const throw(
 const char *BitcoinExchange::OutOfLimitsAmountException::what(void) const throw()
 {
     return ("Out of limits amount.");
+}
+
+BitcoinExchange::CalculationErrorException::CalculationErrorException() {}
+
+BitcoinExchange::CalculationErrorException::CalculationErrorException(const std::string &msg)
+                                                                     : message(msg) {}
+
+const char *BitcoinExchange::CalculationErrorException::what(void) const throw()
+{
+    return (message.c_str());
 }
