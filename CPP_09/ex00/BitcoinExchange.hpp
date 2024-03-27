@@ -6,6 +6,7 @@
 #include <map>
 #include <exception>
 #include <cstdlib>
+#include <iomanip>
 
 class BitcoinExchange
 {
@@ -30,7 +31,6 @@ class BitcoinExchange
         void readStoreDB();
         void proceedInputFile();
         void validateInputFileLine(const std::string &content);
-        void putError(const std::string &error);
         void calculateResult();
         std::string trim(const std::string &str);
     
