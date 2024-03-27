@@ -5,6 +5,7 @@
 #include <fstream>
 #include <map>
 #include <exception>
+#include <cstdlib>
 
 class BitcoinExchange
 {
@@ -25,11 +26,12 @@ class BitcoinExchange
         void validateFileDB();
         void validateDBLine(const std::string &content);
         std::string validateDate(const std::string &date, int flag);
-        bool validateAmount(const std::string &price, int flag);
+        std::string validateAmount(const std::string &price, int flag);
         void readStoreDB();
         void proceedInputFile();
         void validateInputFileLine(const std::string &content);
-        bool calculateResult();
+        void putError(const std::string &error);
+        void calculateResult();
         std::string trim(const std::string &str);
     
     class WrongDataBaseFileFormatException : public std::exception
@@ -105,6 +107,7 @@ class BitcoinExchange
 
         public:
             CalculationErrorException(const std::string &msg);
+            ~CalculationErrorException() throw();
             const char *what(void) const throw();
     };
 };
