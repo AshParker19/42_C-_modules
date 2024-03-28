@@ -40,7 +40,7 @@ void BitcoinExchange::validateFileDB()
     }
 }
 
-std::string BitcoinExchange::validateDate(const std::string &date, int flag)
+void BitcoinExchange::validateDate(const std::string &date, int flag)
 {
     int yearMonthDay[3];
     
@@ -49,7 +49,7 @@ std::string BitcoinExchange::validateDate(const std::string &date, int flag)
     {
         if (flag == 0)
             throw (WrongDateFormatException());
-        return ("bad input => " + date);
+        throw (ContentException("bad input => " + date));
     }
 
     yearMonthDay[0] = std::atoi(date.substr(0, 4).c_str());
@@ -57,24 +57,18 @@ std::string BitcoinExchange::validateDate(const std::string &date, int flag)
     yearMonthDay[2] = std::atoi(date.substr(8, 2).c_str());
 
     if (yearMonthDay[0] == 2009 && yearMonthDay[1] == 1 && yearMonthDay[2] < 2)
-    {
-        if (flag == 0)
             throw (BitcoinDidNotExistException());
-        return ("Bitcoin was created on 2009-01-02.");
-    }
+
     if (yearMonthDay[0] < 2009 || yearMonthDay[1] < 1 || yearMonthDay[2] < 1 ||
         yearMonthDay[0] > 2024 || yearMonthDay[1] > 12 || yearMonthDay[2] > 31) //TODO: limit it by the date of the evaluation day
     {
-        if (flag == 0)
-            throw (WrongDateFormatException());
-        return ("Wrong date format."); // TODO: write a better error message
+        throw (WrongDateFormatException()); // TODO: change to a more suitable exception
     }
     
     tempDate = date;
-    return ("");
 }
 
-std::string BitcoinExchange::validateAmount(const std::string &amount, int flag)
+void BitcoinExchange::validateAmount(const std::string &amount, int flag)
 {
     int numDot = 0;
     size_t dotPos;
@@ -89,7 +83,7 @@ std::string BitcoinExchange::validateAmount(const std::string &amount, int flag)
     {
         if (flag == 0)
             throw (DataBaseRowErrorException());
-        return (" not a positive number.");
+        throw (ContentException("not a positive number."));
     }
     
     dotPos = amount.find('.');
@@ -97,22 +91,20 @@ std::string BitcoinExchange::validateAmount(const std::string &amount, int flag)
     {
         if (flag == 0)
             throw (DataBaseRowErrorException());
-        return (" not a positive number.");
+        throw (ContentException("not a positive number."));
     }
     tempAmount = std::atof(amount.c_str());
     if (flag == 0 && tempAmount < 0) //TODO: add a limit for BTC ATH at the day of submission
         throw (InvalidPriceException());
     if (flag == 1 && (tempAmount < 0 || tempAmount > 10000))
-        return (" not a positive number.");
-    return ("");
+        throw (ContentException("too large a number."));
 }
 
 void BitcoinExchange::validateDBLine(const std::string &content)
 {
     size_t numSep = 0;
     size_t sepPos;
-    size_t amountPos;
-    bool onlySpaces = false;
+    std::string afterSep;
 
     for (size_t i = 0; i < content.size(); i++)
     {
@@ -120,30 +112,18 @@ void BitcoinExchange::validateDBLine(const std::string &content)
             numSep++;
     }
     if (numSep != 1)
-            throw (DataBaseRowErrorException());
+        throw (DataBaseRowErrorException());
 
     sepPos = content.find(',');
     if (sepPos == content.size() - 1)
         throw (DataBaseRowErrorException());
     
-    /* 
-        check if there are any not whitespaces after comma
-        find the position of the first not whitespace
-    */
-    for (size_t i = sepPos + 1; i < content.size(); i++)
-    {
-        if (!isspace(content[i]))
-        {
-            onlySpaces = true;
-            amountPos = i;
-            break;
-        }
-    }
-    if (!onlySpaces)
+    afterSep = content.substr(sepPos + 1);
+    if (afterSep.empty() || afterSep.find_first_not_of(" \t\n\r") == std::string::npos)
         throw (DataBaseRowErrorException());
-    
+
     validateDate(trim(content.substr(0, sepPos)), 0);
-    validateAmount(trim(content.substr(amountPos)), 0);
+    validateAmount(trim(content.substr(sepPos + 1)), 0);
 }
 
 void BitcoinExchange::readStoreDB()
@@ -188,9 +168,7 @@ void BitcoinExchange::validateInputFileLine(const std::string &content)
 {
     size_t numSep = 0;
     size_t sepPos;
-    size_t amountPos;
-    bool onlySpaces = false;
-    std::string status;
+    std::string afterSep;
 
     for (size_t i = 0; i < content.size(); i++)
     {
@@ -198,42 +176,18 @@ void BitcoinExchange::validateInputFileLine(const std::string &content)
             numSep++;
     }
     if (numSep != 1)
-    {
-        std::cerr << "Error: bad input => " + content << "\n";
-        return ;
-    }
+        throw (ContentException("bad input => " + content));
 
     sepPos = content.find('|');
     if (sepPos == content.size() - 1)
-    {
-        std::cerr << "Error: bad input => " + content << "\n";
-        return ;
-    }
+        throw (ContentException("bad input => " + content));
     
-    for (size_t i = sepPos + 1; i < content.size(); i++)
-    {
-        if (!isspace(content[i]))
-        {
-            onlySpaces = true;
-            amountPos = i;
-            break;
-        }
-    }
-    if (!onlySpaces)
-    {
-        std::cerr << "Error: bad input => " + content << "\n";
-        return ;
-    }
+    afterSep = content.substr(sepPos + 1);
+    if (afterSep.empty() || afterSep.find_first_not_of(" \t\n\r") == std::string::npos)
+        throw (ContentException("bad input => " + content));
     
-    status = validateDate(trim(content.substr(0, sepPos)), 1);
-    if (!status.empty())
-    {
-        std::cerr << "Error:" + status << "\n";
-        return ;
-    }
-    status = validateAmount(trim(content.substr(amountPos)), 1);
-    if (!status.empty())
-        std::cerr << "Error:" + status << "\n";
+    validateDate(trim(content.substr(0, sepPos)), 1);
+    validateAmount(trim(content.substr(sepPos + 1)), 1);
 }
 
 void BitcoinExchange::proceedInputFile()
@@ -249,8 +203,15 @@ void BitcoinExchange::proceedInputFile()
     {
         if (content.empty())
             continue;
-        validateInputFileLine(content);
-        calculateResult();
+        try
+        {
+            validateInputFileLine(content);
+            calculateResult();
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
     }
     if (inputFile)
         inputFile.close();
@@ -320,14 +281,11 @@ const char *BitcoinExchange::OutOfLimitsAmountException::what(void) const throw(
     return ("Out of limits amount.");
 }
 
-BitcoinExchange::CalculationErrorException::CalculationErrorException() {}
+BitcoinExchange::ContentException::ContentException(const std::string& message) : msg(message) {}
 
-BitcoinExchange::CalculationErrorException::CalculationErrorException(const std::string &msg)
-                                                                     : message(msg) {}
+BitcoinExchange::ContentException::~ContentException() throw() {}
 
-BitcoinExchange::CalculationErrorException::~CalculationErrorException() throw() {}
-
-const char *BitcoinExchange::CalculationErrorException::what(void) const throw()
+const char *BitcoinExchange::ContentException::what(void) const throw()
 {
-    return (message.c_str());
+    return (msg.c_str());
 }
