@@ -28,7 +28,6 @@ int main(int ac, char **av)
         btc.validateInputFile(av[1]);
         btc.validateFileDB();
         btc.readStoreDB();
-        std::cout << "==================\n";
         btc.proceedInputFile();
     }
     catch (const std::exception &e)

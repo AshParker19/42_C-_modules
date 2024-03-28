@@ -14,8 +14,8 @@ class BitcoinExchange
         std::ifstream inputFile;
         std::ifstream fileDB;
         std::string tempDate;
-        int tempAmount;
-        std::map<std::string, int> DB;
+        double tempAmount;
+        std::map<std::string, double> DB;
     
     public:
         BitcoinExchange();

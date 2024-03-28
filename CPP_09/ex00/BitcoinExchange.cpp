@@ -52,9 +52,9 @@ std::string BitcoinExchange::validateDate(const std::string &date, int flag)
         return ("bad input => " + date);
     }
 
-    yearMonthDay[0] = atoi(date.substr(0, 4).c_str());
-    yearMonthDay[1] = atoi(date.substr(5, 2).c_str());
-    yearMonthDay[2] = atoi(date.substr(8, 2).c_str());
+    yearMonthDay[0] = std::atoi(date.substr(0, 4).c_str());
+    yearMonthDay[1] = std::atoi(date.substr(5, 2).c_str());
+    yearMonthDay[2] = std::atoi(date.substr(8, 2).c_str());
 
     if (yearMonthDay[0] == 2009 && yearMonthDay[1] == 1 && yearMonthDay[2] < 2)
     {
@@ -76,10 +76,7 @@ std::string BitcoinExchange::validateDate(const std::string &date, int flag)
 
 std::string BitcoinExchange::validateAmount(const std::string &amount, int flag)
 {
-    int dollars;
-    int cents;
     int numDot = 0;
-    int totalCents;
     size_t dotPos;
 
     for (size_t i = 0; i < amount.size(); i++)
@@ -102,15 +99,11 @@ std::string BitcoinExchange::validateAmount(const std::string &amount, int flag)
             throw (DataBaseRowErrorException());
         return (" not a positive number.");
     }
-    dollars = atoi(amount.substr(0, dotPos).c_str());
-    cents = atoi(amount.substr(dotPos + 1).c_str());
-    totalCents = dollars * 100 + cents;
-
-    if (flag == 0 && totalCents < 0) //TODO: add a limit for BTC ATH at the day of submission
+    tempAmount = std::atof(amount.c_str());
+    if (flag == 0 && tempAmount < 0) //TODO: add a limit for BTC ATH at the day of submission
         throw (InvalidPriceException());
-    if (flag == 1 && (totalCents < 0 || totalCents > 10000))
+    if (flag == 1 && (tempAmount < 0 || tempAmount > 10000))
         return (" not a positive number.");
-    tempAmount = totalCents;
     return ("");
 }
 
@@ -184,12 +177,11 @@ void BitcoinExchange::readStoreDB()
 
 void BitcoinExchange::calculateResult()
 {
-    std::map<std::string, int>::iterator it = DB.lower_bound(tempDate);
-    it--;
+    std::map<std::string, double>::iterator it = DB.lower_bound(tempDate);
 
-    float finalPrice = static_cast<float>(it->second) / 100.0f;
-    int finalAmount = tempAmount / 100;
-    std::cout << tempDate + " => " << finalAmount << " = " << finalAmount * finalPrice << "\n";
+    double finalPrice = it->second;
+    double finalAmount = tempAmount;
+    std::cout << tempDate << " => "<< finalAmount << " = " << finalAmount * finalPrice << "\n";
 }
 
 void BitcoinExchange::validateInputFileLine(const std::string &content)
