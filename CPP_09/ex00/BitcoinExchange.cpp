@@ -7,7 +7,7 @@ BitcoinExchange::BitcoinExchange()
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
 {
-    (void)other;
+    (void)other; // TODO:
 }
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
@@ -100,7 +100,7 @@ void BitcoinExchange::validateAmount(const std::string &amount, int flag)
         throw (ContentException("too large a number."));
 }
 
-void BitcoinExchange::validateDBLine(const std::string &content)
+void BitcoinExchange::validateLine(const std::string &content, int flag, char sep)
 {
     size_t numSep = 0;
     size_t sepPos;
@@ -108,22 +108,34 @@ void BitcoinExchange::validateDBLine(const std::string &content)
 
     for (size_t i = 0; i < content.size(); i++)
     {
-        if (content[i] == ',')
+        if (content[i] == sep)
             numSep++;
     }
     if (numSep != 1)
-        throw (DataBaseRowErrorException());
+    {
+        if (flag == 0)
+            throw (DataBaseRowErrorException());
+        throw (ContentException("bad input => " + content));
+    }
 
-    sepPos = content.find(',');
+    sepPos = content.find(sep);
     if (sepPos == content.size() - 1)
-        throw (DataBaseRowErrorException());
+    {
+        if (flag == 0)
+            throw (DataBaseRowErrorException());
+        throw (ContentException("bad input => " + content));
+    }
     
     afterSep = content.substr(sepPos + 1);
     if (afterSep.empty() || afterSep.find_first_not_of(" \t\n\r") == std::string::npos)
-        throw (DataBaseRowErrorException());
+    {
+        if (flag == 0)
+            throw (DataBaseRowErrorException());
+        throw (ContentException("bad input => " + content));
+    }
 
-    validateDate(trim(content.substr(0, sepPos)), 0);
-    validateAmount(trim(content.substr(sepPos + 1)), 0);
+    validateDate(trim(content.substr(0, sepPos)), flag);
+    validateAmount(trim(content.substr(sepPos + 1)), flag);
 }
 
 void BitcoinExchange::readStoreDB()
@@ -141,7 +153,7 @@ void BitcoinExchange::readStoreDB()
         {
             if (content.empty())
                 continue;
-            validateDBLine(content);
+            validateLine(content, 0, ',');
             DB[tempDate] = tempAmount;
         }
         if (fileDB)
@@ -164,32 +176,6 @@ void BitcoinExchange::calculateResult()
     std::cout << tempDate << " => "<< finalAmount << " = " << finalAmount * finalPrice << "\n";
 }
 
-void BitcoinExchange::validateInputFileLine(const std::string &content)
-{
-    size_t numSep = 0;
-    size_t sepPos;
-    std::string afterSep;
-
-    for (size_t i = 0; i < content.size(); i++)
-    {
-        if (content[i] == '|')
-            numSep++;
-    }
-    if (numSep != 1)
-        throw (ContentException("bad input => " + content));
-
-    sepPos = content.find('|');
-    if (sepPos == content.size() - 1)
-        throw (ContentException("bad input => " + content));
-    
-    afterSep = content.substr(sepPos + 1);
-    if (afterSep.empty() || afterSep.find_first_not_of(" \t\n\r") == std::string::npos)
-        throw (ContentException("bad input => " + content));
-    
-    validateDate(trim(content.substr(0, sepPos)), 1);
-    validateAmount(trim(content.substr(sepPos + 1)), 1);
-}
-
 void BitcoinExchange::proceedInputFile()
 {
     std::string content;
@@ -205,7 +191,7 @@ void BitcoinExchange::proceedInputFile()
             continue;
         try
         {
-            validateInputFileLine(content);
+            validateLine(content, 1, '|');
             calculateResult();
         }
         catch (const std::exception &e)

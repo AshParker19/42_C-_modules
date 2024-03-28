@@ -25,12 +25,11 @@ class BitcoinExchange
 
         void validateInputFile(const std::string &path);
         void validateFileDB();
-        void validateDBLine(const std::string &content);
+        void validateLine(const std::string &content, int flag, char sep);
         void validateDate(const std::string &date, int flag);
         void validateAmount(const std::string &price, int flag);
         void readStoreDB();
         void proceedInputFile();
-        void validateInputFileLine(const std::string &content);
         void calculateResult();
         std::string trim(const std::string &str);
     
@@ -103,10 +102,10 @@ class BitcoinExchange
     {
         private:
             std::string msg;
+
         public:
             ContentException(const std::string& message);
             ~ContentException() throw();
-
             virtual const char* what() const throw();
     };
 };
