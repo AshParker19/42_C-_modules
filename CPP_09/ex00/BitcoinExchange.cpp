@@ -18,18 +18,18 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 
 BitcoinExchange::~BitcoinExchange() {}
 
-void BitcoinExchange::validateInputFile(const std::string &path)
+void BitcoinExchange::validateFile(const std::string &path)
 {
     inputFile.open(path.c_str());
     if (inputFile.fail() || inputFile.peek() == EOF)
     {
         if (inputFile)
             inputFile.close();
-        throw (InvalidDataBaseFileException());
+        throw (CouldNotOpenFileException());
     }
 }
 
-void BitcoinExchange::validateFileDB()
+void BitcoinExchange::validateFile()
 {
     fileDB.open("data.csv");
     if (fileDB.fail() || fileDB.peek() == EOF)
@@ -75,6 +75,12 @@ void BitcoinExchange::validateAmount(const std::string &amount, int flag)
 
     for (size_t i = 0; i < amount.size(); i++)
     {
+        if (!std::isdigit(amount[i]) && amount[i] != '.')
+        {
+            if (flag == 0)
+                throw (DataBaseRowErrorException());
+            throw (InputFileRowErrorException());
+        }
         if (amount[i] == '.')
             numDot++;
     }
@@ -83,7 +89,7 @@ void BitcoinExchange::validateAmount(const std::string &amount, int flag)
     {
         if (flag == 0)
             throw (DataBaseRowErrorException());
-        throw (ContentException("not a positive number."));
+        throw (InputFileRowErrorException());
     }
     
     dotPos = amount.find('.');
@@ -91,15 +97,24 @@ void BitcoinExchange::validateAmount(const std::string &amount, int flag)
     {
         if (flag == 0)
             throw (DataBaseRowErrorException());
-        throw (ContentException("not a positive number."));
+        throw (InputFileRowErrorException());
     }
     tempAmount = std::atof(amount.c_str());
     if (flag == 0 && tempAmount < 0) //TODO: add a limit for BTC ATH at the day of submission
         throw (InvalidPriceException());
-    if (flag == 1 && (tempAmount < 0 || tempAmount > 10000))
-        throw (ContentException("too large a number."));
+    if (flag == 1)
+    {
+        if (tempAmount < 0)
+            throw (ContentException("not a positive number."));
+        else if (tempAmount > 10000)
+            throw (ContentException("too large a number."));
+    }
 }
 
+/*
+    flag 0 --> Database
+    flag 1 --> InputFile
+*/
 void BitcoinExchange::validateLine(const std::string &content, int flag, char sep)
 {
     size_t numSep = 0;
@@ -142,38 +157,31 @@ void BitcoinExchange::readStoreDB()
 {
     std::string content;
 
-    try 
+    std::getline(fileDB, content);
+    if (content.empty())
+        throw (DataBaseRowErrorException());
+    content = trim(content);
+    if (content != "date,exchange_rate")
+        throw (WrongHeadingException());
+    while (std::getline(fileDB, content))
     {
-        std::getline(fileDB, content);
         if (content.empty())
-            throw (DataBaseRowErrorException());
-        if (content != "date,exchange_rate")
-            throw (WrongHeadingException());
-        while (std::getline(fileDB, content))
-        {
-            if (content.empty())
-                continue;
-            validateLine(content, 0, ',');
-            DB[tempDate] = tempAmount;
-        }
-        if (fileDB)
-            fileDB.close();
+            continue;
+        validateLine(content, 0, ',');
+        DB[tempDate] = tempAmount;
     }
-    catch (const std::exception &e)
-    {
-        if (fileDB)
-            fileDB.close();
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
+    if (fileDB)
+        fileDB.close();
 }
 
 void BitcoinExchange::calculateResult()
 {
     std::map<std::string, double>::iterator it = DB.lower_bound(tempDate);
 
-    double finalPrice = it->second;
-    double finalAmount = tempAmount;
-    std::cout << tempDate << " => "<< finalAmount << " = " << finalAmount * finalPrice << "\n";
+    if (it != DB.begin() && (it == DB.end() || it->first != tempDate))
+        it--;
+
+    std::cout << tempDate << " => "<< tempAmount << " = " << tempAmount * it->second << "\n";
 }
 
 void BitcoinExchange::proceedInputFile()
@@ -183,6 +191,7 @@ void BitcoinExchange::proceedInputFile()
     std::getline(inputFile, content);
     if (content.empty())
         throw (InputFileRowErrorException());
+    content = trim(content);
     if (content != "date | value")
         throw (WrongHeadingException());
     while (std::getline(inputFile, content))
@@ -212,29 +221,19 @@ std::string BitcoinExchange::trim(const std::string& str)
     return (str.substr(start, end - start + 1));
 }
 
-const char *BitcoinExchange::WrongDataBaseFileFormatException::what(void) const throw()
-{
-    return ("Wrong format of database file.");
-}
-
-const char *BitcoinExchange::InvalidDataBaseFileException::what(void) const throw()
-{
-    return ("Invalid database file.");
-}
-
 const char *BitcoinExchange::DataBaseRowErrorException::what(void) const throw()
 {
     return ("Database row error.");
 }
 
+const char *BitcoinExchange::InputFileRowErrorException::what(void) const throw()
+{
+    return ("Input file row error.");
+}
+
 const char *BitcoinExchange::WrongDateFormatException::what(void) const throw()
 {
     return ("Wrong date format.");
-}
-
-const char *BitcoinExchange::InvalidFloatValueException::what(void) const throw()
-{
-    return ("Invalid float value.");
 }
 
 const char *BitcoinExchange::InvalidPriceException::what(void) const throw()
@@ -255,16 +254,6 @@ const char *BitcoinExchange::CouldNotOpenFileException::what(void) const throw()
 const char *BitcoinExchange::WrongHeadingException::what(void) const throw()
 {
     return ("Wrong file heading.");
-}
-
-const char *BitcoinExchange::InputFileRowErrorException::what(void) const throw()
-{
-    return ("Input file row error.");
-}
-
-const char *BitcoinExchange::OutOfLimitsAmountException::what(void) const throw()
-{
-    return ("Out of limits amount.");
 }
 
 BitcoinExchange::ContentException::ContentException(const std::string& message) : msg(message) {}

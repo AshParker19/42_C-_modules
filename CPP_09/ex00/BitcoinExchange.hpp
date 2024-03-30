@@ -23,8 +23,8 @@ class BitcoinExchange
         BitcoinExchange &operator=(const BitcoinExchange &other);
         ~BitcoinExchange();
 
-        void validateInputFile(const std::string &path);
-        void validateFileDB();
+        void validateFile(const std::string &path);
+        void validateFile();
         void validateLine(const std::string &content, int flag, char sep);
         void validateDate(const std::string &date, int flag);
         void validateAmount(const std::string &price, int flag);
@@ -33,30 +33,13 @@ class BitcoinExchange
         void calculateResult();
         std::string trim(const std::string &str);
     
-    class WrongDataBaseFileFormatException : public std::exception
-    {
-        public:
-            const char *what(void) const throw();
-    };
-
-     class InvalidDataBaseFileException : public std::exception
-    {
-        public:
-            const char *what(void) const throw();
-    };
-
     class DataBaseRowErrorException : public std::exception
     {
         public:
             const char *what(void) const throw();
     };
+    
     class WrongDateFormatException : public std::exception
-    {
-        public:
-            const char *what(void) const throw();
-    };
-
-    class InvalidFloatValueException : public std::exception
     {
         public:
             const char *what(void) const throw();
@@ -87,12 +70,6 @@ class BitcoinExchange
     };
 
     class InputFileRowErrorException : public std::exception
-    {
-        public:
-            const char *what(void) const throw();
-    };
-
-    class OutOfLimitsAmountException : public std::exception
     {
         public:
             const char *what(void) const throw();
