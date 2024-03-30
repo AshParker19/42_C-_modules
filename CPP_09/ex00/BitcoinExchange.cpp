@@ -1,18 +1,20 @@
 #include "BitcoinExchange.hpp"
 
-BitcoinExchange::BitcoinExchange()
-{
-    
-}
+BitcoinExchange::BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
 {
-    (void)other; // TODO:
+    *this = other;
 }
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
-    (void)other;
+    if (this == &other)
+        return (*this);
+    this->tempDate = other.tempDate;
+    this->tempAmount = other.tempAmount;
+    this->DB = other.DB;
+
     return (*this);
 }
 
@@ -181,7 +183,8 @@ void BitcoinExchange::calculateResult()
     if (it != DB.begin() && (it == DB.end() || it->first != tempDate))
         it--;
 
-    std::cout << tempDate << " => "<< tempAmount << " = " << tempAmount * it->second << "\n";
+    long long result = tempAmount * it->second;
+    std::cout << tempDate << " => "<< tempAmount << " = " << result << "\n";
 }
 
 void BitcoinExchange::proceedInputFile()
