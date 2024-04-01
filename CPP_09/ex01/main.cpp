@@ -5,12 +5,13 @@ int main(int ac, char **av)
     try
     {
         if (ac != 2)
-            throw (RPN::WrongAgumentNumberException());
+            throw (RPN::WrongArgumentNumberException());
         
         RPN rpn(av[1]);
+        rpn.calculate();
     }
     catch (const std::exception &e)
     {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
     }
 }

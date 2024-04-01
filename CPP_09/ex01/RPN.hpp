@@ -5,20 +5,24 @@
 #include <sstream>
 #include <stack>
 #include <exception>
+#include <cstdlib>
 
 class RPN
 {
     private:
         RPN();
         std::stack<int> numbers;
+        std::string notation;
 
     public:
-        RPN(const std::string &notation);
+        RPN(const std::string &n);
         RPN(const RPN &other);
         RPN &operator=(const RPN &other);
         ~RPN();
 
-    class WrongAgumentNumberException : public std::exception
+        void calculate();
+
+    class WrongArgumentNumberException : public std::exception
     {
         public:
             const char *what(void) const throw();
@@ -30,11 +34,18 @@ class RPN
             const char *what(void) const throw();
     };
 
-    class WrongNotationFormatException : public std::exception
+    class ErrorException : public std::exception
     {
         public:
             const char *what(void) const throw();
     };
+
+    class DivisionByZeroException : public std::exception
+    {
+        public:
+            const char *what(void) const throw();
+    };
+    
 };
 
 #endif
