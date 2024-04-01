@@ -21,6 +21,7 @@ class RPN
         ~RPN();
 
         void calculate();
+        int getResult();
 
     class WrongArgumentNumberException : public std::exception
     {

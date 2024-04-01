@@ -37,16 +37,19 @@ void RPN::calculate()
             throw (ErrorException());
         if (isdigit(token[0]))
             numbers.push(std::atoi(token.c_str()));
-        else if (notation.find_first_of("*/+-") != std::string::npos)
+        else if (token.find_first_of("*/+-") != std::string::npos)
         {
+            if(numbers.size() != 2)
+                throw (ErrorException());
+
             op2 = numbers.top();
             numbers.pop();
-            op1 = numbers.top();    
+            op1 = numbers.top();
             numbers.pop();
 
             if (token[0] == '/' && op2 == 0)
                 throw (DivisionByZeroException());
-                
+
             switch (token[0])
             {
                 case '*':
@@ -63,13 +66,19 @@ void RPN::calculate()
                 
                 case '-':
                     numbers.push(op1 - op2);
-                    break ;
             }
         }
         else
             throw (ErrorException());
     }
-    std::cout << numbers.top() << std::endl;
+
+    if (numbers.size() != 1)
+        throw ErrorException();
+}
+
+int RPN::getResult()
+{
+    return (numbers.top());
 }
 
 const char *RPN::WrongArgumentNumberException::what(void) const throw()

@@ -9,6 +9,7 @@ int main(int ac, char **av)
         
         RPN rpn(av[1]);
         rpn.calculate();
+        std::cout << rpn.getResult() << std::endl;
     }
     catch (const std::exception &e)
     {
