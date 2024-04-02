@@ -17,7 +17,7 @@ CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 
 # Sources
 SRC = main.cpp				\
-	  PmegreMe.cpp			\
+	  PmergeMe.cpp			\
 
 # Objects
 OBJ = $(SRC:%.cpp=obj/%.o)
@@ -35,7 +35,7 @@ $(NAME): $(OBJ)
 	@echo "╟───────────────────────────────────────────╢"
 	@echo "║                    ex02                   ║"
 	@echo "╟───────────────────────────────────────────╢"
-	@echo "║                    $(NAME)                    ║"
+	@echo "║                  $(NAME)                 ║"
 	@echo "╚═══════════════════════════════════════════╝"
 
 obj/%.o: %.cpp
