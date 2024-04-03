@@ -4,9 +4,11 @@ int main(int ac, char **av)
 {
     try
     {
-        (void) ac;
+        if (ac != 2)
+            throw (PmergeMe::ErrorException());
+        
         PmergeMe PM(av[1]);
-
+        PM.sortVector();
     }
     catch (const std::exception &e)
     {

@@ -26,7 +26,7 @@ class PmergeMe // vector and linked list
         bool containsAlready(const std::vector<int>& vt, int value);
         void sortVector();
 
-        class ParsingErrorException : public std::exception
+        class ErrorException : public std::exception
         {
             public:
                 const char *what(void) const throw();
