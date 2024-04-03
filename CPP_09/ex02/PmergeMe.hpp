@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <algorithm>
 #include <vector>
 #include <list>
 
@@ -21,6 +22,15 @@ class PmergeMe // vector and linked list
         ~PmergeMe();
 
         bool parse(const std::string &input);
+        bool isNumber(const std::string &str);
+        bool containsAlready(const std::vector<int>& vt, int value);
+        void sortVector();
+
+        class ParsingErrorException : public std::exception
+        {
+            public:
+                const char *what(void) const throw();
+        };
 };
 
 #endif
