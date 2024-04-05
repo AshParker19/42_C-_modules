@@ -15,6 +15,7 @@ class PmergeMe // vector and linked list
 
         std::vector<int> vt;
         std::vector<std::pair <int,int> > pairs;
+        // int vector time;
 
         std::list<int> lt;
 
@@ -29,7 +30,8 @@ class PmergeMe // vector and linked list
         bool containsAlready(const std::vector<int>& vt, int value);
         void createSortVectorPairs();
         void selectSortHigherValues();
-        void binarySearchInsert();
+        void searchInsert(int value);
+
         void handleVector();
 
         class ErrorException : public std::exception

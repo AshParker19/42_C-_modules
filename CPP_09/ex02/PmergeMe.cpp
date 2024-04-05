@@ -58,6 +58,8 @@ bool PmergeMe::parse(const std::string &input) // TODO: make this a template so 
 
 void PmergeMe::createSortVectorPairs()
 {
+    int temp;
+
     for (size_t i = 0; i < vt.size(); i += 2)
         pairs.push_back(std::make_pair(vt[i], vt[i + 1]));
 
@@ -65,7 +67,7 @@ void PmergeMe::createSortVectorPairs()
     {
         if (it->first > it->second)
         {
-            int temp = it->first;
+            temp = it->first;
             it->first = it->second;
             it->second = temp;
         }
@@ -80,25 +82,21 @@ void PmergeMe::selectSortHigherValues()
     std::sort(vt.begin(), vt.end());
 }
 
-void PmergeMe::binarySearchInsert()
+void PmergeMe::searchInsert(int value)
 {
     int toInsert;
-    int low = 0, mid, high = vt.size();
+
+    if (value != -1)
+    {
+        vt.insert(std::lower_bound(vt.begin(), vt.end(), value), value);
+        return ;
+    }
 
     for (size_t i = 0; i < pairs.size(); i++)
     {
         toInsert = pairs[i].first;
-
-        while (low < high)
-        {
-            mid = (low + high) / 2;
-            if (vt[mid] < toInsert)
-                low = mid + 1;
-            else
-                high = mid - 1;
-        }
+        vt.insert(std::lower_bound(vt.begin(), vt.end(), toInsert), toInsert);
     }
-    // vt.insert();
 }
 
 void PmergeMe::handleVector()
@@ -113,12 +111,13 @@ void PmergeMe::handleVector()
         leftover = vt.back();
         vt.erase(vt.end() - 1);
     }
-    (void)leftover;
+    
     createSortVectorPairs();
     vt.clear();
     selectSortHigherValues();
-    binarySearchInsert();
-
+    searchInsert(-1);
+    if (leftover != -1)
+        searchInsert(leftover);
 }
 
 const char *PmergeMe::ErrorException::what(void) const throw()
