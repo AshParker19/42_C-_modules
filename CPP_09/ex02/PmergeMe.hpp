@@ -12,7 +12,10 @@ class PmergeMe // vector and linked list
 {
     private:
         PmergeMe();
+
         std::vector<int> vt;
+        std::vector<std::pair <int,int> > pairs;
+
         std::list<int> lt;
 
     public:
@@ -24,9 +27,18 @@ class PmergeMe // vector and linked list
         bool parse(const std::string &input);
         bool isNumber(const std::string &str);
         bool containsAlready(const std::vector<int>& vt, int value);
-        void sortVector();
+        void createSortVectorPairs();
+        void selectSortHigherValues();
+        void binarySearchInsert();
+        void handleVector();
 
         class ErrorException : public std::exception
+        {
+            public:
+                const char *what(void) const throw();
+        };
+
+        class OnlyOneIntegerException : public std::exception
         {
             public:
                 const char *what(void) const throw();

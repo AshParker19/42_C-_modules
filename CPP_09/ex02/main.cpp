@@ -8,7 +8,7 @@ int main(int ac, char **av)
             throw (PmergeMe::ErrorException());
         
         PmergeMe PM(av[1]);
-        PM.sortVector();
+        PM.handleVector();
     }
     catch (const std::exception &e)
     {
