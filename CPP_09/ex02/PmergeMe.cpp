@@ -120,6 +120,11 @@ void PmergeMe::handleVector()
         searchInsert(leftover);
 }
 
+void PmergeMe::handleList()
+{
+    
+}
+
 const char *PmergeMe::ErrorException::what(void) const throw()
 {
     return ("Error");

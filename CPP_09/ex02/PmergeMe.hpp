@@ -25,14 +25,19 @@ class PmergeMe // vector and linked list
         PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();
 
-        bool parse(const std::string &input);
+        // parsing
         bool isNumber(const std::string &str);
         bool containsAlready(const std::vector<int>& vt, int value);
+        bool parse(const std::string &input);
+
+        // vector
         void createSortVectorPairs();
         void selectSortHigherValues();
         void searchInsert(int value);
-
         void handleVector();
+
+        // list
+        void handleList();
 
         class ErrorException : public std::exception
         {
