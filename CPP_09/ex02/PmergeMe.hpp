@@ -28,6 +28,7 @@ class PmergeMe // vector and linked list
         // parsing
         bool isNumber(const std::string &str);
         bool containsAlready(const std::vector<int>& vt, int value);
+        bool noOverflow(std::string token);
         bool parse(const std::string &input);
 
         // vector

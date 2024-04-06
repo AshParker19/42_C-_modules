@@ -35,18 +35,31 @@ bool PmergeMe::containsAlready(const std::vector<int>& vt, int value)
     return (std::find(vt.begin(), vt.end(), value) != vt.end());
 }
 
+bool PmergeMe::noOverflow(std::string token)
+{
+    const std::string maxInt = "2147483647";
+
+    token.erase(0, token.find_first_not_of('0'));
+    if (token.empty())
+        return (false);
+    if (token.length() > maxInt.size())
+        return (false);
+    if (token.length() < maxInt.size())
+        return (true);
+    return (token.compare(maxInt) <= 0);
+}
+
 bool PmergeMe::parse(const std::string &input) // TODO: make this a template so it works with both containers
 {
-    if (input.empty())
-        return (false);
-
     std::istringstream iss(input);
     std::string token;
     int value;
 
+    if (input.empty())
+        return (false);
     while (iss >> token)
     {
-        if (!isNumber(token))
+        if (!isNumber(token) || !noOverflow(token))
             return (false);
         value = std::atoi(token.c_str());
         if (value == 0 || containsAlready(vt, value))
