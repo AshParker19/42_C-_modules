@@ -32,8 +32,8 @@ class PmergeMe // vector and linked list
         bool parse(const std::string &input);
 
         // vector
-        void createSortVectorPairs();
-        void selectSortHigherValues();
+        void createVectorPairs();
+        void sortHigherValuesRecursively(size_t index);
         void searchInsert(int value);
         void handleVector();
 

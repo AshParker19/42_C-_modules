@@ -69,30 +69,28 @@ bool PmergeMe::parse(const std::string &input) // TODO: make this a template so 
     return (true);
 }
 
-void PmergeMe::createSortVectorPairs()
+void PmergeMe::createVectorPairs()
+{
+    for (size_t i = 0; i < vt.size(); i += 2)
+        pairs.push_back(std::make_pair(vt[i], vt[i + 1]));
+}
+
+void PmergeMe::sortHigherValuesRecursively(size_t index)
 {
     int temp;
 
-    for (size_t i = 0; i < vt.size(); i += 2)
-        pairs.push_back(std::make_pair(vt[i], vt[i + 1]));
+    if (pairs.size() == index)
+        return ;
 
-    for (std::vector<std::pair <int, int> >::iterator it = pairs.begin(); it != pairs.end(); it++)
+    if (pairs[index].first > pairs[index].second)
     {
-        if (it->first > it->second)
-        {
-            temp = it->first;
-            it->first = it->second;
-            it->second = temp;
-        }
+        temp = pairs[index].first;
+        pairs[index].first = pairs[index].second;
+        pairs[index].second = temp;
     }
-}
 
-void PmergeMe::selectSortHigherValues()
-{
-    for (size_t i = 0; i < pairs.size(); i++)
-        vt.push_back(pairs[i].second);
-
-    std::sort(vt.begin(), vt.end());
+    vt.insert(std::lower_bound(vt.begin(), vt.end(), pairs[index].second), pairs[index].second);
+    sortHigherValuesRecursively(index + 1);
 }
 
 void PmergeMe::searchInsert(int value)
@@ -114,23 +112,29 @@ void PmergeMe::searchInsert(int value)
 
 void PmergeMe::handleVector()
 {
-    int leftover = -1;
+    // int leftover = -1;
 
     if (vt.size() == 1)
         throw (OnlyOneIntegerException());
 
-    if (vt.size() % 2 != 0)
-    {
-        leftover = vt.back();
-        vt.erase(vt.end() - 1);
-    }
+    // if (vt.size() % 2 != 0)
+    // {
+    //     leftover = vt.back();
+    //     vt.erase(vt.end() - 1);
+    // }
     
-    createSortVectorPairs();
+    createVectorPairs();
     vt.clear();
-    selectSortHigherValues();
-    searchInsert(-1);
-    if (leftover != -1)
-        searchInsert(leftover);
+    sortHigherValuesRecursively(0);
+    vt.insert(vt.begin(), pairs[0].first);
+    pairs.erase(pairs.begin());
+    // searchInsert(-1);
+    // if (leftover != -1)
+    //     searchInsert(leftover);
+    
+    for (size_t i = 0; i < vt.size(); i++)
+        std::cout << vt[i] << " ";
+    std::cout << std::endl;
 }
 
 void PmergeMe::handleList()
