@@ -93,15 +93,9 @@ void PmergeMe::sortHigherValuesRecursively(size_t index)
     sortHigherValuesRecursively(index + 1);
 }
 
-void PmergeMe::searchInsert(int value)
+void PmergeMe::searchInsert()
 {
     int toInsert;
-
-    if (value != -1)
-    {
-        vt.insert(std::lower_bound(vt.begin(), vt.end(), value), value);
-        return ;
-    }
 
     for (size_t i = 0; i < pairs.size(); i++)
     {
@@ -110,37 +104,49 @@ void PmergeMe::searchInsert(int value)
     }
 }
 
+void PmergeMe::insertSmallest()
+{
+    std::vector<std::pair <int, int> >::iterator it;
+
+    for (it = pairs.begin(); it != pairs.end(); ++it)
+    {
+        if (it->second == vt[0])
+        {
+            vt.insert(vt.begin(), it->first);
+            break ;
+        }
+    }
+    pairs.erase(it);
+}
+
 void PmergeMe::handleVector()
 {
-    // int leftover = -1;
+    int leftover = -1;
 
     if (vt.size() == 1)
         throw (OnlyOneIntegerException());
-
-    // if (vt.size() % 2 != 0)
-    // {
-    //     leftover = vt.back();
-    //     vt.erase(vt.end() - 1);
-    // }
+    if (vt.size() % 2 != 0)
+    {
+        leftover = vt.back();
+        vt.erase(vt.end() - 1);
+    }
     
     createVectorPairs();
     vt.clear();
     sortHigherValuesRecursively(0);
-    vt.insert(vt.begin(), pairs[0].first);
-    pairs.erase(pairs.begin());
-    // searchInsert(-1);
-    // if (leftover != -1)
-    //     searchInsert(leftover);
+    insertSmallest();
+    if (leftover != -1)
+        pairs.push_back(std::make_pair(leftover, 0));
     
     for (size_t i = 0; i < vt.size(); i++)
         std::cout << vt[i] << " ";
     std::cout << std::endl;
 }
 
-void PmergeMe::handleList()
-{
+// void PmergeMe::handleList()
+// {
     
-}
+// }
 
 const char *PmergeMe::ErrorException::what(void) const throw()
 {

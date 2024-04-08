@@ -20,7 +20,7 @@ class PmergeMe // vector and linked list
         std::list<int> lt;
 
     public:
-        PmergeMe(const std::string &input); // parse the input in the constructor
+        PmergeMe(const std::string &input);
         PmergeMe(const PmergeMe &other);
         PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();
@@ -34,11 +34,12 @@ class PmergeMe // vector and linked list
         // vector
         void createVectorPairs();
         void sortHigherValuesRecursively(size_t index);
-        void searchInsert(int value);
+        void searchInsert();
+        void insertSmallest();
         void handleVector();
 
         // list
-        void handleList();
+        // void handleList();
 
         class ErrorException : public std::exception
         {
