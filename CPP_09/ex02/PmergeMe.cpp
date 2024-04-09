@@ -69,6 +69,14 @@ bool PmergeMe::parse(const std::string &input) // TODO: make this a template so 
     return (true);
 }
 
+void PmergeMe::generateSequence()
+{
+    Jacobstahl[0] = 0;
+    Jacobstahl[1] = 1;
+    for (size_t i = 2; i < 33; ++i)
+        Jacobstahl[i] = (Jacobstahl[i - 1] + 2 * Jacobstahl[i - 2]);
+}
+
 void PmergeMe::createVectorPairs()
 {
     for (size_t i = 0; i < vt.size(); i += 2)
@@ -119,6 +127,37 @@ void PmergeMe::insertSmallest()
     pairs.erase(it);
 }
 
+void PmergeMe::insertInReverseOrder(std::vector<int> group)
+{
+    for (int i = group.size() - 1; i >= 0; --i) 
+        vtInSequence.push_back(group[i]);
+}
+
+void PmergeMe::putInSequence()
+{
+    size_t groupSize;
+
+    std::vector<int> group;
+    size_t currentIndex = 0;
+    for (size_t i = 2; i < 32 && currentIndex < pairs.size(); i++)
+    {
+        group.clear();
+        groupSize = Jacobstahl[i + 1] - Jacobstahl[i];
+        for (size_t j = 0; j < groupSize && currentIndex < pairs.size(); j++)
+        {
+            group.push_back(pairs[currentIndex].first);
+            currentIndex++;
+        }
+        insertInReverseOrder(group);
+    }
+}
+
+void PmergeMe::insertJacobstahl(int index)
+{
+    if (index == 33)
+        return ;
+}
+
 void PmergeMe::handleVector()
 {
     int leftover = -1;
@@ -135,12 +174,16 @@ void PmergeMe::handleVector()
     vt.clear();
     sortHigherValuesRecursively(0);
     insertSmallest();
+    putInSequence();
     if (leftover != -1)
-        pairs.push_back(std::make_pair(leftover, 0));
-    
-    for (size_t i = 0; i < vt.size(); i++)
-        std::cout << vt[i] << " ";
+        vtInSequence.push_back(leftover);
+    for (size_t i = 0; i < vtInSequence.size(); i++)
+        std::cout << vtInSequence[i] << " ";
     std::cout << std::endl;
+
+    // for (size_t i = 0; i < pairs.size(); i++)
+    //     std::cout << pairs[i].first << " ";
+    // std::cout << std::endl;
 }
 
 // void PmergeMe::handleList()

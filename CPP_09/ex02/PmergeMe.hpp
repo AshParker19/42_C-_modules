@@ -13,8 +13,11 @@ class PmergeMe // vector and linked list
     private:
         PmergeMe();
 
+        int Jacobstahl[33];
+
         std::vector<int> vt;
         std::vector<std::pair <int,int> > pairs;
+        std::vector<int> vtInSequence;
         // int vector time;
 
         std::list<int> lt;
@@ -27,9 +30,12 @@ class PmergeMe // vector and linked list
 
         // parsing
         bool isNumber(const std::string &str);
-        bool containsAlready(const std::vector<int>& vt, int value);
+        bool containsAlready(const std::vector<int> &vt, int value);
         bool noOverflow(std::string token);
         bool parse(const std::string &input);
+
+        // Jacobstahl sequence
+        void generateSequence();
 
         // vector
         void createVectorPairs();
@@ -37,6 +43,9 @@ class PmergeMe // vector and linked list
         void searchInsert();
         void insertSmallest();
         void handleVector();
+        void putInSequence();
+        void insertJacobstahl(int index);
+        void insertInReverseOrder(std::vector<int> group);
 
         // list
         // void handleList();
