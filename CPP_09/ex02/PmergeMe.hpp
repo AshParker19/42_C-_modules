@@ -45,7 +45,6 @@ class PmergeMe // vector and linked list
         void handleVector();
         void putInSequence();
         void insertJacobstahl(int index);
-        void insertInReverseOrder(std::vector<int> group);
 
         // list
         // void handleList();

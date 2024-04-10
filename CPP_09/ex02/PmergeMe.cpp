@@ -127,28 +127,22 @@ void PmergeMe::insertSmallest()
     pairs.erase(it);
 }
 
-void PmergeMe::insertInReverseOrder(std::vector<int> group)
-{
-    for (int i = group.size() - 1; i >= 0; --i) 
-        vtInSequence.push_back(group[i]);
-}
-
 void PmergeMe::putInSequence()
 {
-    size_t groupSize;
+    size_t currentIndex;
+    int prevIndex;
 
-    std::vector<int> group;
-    size_t currentIndex = 0;
-    for (size_t i = 2; i < 32 && currentIndex < pairs.size(); i++)
+    for (size_t i = 1; i < 33; i++)
     {
-        group.clear();
-        groupSize = Jacobstahl[i + 1] - Jacobstahl[i];
-        for (size_t j = 0; j < groupSize && currentIndex < pairs.size(); j++)
+        currentIndex = Jacobstahl[i];
+        if (currentIndex > pairs.size())
+            currentIndex = pairs.size();
+        prevIndex = Jacobstahl[i - 1];
+        for (int j = currentIndex; j > prevIndex; j--)
         {
-            group.push_back(pairs[currentIndex].first);
+            vtInSequence.push_back(pairs[j].first);
             currentIndex++;
         }
-        insertInReverseOrder(group);
     }
 }
 
@@ -180,7 +174,6 @@ void PmergeMe::handleVector()
     for (size_t i = 0; i < vtInSequence.size(); i++)
         std::cout << vtInSequence[i] << " ";
     std::cout << std::endl;
-
     // for (size_t i = 0; i < pairs.size(); i++)
     //     std::cout << pairs[i].first << " ";
     // std::cout << std::endl;
