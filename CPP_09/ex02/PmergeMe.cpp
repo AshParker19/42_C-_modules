@@ -132,17 +132,16 @@ void PmergeMe::putInSequence()
     size_t currentIndex;
     int prevIndex;
 
+    vtInSequence.push_back(pairs[0].first);
     for (size_t i = 1; i < 33; i++)
     {
         currentIndex = Jacobstahl[i];
         if (currentIndex > pairs.size())
-            currentIndex = pairs.size();
+            currentIndex = pairs.size() - 1;
+
         prevIndex = Jacobstahl[i - 1];
         for (int j = currentIndex; j > prevIndex; j--)
-        {
             vtInSequence.push_back(pairs[j].first);
-            currentIndex++;
-        }
     }
 }
 
@@ -171,12 +170,6 @@ void PmergeMe::handleVector()
     putInSequence();
     if (leftover != -1)
         vtInSequence.push_back(leftover);
-    for (size_t i = 0; i < vtInSequence.size(); i++)
-        std::cout << vtInSequence[i] << " ";
-    std::cout << std::endl;
-    // for (size_t i = 0; i < pairs.size(); i++)
-    //     std::cout << pairs[i].first << " ";
-    // std::cout << std::endl;
 }
 
 // void PmergeMe::handleList()
@@ -193,3 +186,9 @@ const char *PmergeMe::OnlyOneIntegerException::what(void) const throw()
 {
     return ("Input more positive integers!");
 }
+
+// I have an array of integers, they represent a specific sequence. It's a static array, it's fine.
+// Also I have a vector of positive integers. Now, taking into account the sequence that I have, I want to split vector into specific subgroups.
+// the sequence starts like this 0, 1, 1, 3, 5, 11
+// Now I iterate through the sequence and let's say I'm on value 5, I use it as an index to say: go to index 5 at the vector and print indexes in an opposite direction till you reach a previous index of a sequence, 3 in this case.
+// so, if my input is 52 56 8 65 39 29 55 2 12, in this iteration I want to print 29 39 
