@@ -101,17 +101,6 @@ void PmergeMe::sortHigherValuesRecursively(size_t index)
     sortHigherValuesRecursively(index + 1);
 }
 
-void PmergeMe::searchInsert()
-{
-    int toInsert;
-
-    for (size_t i = 0; i < pairs.size(); i++)
-    {
-        toInsert = pairs[i].first;
-        vt.insert(std::lower_bound(vt.begin(), vt.end(), toInsert), toInsert);
-    }
-}
-
 void PmergeMe::insertSmallest()
 {
     std::vector<std::pair <int, int> >::iterator it;
@@ -127,28 +116,57 @@ void PmergeMe::insertSmallest()
     pairs.erase(it);
 }
 
-void PmergeMe::putInSequence()
+std::vector<int>::iterator PmergeMe::findInPairs(int value)
+{
+    std::vector<std::pair<int, int> >::iterator itP = pairs.begin();
+
+    while (itP != pairs.end())
+    {
+        for (std::vector<int>::iterator itV = vt.begin(); itV != vt.end(); ++itV)
+        {
+            if (value == *itV)
+                return (itV);
+        }
+        ++itP;
+    }
+    return (vt.end());
+}
+
+void PmergeMe::insertInHigher(size_t index)
+{
+    std::vector<int>::iterator end;
+    int value = pairs[index].first;
+
+    end = findInPairs(pairs[index].second);
+    vt.insert(std::lower_bound(vt.begin(), end, value), value);
+}
+
+void PmergeMe::prepareInsert(int leftover)
 {
     size_t currentIndex;
     int prevIndex;
+    bool end = false;
+    int j;
 
-    vtInSequence.push_back(pairs[0].first);
+    insertInHigher(0);
     for (size_t i = 1; i < 33; i++)
     {
         currentIndex = Jacobstahl[i];
         if (currentIndex > pairs.size())
+        {
+            end = true;
             currentIndex = pairs.size() - 1;
-
+        }
         prevIndex = Jacobstahl[i - 1];
-        for (int j = currentIndex; j > prevIndex; j--)
-            vtInSequence.push_back(pairs[j].first);
-    }
-}
 
-void PmergeMe::insertJacobstahl(int index)
-{
-    if (index == 33)
-        return ;
+        for (j = currentIndex; j > prevIndex; j--)
+            insertInHigher(j);
+
+        if (end)
+            break ;
+    }
+    if (leftover != -1)
+        insertInHigher(j);
 }
 
 void PmergeMe::handleVector()
@@ -166,10 +184,11 @@ void PmergeMe::handleVector()
     createVectorPairs();
     vt.clear();
     sortHigherValuesRecursively(0);
-    insertSmallest();
-    putInSequence();
-    if (leftover != -1)
-        vtInSequence.push_back(leftover);
+    insertSmallest();    
+    prepareInsert(leftover);
+    for (size_t i = 0; i < vt.size(); i++)
+        std::cout << vt[i] << " ";
+    std::cout << "\n";
 }
 
 // void PmergeMe::handleList()

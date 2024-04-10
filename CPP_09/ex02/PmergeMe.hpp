@@ -17,7 +17,6 @@ class PmergeMe // vector and linked list
 
         std::vector<int> vt;
         std::vector<std::pair <int,int> > pairs;
-        std::vector<int> vtInSequence;
         // int vector time;
 
         std::list<int> lt;
@@ -40,11 +39,11 @@ class PmergeMe // vector and linked list
         // vector
         void createVectorPairs();
         void sortHigherValuesRecursively(size_t index);
-        void searchInsert();
         void insertSmallest();
+        void prepareInsert(int leftover);
+        void insertInHigher(size_t index);
+        std::vector<int>::iterator findInPairs(int value);
         void handleVector();
-        void putInSequence();
-        void insertJacobstahl(int index);
 
         // list
         // void handleList();
