@@ -16,10 +16,11 @@ class PmergeMe
         int Jacobstahl[33];
 
         std::vector<int> vt;
-        std::vector<std::pair <int,int> > pairs;
+        std::vector<std::pair <int,int> > pairsVt;
         // int vector time;
 
         std::list<int> lt;
+        std::list<std::pair <int,int> > pairsLt;
 
     public:
         PmergeMe(int ac, char **av);
@@ -35,7 +36,6 @@ class PmergeMe
         void generateSequence();
 
         // vector
-        void createPairsVt();
         void sortHigherValuesRecursivelyVt(size_t index);
         void insertSmallestVt();
         void prepareInsertVt(int leftover);
@@ -44,6 +44,7 @@ class PmergeMe
         void handleVector();
 
         // list
+        void sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::iterator itPair);
         void handleList();
 
         class ErrorException : public std::exception
@@ -104,6 +105,21 @@ class PmergeMe
                 container.push_back(value);
             }
             return (true);
+        }
+
+        template<typename T, typename U>
+        void createPairs(T &pairs, const U &container)
+        {
+            int first, second;
+            typename U::const_iterator it = container.begin();
+
+            for ( ; it != container.end(); ++it)
+            {
+                first = *it;
+                ++it;
+                second = *it;
+                pairs.push_back(std::make_pair(first, second));
+            }
         }
 };
 
