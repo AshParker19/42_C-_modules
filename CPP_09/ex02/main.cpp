@@ -3,11 +3,9 @@
 int main(int ac, char **av)
 {
     try
-    {
-        if (ac != 2)
-            throw (PmergeMe::ErrorException());
-        
-        PmergeMe PM(av[1]);
+    {   
+        PmergeMe PM(ac, av);
+
         PM.generateSequence();
         PM.handleVector();
     }

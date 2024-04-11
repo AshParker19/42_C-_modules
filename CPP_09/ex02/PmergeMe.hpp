@@ -8,6 +8,26 @@
 #include <vector>
 #include <list>
 
+template<typename T>
+void checkIfSorted(const T &container)
+{
+    typename T::const_iterator it = container.begin();
+    typename T::const_iterator nextIT = it;
+    ++nextIT;
+
+    while (nextIT != container.end())
+    {
+        if (*it > *nextIT)
+        {
+            std::cout << "KO" << std::endl;
+            return ;
+        }
+        ++it;
+        ++nextIT;
+    }
+    std::cout << "OK" << std::endl;
+}
+
 class PmergeMe // vector and linked list
 {
     private:
@@ -22,7 +42,7 @@ class PmergeMe // vector and linked list
         std::list<int> lt;
 
     public:
-        PmergeMe(const std::string &input);
+        PmergeMe(int ac, char **av);
         PmergeMe(const PmergeMe &other);
         PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();

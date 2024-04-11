@@ -2,8 +2,16 @@
 
 PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(const std::string &input)
+PmergeMe::PmergeMe(int ac, char **av)
 {
+    std::string input;
+
+    for (int i = 1; i < ac; ++i)
+    {
+        input += av[i];
+        if (i < ac -1)
+            input += " ";
+    }
     if (!parse(input))
         throw (ErrorException());
 }
@@ -49,7 +57,7 @@ bool PmergeMe::noOverflow(std::string token)
     return (token.compare(maxInt) <= 0);
 }
 
-bool PmergeMe::parse(const std::string &input) // TODO: make this a template so it works with both containers
+bool PmergeMe::parse(const std::string &input)
 {
     std::istringstream iss(input);
     std::string token;
@@ -146,7 +154,6 @@ void PmergeMe::prepareInsert(int leftover)
     size_t currentIndex;
     int prevIndex;
     bool end = false;
-    int j;
 
     insertInHigher(0);
     for (size_t i = 1; i < 33; i++)
@@ -159,14 +166,14 @@ void PmergeMe::prepareInsert(int leftover)
         }
         prevIndex = Jacobstahl[i - 1];
 
-        for (j = currentIndex; j > prevIndex; j--)
+        for (int j = currentIndex; j > prevIndex; j--)
             insertInHigher(j);
-
+        
         if (end)
             break ;
     }
     if (leftover != -1)
-        insertInHigher(j);
+        vt.insert(std::lower_bound(vt.begin(), vt.end(), leftover), leftover);
 }
 
 void PmergeMe::handleVector()
@@ -180,15 +187,12 @@ void PmergeMe::handleVector()
         leftover = vt.back();
         vt.erase(vt.end() - 1);
     }
-    
     createVectorPairs();
     vt.clear();
     sortHigherValuesRecursively(0);
     insertSmallest();    
     prepareInsert(leftover);
-    for (size_t i = 0; i < vt.size(); i++)
-        std::cout << vt[i] << " ";
-    std::cout << "\n";
+    checkIfSorted(vt);
 }
 
 // void PmergeMe::handleList()
@@ -205,9 +209,3 @@ const char *PmergeMe::OnlyOneIntegerException::what(void) const throw()
 {
     return ("Input more positive integers!");
 }
-
-// I have an array of integers, they represent a specific sequence. It's a static array, it's fine.
-// Also I have a vector of positive integers. Now, taking into account the sequence that I have, I want to split vector into specific subgroups.
-// the sequence starts like this 0, 1, 1, 3, 5, 11
-// Now I iterate through the sequence and let's say I'm on value 5, I use it as an index to say: go to index 5 at the vector and print indexes in an opposite direction till you reach a previous index of a sequence, 3 in this case.
-// so, if my input is 52 56 8 65 39 29 55 2 12, in this iteration I want to print 29 39 
