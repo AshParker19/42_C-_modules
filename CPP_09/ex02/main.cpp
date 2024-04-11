@@ -8,6 +8,7 @@ int main(int ac, char **av)
 
         PM.generateSequence();
         PM.handleVector();
+        PM.handleList();
     }
     catch (const std::exception &e)
     {

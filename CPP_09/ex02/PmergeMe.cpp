@@ -12,8 +12,11 @@ PmergeMe::PmergeMe(int ac, char **av)
         if (i < ac -1)
             input += " ";
     }
-    if (!parse(input))
+    if (!parse(false, input, vt))
         throw (ErrorException());
+    if (vt.size() == 1)
+        throw (OnlyOneIntegerException());
+    parse(true, input, lt);
 }
 
 PmergeMe::PmergeMe(const PmergeMe &other)
@@ -38,11 +41,6 @@ bool PmergeMe::isNumber(const std::string &str)
     return (!str.empty() && it == str.end());
 }
 
-bool PmergeMe::containsAlready(const std::vector<int>& vt, int value)
-{
-    return (std::find(vt.begin(), vt.end(), value) != vt.end());
-}
-
 bool PmergeMe::noOverflow(std::string token)
 {
     const std::string maxInt = "2147483647";
@@ -57,26 +55,6 @@ bool PmergeMe::noOverflow(std::string token)
     return (token.compare(maxInt) <= 0);
 }
 
-bool PmergeMe::parse(const std::string &input)
-{
-    std::istringstream iss(input);
-    std::string token;
-    int value;
-
-    if (input.empty())
-        return (false);
-    while (iss >> token)
-    {
-        if (!isNumber(token) || !noOverflow(token))
-            return (false);
-        value = std::atoi(token.c_str());
-        if (value == 0 || containsAlready(vt, value))
-            return (false);
-        vt.push_back(value);
-    }
-    return (true);
-}
-
 void PmergeMe::generateSequence()
 {
     Jacobstahl[0] = 0;
@@ -85,13 +63,13 @@ void PmergeMe::generateSequence()
         Jacobstahl[i] = (Jacobstahl[i - 1] + 2 * Jacobstahl[i - 2]);
 }
 
-void PmergeMe::createVectorPairs()
+void PmergeMe::createPairsVt()
 {
     for (size_t i = 0; i < vt.size(); i += 2)
         pairs.push_back(std::make_pair(vt[i], vt[i + 1]));
 }
 
-void PmergeMe::sortHigherValuesRecursively(size_t index)
+void PmergeMe::sortHigherValuesRecursivelyVt(size_t index)
 {
     int temp;
 
@@ -106,10 +84,10 @@ void PmergeMe::sortHigherValuesRecursively(size_t index)
     }
 
     vt.insert(std::lower_bound(vt.begin(), vt.end(), pairs[index].second), pairs[index].second);
-    sortHigherValuesRecursively(index + 1);
+    sortHigherValuesRecursivelyVt(index + 1);
 }
 
-void PmergeMe::insertSmallest()
+void PmergeMe::insertSmallestVt()
 {
     std::vector<std::pair <int, int> >::iterator it;
 
@@ -124,7 +102,7 @@ void PmergeMe::insertSmallest()
     pairs.erase(it);
 }
 
-std::vector<int>::iterator PmergeMe::findInPairs(int value)
+std::vector<int>::iterator PmergeMe::findInPairsVt(int value)
 {
     std::vector<std::pair<int, int> >::iterator itP = pairs.begin();
 
@@ -140,22 +118,22 @@ std::vector<int>::iterator PmergeMe::findInPairs(int value)
     return (vt.end());
 }
 
-void PmergeMe::insertInHigher(size_t index)
+void PmergeMe::insertInHigherVt(size_t index)
 {
     std::vector<int>::iterator end;
     int value = pairs[index].first;
 
-    end = findInPairs(pairs[index].second);
+    end = findInPairsVt(pairs[index].second);
     vt.insert(std::lower_bound(vt.begin(), end, value), value);
 }
 
-void PmergeMe::prepareInsert(int leftover)
+void PmergeMe::prepareInsertVt(int leftover)
 {
     size_t currentIndex;
     int prevIndex;
     bool end = false;
 
-    insertInHigher(0);
+    insertInHigherVt(0);
     for (size_t i = 1; i < 33; i++)
     {
         currentIndex = Jacobstahl[i];
@@ -167,7 +145,7 @@ void PmergeMe::prepareInsert(int leftover)
         prevIndex = Jacobstahl[i - 1];
 
         for (int j = currentIndex; j > prevIndex; j--)
-            insertInHigher(j);
+            insertInHigherVt(j);
         
         if (end)
             break ;
@@ -180,25 +158,27 @@ void PmergeMe::handleVector()
 {
     int leftover = -1;
 
-    if (vt.size() == 1)
-        throw (OnlyOneIntegerException());
     if (vt.size() % 2 != 0)
     {
         leftover = vt.back();
         vt.erase(vt.end() - 1);
     }
-    createVectorPairs();
+    createPairsVt();
     vt.clear();
-    sortHigherValuesRecursively(0);
-    insertSmallest();    
-    prepareInsert(leftover);
+    sortHigherValuesRecursivelyVt(0);
+    insertSmallestVt();    
+    prepareInsertVt(leftover);
     checkIfSorted(vt);
 }
 
-// void PmergeMe::handleList()
-// {
-    
-// }
+void PmergeMe::handleList()
+{
+    // int leftover = -1;
+
+
+    // std::list<int>::iterator it = lt.begin();
+
+}
 
 const char *PmergeMe::ErrorException::what(void) const throw()
 {
