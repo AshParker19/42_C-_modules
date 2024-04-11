@@ -81,21 +81,6 @@ void PmergeMe::sortHigherValuesRecursivelyVt(size_t index)
     sortHigherValuesRecursivelyVt(index + 1);
 }
 
-void PmergeMe::insertSmallestVt()
-{
-    std::vector<std::pair <int, int> >::iterator it;
-
-    for (it = pairsVt.begin(); it != pairsVt.end(); ++it)
-    {
-        if (it->second == vt[0])
-        {
-            vt.insert(vt.begin(), it->first);
-            break ;
-        }
-    }
-    pairsVt.erase(it);
-}
-
 std::vector<int>::iterator PmergeMe::findInPairsVt(int value)
 {
     std::vector<std::pair<int, int> >::iterator itP = pairsVt.begin();
@@ -121,31 +106,39 @@ void PmergeMe::insertInHigherVt(size_t index)
     vt.insert(std::lower_bound(vt.begin(), end, value), value);
 }
 
-void PmergeMe::prepareInsertVt(int leftover)
+void PmergeMe::prepareInsert(int leftover, bool container)
 {
     size_t currentIndex;
     int prevIndex;
-    bool end = false;
 
     insertInHigherVt(0);
     for (size_t i = 1; i < 33; i++)
     {
         currentIndex = Jacobstahl[i];
         if (currentIndex > pairsVt.size())
-        {
-            end = true;
             currentIndex = pairsVt.size() - 1;
-        }
         prevIndex = Jacobstahl[i - 1];
 
         for (int j = currentIndex; j > prevIndex; j--)
-            insertInHigherVt(j);
-        
-        if (end)
-            break ;
+        {
+            if (container == true)
+                insertInHigherVt(j);
+            else
+                insertInHigherLt(j);
+        }
     }
     if (leftover != -1)
-        vt.insert(std::lower_bound(vt.begin(), vt.end(), leftover), leftover);
+    {
+        if (container == true)
+            vt.insert(std::lower_bound(vt.begin(), vt.end(), leftover), leftover);
+        else
+        {
+            std::list<int>::iterator it = lt.begin();
+            while (it != lt.end() && *it < leftover)
+                ++it;
+            lt.insert(it, leftover);
+        }
+    }
 }
 
 void PmergeMe::handleVector()
@@ -160,8 +153,8 @@ void PmergeMe::handleVector()
     createPairs(pairsVt, vt);
     vt.clear();
     sortHigherValuesRecursivelyVt(0);
-    insertSmallestVt();    
-    prepareInsertVt(leftover);
+    insertSmallest(pairsVt, vt);    
+    prepareInsert(leftover, true);
     checkIfSorted(vt);
 }
 
@@ -190,21 +183,57 @@ void PmergeMe::sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::i
     sortHigherValuesRecursivelyLt(++itPair);
 }
 
+std::list<int>::iterator PmergeMe::findInPairsLt(int value)
+{
+    std::list<std::pair<int, int> >::iterator itP = pairsLt.begin();
+
+    while (itP != pairsLt.end())
+    {
+        for (std::list<int>::iterator itL = lt.begin(); itL != lt.end(); ++itL)
+        {
+            if (value == *itL)
+                return (itL);
+        }
+        ++itP;
+    }
+    return (lt.end());
+}
+
+void PmergeMe::insertInHigherLt(size_t index)
+{
+    std::list<int>::iterator end;
+    std::list<std::pair<int, int> >::iterator itP = pairsLt.begin();
+    std::list<int>::iterator itL;
+    int value;
+
+    std::advance(itP, index);
+    value = itP->first;
+
+    end = findInPairsLt(itP->second);
+
+    for (itL = lt.begin(); itL != end; ++itL)
+    {
+        if (*itL > value)
+            break ;
+    }
+    lt.insert(itL, value);
+}
+
 void PmergeMe::handleList()
 {
-    // int leftover = -1;
+    int leftover = -1;
 
-    // if (lt.size() % 2 != 0)
-    // {
-    //     leftover = lt.back();
-    //     lt.pop_back();
-    // }
+    if (lt.size() % 2 != 0)
+    {
+        leftover = lt.back();
+        lt.pop_back();
+    }
     createPairs(pairsLt, lt);
     lt.clear();
     sortHigherValuesRecursivelyLt(pairsLt.begin());
-    for (std::list<int>::const_iterator it = lt.begin(); it != lt.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << "\n";
+    insertSmallest(pairsLt, lt);
+    prepareInsert(leftover, false);
+    checkIfSorted(lt);
 }
 
 const char *PmergeMe::ErrorException::what(void) const throw()
