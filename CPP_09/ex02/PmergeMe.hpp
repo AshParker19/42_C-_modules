@@ -37,16 +37,14 @@ class PmergeMe
 
         // vector
         void sortHigherValuesRecursivelyVt(size_t index);
-        void insertInHigherVt(size_t index);
-        std::vector<int>::iterator findInPairsVt(int value);
+        void binarySearchVt(size_t index);
         void handleVector();
 
-        void prepareInsert(int leftover, bool container);
+        void prepareInsert(bool useVector );
 
         // list
         void sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::iterator itPair);
-        void insertInHigherLt(size_t index);
-        std::list<int>::iterator findInPairsLt(int value);
+        void binarySearchLt(size_t index);
         void handleList();
 
         class ErrorException : public std::exception
@@ -138,6 +136,31 @@ class PmergeMe
                 }
             }
             pairs.erase(it);
+        }
+
+        template<typename T>
+        void insertLeftover(T &pairs, int leftover)
+        {
+            if (leftover != -1)
+                pairs.insert(pairs.end(), std::make_pair(leftover, 0));
+        }
+
+        template<typename T, typename U>
+        typename U::iterator findInPairs(int value, T &pairs, U &container)
+        {
+            typename T::iterator itP = pairs.begin();
+            typename U::iterator itL;
+
+            while (itP != pairs.end())
+            {
+                for (itL = container.begin(); itL != container.end(); ++itL)
+                {
+                    if (value == *itL)
+                        return (itL);
+                }
+                ++itP;
+            }
+            return (container.end());
         }
 };
 

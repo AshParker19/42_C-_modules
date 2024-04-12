@@ -3,7 +3,7 @@
 int main(int ac, char **av)
 {
     try
-    {   
+    {
         PmergeMe PM(ac, av);
 
         PM.generateSequence();

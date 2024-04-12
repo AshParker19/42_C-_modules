@@ -81,37 +81,22 @@ void PmergeMe::sortHigherValuesRecursivelyVt(size_t index)
     sortHigherValuesRecursivelyVt(index + 1);
 }
 
-std::vector<int>::iterator PmergeMe::findInPairsVt(int value)
-{
-    std::vector<std::pair<int, int> >::iterator itP = pairsVt.begin();
-
-    while (itP != pairsVt.end())
-    {
-        for (std::vector<int>::iterator itV = vt.begin(); itV != vt.end(); ++itV)
-        {
-            if (value == *itV)
-                return (itV);
-        }
-        ++itP;
-    }
-    return (vt.end());
-}
-
-void PmergeMe::insertInHigherVt(size_t index)
+void PmergeMe::binarySearchVt(size_t index)
 {
     std::vector<int>::iterator end;
     int value = pairsVt[index].first;
 
-    end = findInPairsVt(pairsVt[index].second);
+    end = findInPairs(pairsVt[index].second, pairsVt, vt);
     vt.insert(std::lower_bound(vt.begin(), end, value), value);
 }
 
-void PmergeMe::prepareInsert(int leftover, bool container)
+void PmergeMe::prepareInsert(bool useVector)
 {
     size_t currentIndex;
     int prevIndex;
+    void (PmergeMe::*searchFunc)(size_t) = useVector ? &PmergeMe::binarySearchVt : &PmergeMe::binarySearchLt;
 
-    insertInHigherVt(0);
+    (this->*searchFunc)(0);
     for (size_t i = 1; i < 33; i++)
     {
         currentIndex = Jacobstahl[i];
@@ -120,24 +105,7 @@ void PmergeMe::prepareInsert(int leftover, bool container)
         prevIndex = Jacobstahl[i - 1];
 
         for (int j = currentIndex; j > prevIndex; j--)
-        {
-            if (container == true)
-                insertInHigherVt(j);
-            else
-                insertInHigherLt(j);
-        }
-    }
-    if (leftover != -1)
-    {
-        if (container == true)
-            vt.insert(std::lower_bound(vt.begin(), vt.end(), leftover), leftover);
-        else
-        {
-            std::list<int>::iterator it = lt.begin();
-            while (it != lt.end() && *it < leftover)
-                ++it;
-            lt.insert(it, leftover);
-        }
+            (this->*searchFunc)(j);
     }
 }
 
@@ -153,8 +121,9 @@ void PmergeMe::handleVector()
     createPairs(pairsVt, vt);
     vt.clear();
     sortHigherValuesRecursivelyVt(0);
-    insertSmallest(pairsVt, vt);    
-    prepareInsert(leftover, true);
+    insertSmallest(pairsVt, vt);
+    insertLeftover(pairsVt, leftover); 
+    prepareInsert(true);
     checkIfSorted(vt);
 }
 
@@ -183,40 +152,33 @@ void PmergeMe::sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::i
     sortHigherValuesRecursivelyLt(++itPair);
 }
 
-std::list<int>::iterator PmergeMe::findInPairsLt(int value)
+void PmergeMe::binarySearchLt(size_t index)
 {
-    std::list<std::pair<int, int> >::iterator itP = pairsLt.begin();
-
-    while (itP != pairsLt.end())
-    {
-        for (std::list<int>::iterator itL = lt.begin(); itL != lt.end(); ++itL)
-        {
-            if (value == *itL)
-                return (itL);
-        }
-        ++itP;
-    }
-    return (lt.end());
-}
-
-void PmergeMe::insertInHigherLt(size_t index)
-{
+    std::list<int>::iterator itL = lt.begin();
+    std::list<int>::iterator mid;
     std::list<int>::iterator end;
     std::list<std::pair<int, int> >::iterator itP = pairsLt.begin();
-    std::list<int>::iterator itL;
     int value;
+    int distance;
 
     std::advance(itP, index);
     value = itP->first;
-
-    end = findInPairsLt(itP->second);
-
-    for (itL = lt.begin(); itL != end; ++itL)
+    end = findInPairs(itP->second, pairsLt, lt);
+    distance = std::distance(lt.begin(), end);
+    while (distance > 1)
     {
-        if (*itL > value)
-            break ;
+        mid = itL;
+        std::advance(mid, distance / 2);
+        if (*mid > value)
+            end = mid;
+        else
+            itL = mid;
+        distance = std::distance(itL, end);
     }
-    lt.insert(itL, value);
+    if (*itL > value)
+        lt.insert(itL, value);
+    else
+        lt.insert(++itL, value);
 }
 
 void PmergeMe::handleList()
@@ -232,7 +194,8 @@ void PmergeMe::handleList()
     lt.clear();
     sortHigherValuesRecursivelyLt(pairsLt.begin());
     insertSmallest(pairsLt, lt);
-    prepareInsert(leftover, false);
+    insertLeftover(pairsLt, leftover); 
+    prepareInsert(false);
     checkIfSorted(lt);
 }
 
