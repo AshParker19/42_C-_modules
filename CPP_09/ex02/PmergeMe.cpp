@@ -2,23 +2,6 @@
 
 PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(int ac, char **av)
-{
-    std::string input;
-
-    for (int i = 1; i < ac; ++i)
-    {
-        input += av[i];
-        if (i < ac -1)
-            input += " ";
-    }
-    if (!parse(false, input, vt))
-        throw (ErrorException());
-    if (vt.size() == 1)
-        throw (OnlyOneIntegerException());
-    parse(true, input, lt);
-}
-
 PmergeMe::PmergeMe(const PmergeMe &other)
 {
     (void) other;
@@ -53,6 +36,31 @@ bool PmergeMe::noOverflow(std::string token)
     if (token.length() < maxInt.size())
         return (true);
     return (token.compare(maxInt) <= 0);
+}
+
+bool PmergeMe::containsAlready(const std::string& value)
+{
+    std::istringstream iss(parsedInput);
+    std::string token;
+
+    while (iss >> token)
+    {
+        if (token == value)
+            return (true);
+    }
+    return (false);
+}
+
+void PmergeMe::parse(int ac, char **av)
+{
+    for (int i = 1; i < ac; ++i)
+    {
+        if (!isNumber(av[i]) || !noOverflow(av[i]) || containsAlready(av[i]))
+            throw (ErrorException());
+        parsedInput += av[i];
+        if (i < ac - 1)
+            parsedInput += " ";
+    }
 }
 
 void PmergeMe::generateSequence()
@@ -112,7 +120,10 @@ void PmergeMe::prepareInsert(bool useVector)
 void PmergeMe::handleVector()
 {
     int leftover = -1;
+    clock_t start, end;
 
+    start = clock();
+    readStore(vt);
     if (vt.size() % 2 != 0)
     {
         leftover = vt.back();
@@ -124,7 +135,8 @@ void PmergeMe::handleVector()
     insertSmallest(pairsVt, vt);
     insertLeftover(pairsVt, leftover); 
     prepareInsert(true);
-    checkIfSorted(vt);
+    // checkIfSorted(vt);
+    end = clock();
 }
 
 void PmergeMe::sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::iterator itPair)
@@ -185,6 +197,7 @@ void PmergeMe::handleList()
 {
     int leftover = -1;
 
+    readStore(lt);
     if (lt.size() % 2 != 0)
     {
         leftover = lt.back();

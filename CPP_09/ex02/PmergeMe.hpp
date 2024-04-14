@@ -7,23 +7,25 @@
 #include <algorithm>
 #include <vector>
 #include <list>
+#include <ctime>
 
 class PmergeMe
 {
     private:
-        PmergeMe();
 
         int Jacobstahl[33];
+        std::string parsedInput;
 
         std::vector<int> vt;
         std::vector<std::pair <int,int> > pairsVt;
-        // int vector time;
+        double benchmarkVt;
 
         std::list<int> lt;
         std::list<std::pair <int,int> > pairsLt;
+        double benchmarkLt;
 
     public:
-        PmergeMe(int ac, char **av);
+        PmergeMe();
         PmergeMe(const PmergeMe &other); //TODO:
         PmergeMe &operator=(const PmergeMe &other); //TODO:
         ~PmergeMe();
@@ -31,6 +33,8 @@ class PmergeMe
         // parsing
         bool isNumber(const std::string &str);
         bool noOverflow(std::string token);
+        bool containsAlready(const std::string& value);
+        void parse(int ac, char **av);
 
         // Jacobstahl sequence
         void generateSequence();
@@ -80,31 +84,19 @@ class PmergeMe
         }
 
         template<typename T>
-        bool containsAlready(T container, int value)
+        void readStore(T &container)
         {
-            return (std::find(container.begin(), container.end(), value) != container.end());
-        }
-
-        template<typename T>
-        bool parse(bool alreadyChecked, const std::string &input, T &container)
-        {
-            std::istringstream iss(input);
+            std::istringstream iss(parsedInput);
             std::string token;
             int value;
 
-            if (input.empty())
-                return (false);
-            
             while (iss >> token)
             {
-                if (!alreadyChecked && (!isNumber(token) || !noOverflow(token)))
-                    return (false);
                 value = std::atoi(token.c_str());
-                if (!alreadyChecked && (value == 0 || containsAlready(container, value)))
-                    return (false);
                 container.push_back(value);
             }
-            return (true);
+            if (container.size() == 1)
+                throw (OnlyOneIntegerException());
         }
 
         template<typename T, typename U>

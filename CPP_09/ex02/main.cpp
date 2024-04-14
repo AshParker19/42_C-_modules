@@ -4,8 +4,9 @@ int main(int ac, char **av)
 {
     try
     {
-        PmergeMe PM(ac, av);
+        PmergeMe PM;
 
+        PM.parse(ac, av);
         PM.generateSequence();
         PM.handleVector();
         PM.handleList();
