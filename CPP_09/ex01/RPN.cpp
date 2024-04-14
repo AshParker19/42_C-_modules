@@ -18,8 +18,8 @@ RPN &RPN::operator=(const RPN &other)
     if (this == &other)
         return (*this);
 
-    this->numbers = other.numbers;
-    this->notation = other.notation;
+    numbers = other.numbers;
+    notation = other.notation;
     return (*this);
 }
 

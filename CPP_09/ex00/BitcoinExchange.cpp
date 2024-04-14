@@ -11,9 +11,9 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
     if (this == &other)
         return (*this);
-    this->tempDate = other.tempDate;
-    this->tempAmount = other.tempAmount;
-    this->DB = other.DB;
+    tempDate = other.tempDate;
+    tempAmount = other.tempAmount;
+    DB = other.DB;
 
     return (*this);
 }
