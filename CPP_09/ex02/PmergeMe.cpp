@@ -4,12 +4,26 @@ PmergeMe::PmergeMe() {}
 
 PmergeMe::PmergeMe(const PmergeMe &other)
 {
-    (void) other;
+    *this = other;
 }
 
 PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 {
-    (void) other;
+    if (this == &other)
+        return (*this);
+    
+    for (int i = 0; i < 33; i++)
+        Jacobstahl[i] = other.Jacobstahl[i];
+
+    parsedInput = other.parsedInput;
+
+    vt = other.vt;
+    benchmarkVt = other.benchmarkVt;
+    pairsVt = other.pairsVt;
+
+    lt = other.lt;
+    pairsLt = other.pairsLt;
+    benchmarkLt = other.benchmarkLt;
     return (*this);
 }
 
@@ -18,7 +32,6 @@ PmergeMe::~PmergeMe() {}
 bool PmergeMe::isNumber(const std::string &str)
 {
     std::string::const_iterator it = str.begin();
-
     while (it != str.end() && std::isdigit(*it))
         it++;
     return (!str.empty() && it == str.end());
@@ -135,8 +148,8 @@ void PmergeMe::handleVector()
     insertSmallest(pairsVt, vt);
     insertLeftover(pairsVt, leftover); 
     prepareInsert(true);
-    // checkIfSorted(vt);
     end = clock();
+    benchmarkVt = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
 }
 
 void PmergeMe::sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::iterator itPair)
@@ -196,7 +209,9 @@ void PmergeMe::binarySearchLt(size_t index)
 void PmergeMe::handleList()
 {
     int leftover = -1;
+    clock_t start, end;
 
+    start = clock();
     readStore(lt);
     if (lt.size() % 2 != 0)
     {
@@ -209,7 +224,23 @@ void PmergeMe::handleList()
     insertSmallest(pairsLt, lt);
     insertLeftover(pairsLt, leftover); 
     prepareInsert(false);
-    checkIfSorted(lt);
+    end = clock();
+    benchmarkLt = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
+}
+
+void PmergeMe::displayResults()
+{
+    std::cout << "Before: " << parsedInput << "\n";
+    std::cout << "After: ";
+    for (size_t i = 0; i < vt.size(); i++)
+        std::cout << vt[i] << " ";
+    std::cout << "\n";
+    std::cout << "std::vector --> " << checkIfSorted(vt) << "\n";
+    std::cout << "std::list --> " << checkIfSorted(lt) << "\n";
+    std::cout << "Time to process a range of " << vt.size() << " elements with "
+              << "std::vector" << " : " << benchmarkVt << "ms\n";
+    std::cout << "Time to process a range of " << lt.size() << " elements with "
+              << "std::list" << " : " << benchmarkLt << "ms" << std::endl;
 }
 
 const char *PmergeMe::ErrorException::what(void) const throw()

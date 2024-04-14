@@ -10,6 +10,7 @@ int main(int ac, char **av)
         PM.generateSequence();
         PM.handleVector();
         PM.handleList();
+        PM.displayResults();
     }
     catch (const std::exception &e)
     {

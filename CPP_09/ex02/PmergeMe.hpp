@@ -8,6 +8,7 @@
 #include <vector>
 #include <list>
 #include <ctime>
+#include <iomanip>
 
 class PmergeMe
 {
@@ -26,8 +27,8 @@ class PmergeMe
 
     public:
         PmergeMe();
-        PmergeMe(const PmergeMe &other); //TODO:
-        PmergeMe &operator=(const PmergeMe &other); //TODO:
+        PmergeMe(const PmergeMe &other);
+        PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();
 
         // parsing
@@ -35,6 +36,7 @@ class PmergeMe
         bool noOverflow(std::string token);
         bool containsAlready(const std::string& value);
         void parse(int ac, char **av);
+        void displayResults();
 
         // Jacobstahl sequence
         void generateSequence();
@@ -64,7 +66,7 @@ class PmergeMe
         };
 
         template<typename T>
-        void checkIfSorted(const T &container)
+        const std::string checkIfSorted(const T &container)
         {
             typename T::const_iterator it = container.begin();
             typename T::const_iterator nextIT = it;
@@ -73,14 +75,11 @@ class PmergeMe
             while (nextIT != container.end())
             {
                 if (*it > *nextIT)
-                {
-                    std::cout << "KO" << std::endl;
-                    return ;
-                }
+                    return ("KO");
                 ++it;
                 ++nextIT;
             }
-            std::cout << "OK" << std::endl;
+            return ("OK");
         }
 
         template<typename T>
