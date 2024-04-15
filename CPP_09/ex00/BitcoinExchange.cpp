@@ -60,8 +60,10 @@ void BitcoinExchange::validateDate(const std::string &date, int flag)
     if (yearMonthDay[0] == 2009 && yearMonthDay[1] == 1 && yearMonthDay[2] < 2)
             throw (BitcoinDidNotExistException());
 
-    if (yearMonthDay[0] < 2009 || yearMonthDay[1] < 1 || yearMonthDay[2] < 1 ||
-        (yearMonthDay[0] > 2024 && yearMonthDay[1] > 4 && yearMonthDay[2] > 15))
+    if ((yearMonthDay[0] < 2009) || 
+        (yearMonthDay[0] == 2009 && (yearMonthDay[1] < 1 || (yearMonthDay[1] == 1 && yearMonthDay[2] < 2))) ||
+        (yearMonthDay[0] > 2024) ||
+        (yearMonthDay[0] == 2024 && (yearMonthDay[1] > 4 || (yearMonthDay[1] == 4 && yearMonthDay[2] > 15))))
     {
         throw (WrongDateFormatException());
     }
@@ -178,11 +180,12 @@ void BitcoinExchange::readStoreDB()
 void BitcoinExchange::calculateResult()
 {
     std::map<std::string, double>::iterator it = DB.lower_bound(tempDate);
+    float result;
 
     if (it != DB.begin() && (it == DB.end() || it->first != tempDate))
         it--;
 
-    long long result = tempAmount * it->second;
+    result = tempAmount * it->second;
     std::cout << tempDate << " => "<< tempAmount << " = " << result << "\n";
 }
 
