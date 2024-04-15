@@ -35,8 +35,8 @@ class PmergeMe
         bool isNumber(const std::string &str);
         bool noOverflow(std::string token);
         bool containsAlready(const std::string& value);
+        bool isSorted();
         void parse(int ac, char **av);
-        void displayResults();
 
         // Jacobstahl sequence
         void generateSequence();
@@ -52,6 +52,8 @@ class PmergeMe
         void sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::iterator itPair);
         void binarySearchLt(size_t index);
         void handleList();
+        
+        void displayResults();
 
         class ErrorException : public std::exception
         {
@@ -60,6 +62,12 @@ class PmergeMe
         };
 
         class OnlyOneIntegerException : public std::exception
+        {
+            public:
+                const char *what(void) const throw();
+        };
+
+        class AlreadySortedInputException : public std::exception
         {
             public:
                 const char *what(void) const throw();
@@ -82,8 +90,25 @@ class PmergeMe
             return ("OK");
         }
 
+        template <typename T>
+        bool isSorted(const T& container)
+        {
+            typename T::const_iterator it = container.begin();
+            typename T::const_iterator next = it;
+            ++next;
+
+            while (next != container.end())
+            {
+                if (*it > *next)
+                    return (false);
+                ++it;
+                ++next;
+            }
+            return (true);
+        }
+
         template<typename T>
-        void readStore(T &container)
+        void readStore(T &container, bool checkSorted)
         {
             std::istringstream iss(parsedInput);
             std::string token;
@@ -96,6 +121,8 @@ class PmergeMe
             }
             if (container.size() == 1)
                 throw (OnlyOneIntegerException());
+            if (checkSorted && isSorted(container))
+                throw (AlreadySortedInputException());
         }
 
         template<typename T, typename U>

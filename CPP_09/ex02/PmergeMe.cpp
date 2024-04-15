@@ -136,7 +136,7 @@ void PmergeMe::handleVector()
     clock_t start, end;
 
     start = clock();
-    readStore(vt);
+    readStore(vt, true);
     if (vt.size() % 2 != 0)
     {
         leftover = vt.back();
@@ -212,7 +212,7 @@ void PmergeMe::handleList()
     clock_t start, end;
 
     start = clock();
-    readStore(lt);
+    readStore(lt, false);
     if (lt.size() % 2 != 0)
     {
         leftover = lt.back();
@@ -251,4 +251,9 @@ const char *PmergeMe::ErrorException::what(void) const throw()
 const char *PmergeMe::OnlyOneIntegerException::what(void) const throw()
 {
     return ("Input more positive integers!");
+}
+
+const char *PmergeMe::AlreadySortedInputException::what(void) const throw()
+{
+    return ("Input is already sorted");
 }

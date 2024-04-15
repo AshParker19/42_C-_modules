@@ -6,6 +6,9 @@ int main(int ac, char **av)
     {
         PmergeMe PM;
 
+        if (ac == 1)
+            throw (PmergeMe::ErrorException());
+
         PM.parse(ac, av);
         PM.generateSequence();
         PM.handleVector();

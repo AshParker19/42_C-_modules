@@ -46,7 +46,6 @@ void BitcoinExchange::validateDate(const std::string &date, int flag)
 {
     int yearMonthDay[3];
     
-    // check date's structure
     if (date.size() != 10 || date[4] != '-' || date[7] != '-')
     {
         if (flag == 0)
@@ -62,9 +61,9 @@ void BitcoinExchange::validateDate(const std::string &date, int flag)
             throw (BitcoinDidNotExistException());
 
     if (yearMonthDay[0] < 2009 || yearMonthDay[1] < 1 || yearMonthDay[2] < 1 ||
-        yearMonthDay[0] > 2024 || yearMonthDay[1] > 12 || yearMonthDay[2] > 31) //TODO: limit it by the date of the evaluation day
+        (yearMonthDay[0] > 2024 && yearMonthDay[1] > 4 && yearMonthDay[2] > 15))
     {
-        throw (WrongDateFormatException()); // TODO: change to a more suitable exception
+        throw (WrongDateFormatException());
     }
     
     tempDate = date;
@@ -102,7 +101,7 @@ void BitcoinExchange::validateAmount(const std::string &amount, int flag)
         throw (InputFileRowErrorException());
     }
     tempAmount = std::atof(amount.c_str());
-    if (flag == 0 && tempAmount < 0) //TODO: add a limit for BTC ATH at the day of submission
+    if (flag == 0 && (tempAmount < 0 || tempAmount > 73737.94))
         throw (InvalidPriceException());
     if (flag == 1)
     {
