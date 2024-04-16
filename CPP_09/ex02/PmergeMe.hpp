@@ -35,7 +35,6 @@ class PmergeMe
         bool isNumber(const std::string &str);
         bool noOverflow(std::string token);
         bool containsAlready(const std::string& value);
-        bool isSorted();
         void parse(int ac, char **av);
 
         // Jacobstahl sequence
@@ -91,7 +90,7 @@ class PmergeMe
         }
 
         template <typename T>
-        bool isSorted(const T& container)
+        bool isSorted(const T& container) // TODO: change it into just a fucn because I don't need to do it twice
         {
             typename T::const_iterator it = container.begin();
             typename T::const_iterator next = it;

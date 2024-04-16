@@ -57,13 +57,10 @@ void BitcoinExchange::validateDate(const std::string &date, int flag)
     yearMonthDay[1] = std::atoi(date.substr(5, 2).c_str());
     yearMonthDay[2] = std::atoi(date.substr(8, 2).c_str());
 
-    if (yearMonthDay[0] == 2009 && yearMonthDay[1] == 1 && yearMonthDay[2] < 2)
-            throw (BitcoinDidNotExistException());
-
     if ((yearMonthDay[0] < 2009) || 
         (yearMonthDay[0] == 2009 && (yearMonthDay[1] < 1 || (yearMonthDay[1] == 1 && yearMonthDay[2] < 2))) ||
         (yearMonthDay[0] > 2024) ||
-        (yearMonthDay[0] == 2024 && (yearMonthDay[1] > 4 || (yearMonthDay[1] == 4 && yearMonthDay[2] > 15))))
+        (yearMonthDay[0] == 2024 && (yearMonthDay[1] > 4 || (yearMonthDay[1] == 4 && yearMonthDay[2] > 17))))
     {
         throw (WrongDateFormatException());
     }

@@ -25,11 +25,41 @@ RPN &RPN::operator=(const RPN &other)
 
 RPN::~RPN() {}
 
+void RPN::performOperation(char operand)
+{
+    int op1, op2;
+
+    op2 = numbers.top();
+    numbers.pop();
+    op1 = numbers.top();
+    numbers.pop();
+
+    if (operand == '/' && op2 == 0)
+        throw (DivisionByZeroException());
+
+    switch (operand)
+    {
+        case '*':
+            numbers.push(op1 * op2);
+            break ;
+        
+        case '/':
+            numbers.push(op1 / op2);
+            break ;
+        
+        case '+':
+            numbers.push(op1 + op2);
+            break ;
+        
+        case '-':
+            numbers.push(op1 - op2);
+    }
+}
+
 void RPN::calculate()
 {
     std::istringstream iss(notation);
     std::string token;
-    int op1, op2;
     
     while (iss >> token)
     {
@@ -38,36 +68,7 @@ void RPN::calculate()
         if (isdigit(token[0]))
             numbers.push(std::atoi(token.c_str()));
         else if (token.find_first_of("*/+-") != std::string::npos)
-        {
-            if(numbers.size() != 2)
-                throw (ErrorException());
-
-            op2 = numbers.top();
-            numbers.pop();
-            op1 = numbers.top();
-            numbers.pop();
-
-            if (token[0] == '/' && op2 == 0)
-                throw (DivisionByZeroException());
-
-            switch (token[0])
-            {
-                case '*':
-                    numbers.push(op1 * op2);
-                    break ;
-                
-                case '/':
-                    numbers.push(op1 / op2);
-                    break ;
-                
-                case '+':
-                    numbers.push(op1 + op2);
-                    break ;
-                
-                case '-':
-                    numbers.push(op1 - op2);
-            }
-        }
+            performOperation(token[0]);
         else
             throw (ErrorException());
     }
