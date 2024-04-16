@@ -41,6 +41,7 @@ class PmergeMe
         void generateSequence();
 
         // vector
+        void createPairsVt();
         void sortHigherValuesRecursivelyVt(size_t index);
         void binarySearchVt(size_t index);
         void handleVector();
@@ -48,6 +49,7 @@ class PmergeMe
         void prepareInsert(bool useVector );
 
         // list
+        void createPairsLt();
         void sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::iterator itPair);
         void binarySearchLt(size_t index);
         void handleList();
@@ -122,21 +124,6 @@ class PmergeMe
                 throw (OnlyOneIntegerException());
             if (checkSorted && isSorted(container))
                 throw (AlreadySortedInputException());
-        }
-
-        template<typename T, typename U>
-        void createPairs(T &pairs, const U &container)
-        {
-            int first, second;
-            typename U::const_iterator it = container.begin();
-
-            for ( ; it != container.end(); ++it)
-            {
-                first = *it;
-                ++it;
-                second = *it;
-                pairs.push_back(std::make_pair(first, second));
-            }
         }
 
         template<typename T, typename U>

@@ -84,6 +84,12 @@ void PmergeMe::generateSequence()
         Jacobstahl[i] = (Jacobstahl[i - 1] + 2 * Jacobstahl[i - 2]);
 }
 
+void PmergeMe::createPairsVt()
+{
+    for (size_t i = 0; i < vt.size(); i += 2)
+        pairsVt.push_back(std::make_pair(vt[i], vt[i + 1]));
+}
+
 void PmergeMe::sortHigherValuesRecursivelyVt(size_t index)
 {
     int temp;
@@ -142,7 +148,7 @@ void PmergeMe::handleVector()
         leftover = vt.back();
         vt.erase(vt.end() - 1);
     }
-    createPairs(pairsVt, vt);
+    createPairsVt();
     vt.clear();
     sortHigherValuesRecursivelyVt(0);
     insertSmallest(pairsVt, vt);
@@ -150,6 +156,20 @@ void PmergeMe::handleVector()
     prepareInsert(true);
     end = clock();
     benchmarkVt = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
+}
+
+void PmergeMe::createPairsLt()
+{
+    int first, second;
+    std::list<int>::const_iterator it = lt.begin();
+
+    for ( ; it != lt.end(); ++it)
+    {
+        first = *it;
+        ++it;
+        second = *it;
+        pairsLt.push_back(std::make_pair(first, second));
+    }
 }
 
 void PmergeMe::sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::iterator itPair)
@@ -218,7 +238,7 @@ void PmergeMe::handleList()
         leftover = lt.back();
         lt.pop_back();
     }
-    createPairs(pairsLt, lt);
+    createPairsLt();
     lt.clear();
     sortHigherValuesRecursivelyLt(pairsLt.begin());
     insertSmallest(pairsLt, lt);
