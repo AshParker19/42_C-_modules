@@ -106,7 +106,7 @@ void BitcoinExchange::validateAmount(const std::string &amount, int flag)
     {
         if (tempAmount < 0)
             throw (ContentException("not a positive number."));
-        else if (tempAmount > 10000)
+        else if (tempAmount > 1000)
             throw (ContentException("too large a number."));
     }
 }
