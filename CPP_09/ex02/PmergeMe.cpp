@@ -123,12 +123,28 @@ void PmergeMe::insertSmallestVt()
     }
 }
 
+std::vector<int>::iterator PmergeMe::findInPairsVt(int value)
+{
+    size_t i = 0, j;
+
+    while (i < pairsVt.size())
+    {
+        for (j = 0; j < vt.size(); j++)
+        {
+            if (value == vt[j])
+                return (vt.begin() + j);
+        }
+        i++;
+    }
+    return (vt.end());
+}
+
 void PmergeMe::binarySearchVt(size_t index)
 {
     std::vector<int>::iterator end;
     int value = pairsVt[index].first;
 
-    end = findInPairs(pairsVt[index].second, pairsVt, vt);
+    end = findInPairsVt(pairsVt[index].second);
     vt.insert(std::lower_bound(vt.begin(), end, value), value);
 }
 
@@ -139,7 +155,7 @@ void PmergeMe::prepareInsert(bool useVector)
     void (PmergeMe::*searchFunc)(size_t) = useVector ? &PmergeMe::binarySearchVt : &PmergeMe::binarySearchLt;
 
     (this->*searchFunc)(0);
-    for (size_t i = 1; i < 33; i++)
+    for (size_t i = 2; i < 33; i++)
     {
         currentIndex = Jacobstahl[i];
         if (currentIndex > pairsVt.size())
@@ -227,6 +243,23 @@ void PmergeMe::insertSmallestLt()
     }
 }
 
+std::list<int>::iterator PmergeMe::findInPairsLt(int value)
+{
+    std::list<std::pair<int, int> >::iterator itP = pairsLt.begin();
+    std::list<int>::iterator itL;
+
+    while (itP != pairsLt.end())
+    {
+        for (itL = lt.begin(); itL != lt.end(); ++itL)
+        {
+            if (value == *itL)
+                return (itL);
+        }
+        ++itP;
+    }
+    return (lt.end());
+}
+
 void PmergeMe::binarySearchLt(size_t index)
 {
     std::list<int>::iterator itL = lt.begin();
@@ -238,7 +271,7 @@ void PmergeMe::binarySearchLt(size_t index)
 
     std::advance(itP, index);
     value = itP->first;
-    end = findInPairs(itP->second, pairsLt, lt);
+    end = findInPairsLt(itP->second);
     distance = std::distance(lt.begin(), end);
     while (distance > 1)
     {
