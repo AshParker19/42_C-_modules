@@ -41,6 +41,7 @@ class PmergeMe
         void generateSequence();
 
         // vector
+        bool isSorted();
         void createPairsVt();
         void sortHigherValuesRecursivelyVt(size_t index);
         void insertSmallestVt();
@@ -95,25 +96,8 @@ class PmergeMe
             return ("OK");
         }
 
-        template <typename T>
-        bool isSorted(const T& container) // TODO: change it into just a fucn because I don't need to do it twice
-        {
-            typename T::const_iterator it = container.begin();
-            typename T::const_iterator next = it;
-            ++next;
-
-            while (next != container.end())
-            {
-                if (*it > *next)
-                    return (false);
-                ++it;
-                ++next;
-            }
-            return (true);
-        }
-
         template<typename T>
-        void readStore(T &container, bool checkSorted)
+        void readStore(T &container, bool useVector)
         {
             std::istringstream iss(parsedInput);
             std::string token;
@@ -126,7 +110,7 @@ class PmergeMe
             }
             if (container.size() == 1)
                 throw (OnlyOneIntegerException());
-            if (checkSorted && isSorted(container))
+            if (useVector && isSorted())
                 throw (AlreadySortedInputException());
         }
 

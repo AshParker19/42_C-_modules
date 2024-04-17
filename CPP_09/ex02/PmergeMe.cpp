@@ -76,6 +76,22 @@ void PmergeMe::parse(int ac, char **av)
     }
 }
 
+bool PmergeMe::isSorted()
+{
+    std::vector<int>::const_iterator it = vt.begin();
+    std::vector<int>::const_iterator next = it;
+    ++next;
+
+    while (next != vt.end())
+    {
+        if (*it > *next)
+            return (false);
+        ++it;
+        ++next;
+    }
+    return (true);
+}
+
 void PmergeMe::generateSequence()
 {
     Jacobstahl[0] = 0;
