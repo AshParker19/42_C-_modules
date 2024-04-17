@@ -108,6 +108,21 @@ void PmergeMe::sortHigherValuesRecursivelyVt(size_t index)
     sortHigherValuesRecursivelyVt(index + 1);
 }
 
+void PmergeMe::insertSmallestVt()
+{
+    size_t i;
+
+    for (i = 0; i < pairsVt.size(); i++)
+    {
+        if (pairsVt[i].second == vt[0])
+        {
+            vt.insert(vt.begin(), pairsVt[i].first);
+            pairsVt.erase(pairsVt.begin() + i);
+            break ;
+        }
+    }
+}
+
 void PmergeMe::binarySearchVt(size_t index)
 {
     std::vector<int>::iterator end;
@@ -151,7 +166,7 @@ void PmergeMe::handleVector()
     createPairsVt();
     vt.clear();
     sortHigherValuesRecursivelyVt(0);
-    insertSmallest(pairsVt, vt);
+    insertSmallestVt();
     insertLeftover(pairsVt, leftover); 
     prepareInsert(true);
     end = clock();
@@ -195,6 +210,21 @@ void PmergeMe::sortHigherValuesRecursivelyLt(std::list<std::pair <int, int> >::i
 
     lt.insert(itLt, itPair->second);
     sortHigherValuesRecursivelyLt(++itPair);
+}
+
+void PmergeMe::insertSmallestLt()
+{
+    std::list<std::pair<int, int> >::iterator it;
+
+    for (it = pairsLt.begin(); it != pairsLt.end(); ++it)
+    {
+        if (it->second == *lt.begin())
+        {
+            lt.insert(lt.begin(), it->first);
+            pairsLt.erase(it);
+            break ;
+        }
+    }
 }
 
 void PmergeMe::binarySearchLt(size_t index)
@@ -241,7 +271,7 @@ void PmergeMe::handleList()
     createPairsLt();
     lt.clear();
     sortHigherValuesRecursivelyLt(pairsLt.begin());
-    insertSmallest(pairsLt, lt);
+    insertSmallestLt();
     insertLeftover(pairsLt, leftover); 
     prepareInsert(false);
     end = clock();
