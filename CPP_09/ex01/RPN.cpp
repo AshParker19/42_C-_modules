@@ -68,7 +68,11 @@ void RPN::calculate()
         if (isdigit(token[0]))
             numbers.push(std::atoi(token.c_str()));
         else if (token.find_first_of("*/+-") != std::string::npos)
+        {
+            if (numbers.size() < 2)
+                break ;
             performOperation(token[0]);
+        }
         else
             throw (ErrorException());
     }
