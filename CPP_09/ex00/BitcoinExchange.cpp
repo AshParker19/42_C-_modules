@@ -42,9 +42,14 @@ void BitcoinExchange::validateFile()
     }
 }
 
+bool BitcoinExchange::isLeapYear(int year)
+{
+    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+
 void BitcoinExchange::validateDate(const std::string &date, int flag)
 {
-    int yearMonthDay[3];
+    int year, month, day;
     
     if (date.size() != 10 || date[4] != '-' || date[7] != '-')
     {
@@ -53,17 +58,22 @@ void BitcoinExchange::validateDate(const std::string &date, int flag)
         throw (ContentException("bad input => " + date));
     }
 
-    yearMonthDay[0] = std::atoi(date.substr(0, 4).c_str());
-    yearMonthDay[1] = std::atoi(date.substr(5, 2).c_str());
-    yearMonthDay[2] = std::atoi(date.substr(8, 2).c_str());
+    year = std::atoi(date.substr(0, 4).c_str());
+    month = std::atoi(date.substr(5, 2).c_str());
+    day = std::atoi(date.substr(8, 2).c_str());
 
-    if ((yearMonthDay[0] < 2009) || 
-        (yearMonthDay[0] == 2009 && (yearMonthDay[1] < 1 || (yearMonthDay[1] == 1 && yearMonthDay[2] < 2))) ||
-        (yearMonthDay[0] > 2024) ||
-        (yearMonthDay[0] == 2024 && (yearMonthDay[1] > 4 || (yearMonthDay[1] == 4 && yearMonthDay[2] > 17))))
-    {
-        throw (WrongDateFormatException());
-    }
+    if (year < 2009 ||
+        (year == 2009 && (month < 1 || (month == 1 && day < 2))) ||
+        year > 2024 ||
+        (year == 2024 && (month > 4 || (month == 4 && day > 22))) || // submission day
+        (month < 1 || month > 12) ||
+        (day < 1 || day > 31) ||
+        (month == 2 && day > 29) ||
+        (month == 2 && day == 29 && !isLeapYear(year)) ||
+        ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30))
+        { 
+            throw WrongDateFormatException();
+        }
     
     tempDate = date;
 }

@@ -26,6 +26,7 @@ class BitcoinExchange
         void validateFile(const std::string &path);
         void validateFile();
         void validateLine(const std::string &content, int flag, char sep);
+        bool isLeapYear(int year);
         void validateDate(const std::string &date, int flag);
         void validateAmount(const std::string &price, int flag);
         void readStoreDB();
