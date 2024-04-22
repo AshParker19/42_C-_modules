@@ -60,6 +60,7 @@ void RPN::calculate()
 {
     std::istringstream iss(notation);
     std::string token;
+    size_t count = 0;
     
     while (iss >> token)
     {
@@ -75,9 +76,10 @@ void RPN::calculate()
         }
         else
             throw (ErrorException());
+        count++;
     }
 
-    if (numbers.size() != 1)
+    if (numbers.size() != 1 || count < 3)
         throw ErrorException();
 }
 
