@@ -171,13 +171,13 @@ void PmergeMe::prepareInsert(bool useVector)
     void (PmergeMe::*searchFunc)(size_t) = useVector ? &PmergeMe::binarySearchVt : &PmergeMe::binarySearchLt;
 
     (this->*searchFunc)(0);
+    // (this->*searchFunc)(1);
     for (size_t i = 2; i < 33; i++)
     {
         currentIndex = Jacobstahl[i];
         if (currentIndex > pairsVt.size())
             currentIndex = pairsVt.size() - 1;
         prevIndex = Jacobstahl[i - 1];
-
         for (int j = currentIndex; j > prevIndex; j--)
             (this->*searchFunc)(j);
     }
@@ -330,10 +330,16 @@ void PmergeMe::handleList()
 void PmergeMe::displayResults()
 {
     std::cout << "Before: " << parsedInput << "\n";
-    std::cout << "After: ";
+    std::cout << "After: \n";
+    std::cout << "Sorted vector\n";
     for (size_t i = 0; i < vt.size(); i++)
         std::cout << vt[i] << " ";
     std::cout << "\n";
+    std::cout << "Sorted list\n";
+    for (std::list<int>::iterator it = lt.begin(); it != lt.end(); it++)
+        std::cout << *it << " ";
+    std::cout << "\n";
+
     std::cout << "std::vector --> " << checkIfSorted(vt) << "\n";
     std::cout << "std::list --> " << checkIfSorted(lt) << "\n";
     std::cout << "Time to process a range of " << vt.size() << " elements with "
