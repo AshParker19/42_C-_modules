@@ -12,7 +12,7 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other)
     if (this == &other)
         return (*this);
     
-    for (int i = 0; i < 33; i++)
+    for (int i = 0; i < JACOB_NUM; i++)
         Jacobstahl[i] = other.Jacobstahl[i];
 
     parsedInput = other.parsedInput;
@@ -96,7 +96,7 @@ void PmergeMe::generateSequence()
 {
     Jacobstahl[0] = 0;
     Jacobstahl[1] = 1;
-    for (size_t i = 2; i < 33; ++i)
+    for (size_t i = 2; i < JACOB_NUM; ++i)
         Jacobstahl[i] = (Jacobstahl[i - 1] + 2 * Jacobstahl[i - 2]);
 }
 
@@ -170,14 +170,12 @@ void PmergeMe::prepareInsert(bool useVector)
     int prevIndex;
     void (PmergeMe::*searchFunc)(size_t) = useVector ? &PmergeMe::binarySearchVt : &PmergeMe::binarySearchLt;
 
-    (this->*searchFunc)(0);
-    // (this->*searchFunc)(1);
-    for (size_t i = 2; i < 33; i++)
+    for (size_t i = 0; i < std::min(static_cast<size_t>(JACOB_NUM), pairsVt.size()); i++)
     {
         currentIndex = Jacobstahl[i];
-        if (currentIndex > pairsVt.size())
+        if (currentIndex >= pairsVt.size())
             currentIndex = pairsVt.size() - 1;
-        prevIndex = Jacobstahl[i - 1];
+        prevIndex = i == 0 ? Jacobstahl[i] - 1 : Jacobstahl[i - 1];
         for (int j = currentIndex; j > prevIndex; j--)
             (this->*searchFunc)(j);
     }
@@ -199,7 +197,7 @@ void PmergeMe::handleVector()
     vt.clear();
     sortHigherValuesRecursivelyVt(0);
     insertSmallestVt();
-    insertLeftover(pairsVt, leftover); 
+    insertLeftover(pairsVt, leftover);
     prepareInsert(true);
     end = clock();
     benchmarkVt = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;

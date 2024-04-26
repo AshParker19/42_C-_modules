@@ -78,7 +78,6 @@ void RPN::calculate()
             throw (ErrorException());
         count++;
     }
-
     if (numbers.size() != 1 || count < 3)
         throw ErrorException();
 }

@@ -13,8 +13,8 @@
 class PmergeMe
 {
     private:
-
-        int Jacobstahl[33];
+        static const int JACOB_NUM = 33;
+        int Jacobstahl[JACOB_NUM];
         std::string parsedInput;
 
         std::vector<int> vt;
